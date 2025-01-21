@@ -1,16 +1,21 @@
 import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { X, Menu } from "lucide-react";
 import logo from "../assets/logo.png";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  // Helper function to determine if a link is active
+  const isActive = (path) => location.pathname === path;
 
   return (
     <div className="w-full flex border-b border-gray-200">
       <div className="w-64 border-r border-gray-200">
-        <div className="p-4 h-full flex items-center">
+        <Link to="/" className="p-4 h-full flex items-center">
           <img src={logo} alt="Insure Logo" className="h-12" />
-        </div>
+        </Link>
       </div>
 
       <div className="flex-1">
@@ -36,40 +41,82 @@ const Header = () => {
         </div>
 
         {/* Main Navigation */}
-        <nav className="relative flex items-stretch ">
+        <nav className="relative flex items-stretch">
           <div className="flex-1 py-4 flex justify-between items-center">
             {/* Desktop Menu */}
-            <div className="hidden md:flex flex-1 ">
+            <div className="hidden md:flex flex-1">
               <div className="font-bold flex justify-between w-full space-x-8 px-12">
-                <a href="#" className="text-blue-600 font-medium">
+                <Link
+                  to="/insurance"
+                  className={
+                    isActive("/insurance")
+                      ? "text-blue-600 font-medium"
+                      : "text-gray-600 hover:text-gray-800"
+                  }
+                >
                   Insurance
-                </a>
-                <a href="#" className="text-gray-600 hover:text-gray-800">
+                </Link>
+                <Link
+                  to="/pension"
+                  className={
+                    isActive("/pension")
+                      ? "text-blue-600 font-medium"
+                      : "text-gray-600 hover:text-gray-800"
+                  }
+                >
                   Pension
-                </a>
-                <a href="#" className="text-gray-600 hover:text-gray-800">
+                </Link>
+                <Link
+                  to="/money"
+                  className={
+                    isActive("/money")
+                      ? "text-blue-600 font-medium"
+                      : "text-gray-600 hover:text-gray-800"
+                  }
+                >
                   Money
-                </a>
-                <a href="#" className="text-gray-600 hover:text-gray-800">
+                </Link>
+                <Link
+                  to="/utility"
+                  className={
+                    isActive("/utility")
+                      ? "text-blue-600 font-medium"
+                      : "text-gray-600 hover:text-gray-800"
+                  }
+                >
                   Utility
-                </a>
-                <a href="#" className="text-gray-600 hover:text-gray-800">
+                </Link>
+                <Link
+                  to="/blogs"
+                  className={
+                    isActive("/blogs")
+                      ? "text-blue-600 font-medium"
+                      : "text-gray-600 hover:text-gray-800"
+                  }
+                >
                   Blog
-                </a>
-                <a href="#" className="text-gray-600 hover:text-gray-800">
+                </Link>
+                <Link
+                  to="/contact"
+                  className={
+                    isActive("/contact")
+                      ? "text-blue-600 font-medium"
+                      : "text-gray-600 hover:text-gray-800"
+                  }
+                >
                   Contact us
-                </a>
+                </Link>
               </div>
             </div>
 
             {/* Sign In Button + Mobile Menu Button */}
             <div className="font-bold flex items-center">
-              <a
-                href="#"
+              <Link
+                to="/signin"
                 className="hidden md:block bg-blue-600 text-white px-7 py-2 rounded-lg hover:bg-blue-700 mx-6"
               >
                 Sign In
-              </a>
+              </Link>
               <button
                 className="md:hidden p-4 hover:bg-gray-100"
                 onClick={() => setIsOpen(!isOpen)}
@@ -87,31 +134,73 @@ const Header = () => {
           {isOpen && (
             <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-200 md:hidden z-50">
               <div className="flex flex-col p-4">
-                <a href="#" className="py-2 text-blue-600 font-medium">
+                <Link
+                  to="/insurance"
+                  className={
+                    isActive("/insurance")
+                      ? "py-2 text-blue-600 font-medium"
+                      : "py-2 text-gray-600"
+                  }
+                >
                   Insurance
-                </a>
-                <a href="#" className="py-2 text-gray-600">
+                </Link>
+                <Link
+                  to="/pension"
+                  className={
+                    isActive("/pension")
+                      ? "py-2 text-blue-600 font-medium"
+                      : "py-2 text-gray-600"
+                  }
+                >
                   Pension
-                </a>
-                <a href="#" className="py-2 text-gray-600">
+                </Link>
+                <Link
+                  to="/money"
+                  className={
+                    isActive("/money")
+                      ? "py-2 text-blue-600 font-medium"
+                      : "py-2 text-gray-600"
+                  }
+                >
                   Money
-                </a>
-                <a href="#" className="py-2 text-gray-600">
+                </Link>
+                <Link
+                  to="/utility"
+                  className={
+                    isActive("/utility")
+                      ? "py-2 text-blue-600 font-medium"
+                      : "py-2 text-gray-600"
+                  }
+                >
                   Utility
-                </a>
-                <a href="#" className="py-2 text-gray-600">
+                </Link>
+                <Link
+                  to="/blogs"
+                  className={
+                    isActive("/blogs")
+                      ? "py-2 text-blue-600 font-medium"
+                      : "py-2 text-gray-600"
+                  }
+                >
                   Blog / News
-                </a>
-                <a href="#" className="py-2 text-gray-600">
+                </Link>
+                <Link
+                  to="/contact"
+                  className={
+                    isActive("/contact")
+                      ? "py-2 text-blue-600 font-medium"
+                      : "py-2 text-gray-600"
+                  }
+                >
                   Contact us
-                </a>
+                </Link>
                 <div className="h-px bg-gray-200 my-2"></div>
-                <a
-                  href="#"
+                <Link
+                  to="/signin"
                   className="bg-blue-600 text-white text-center py-2 rounded-lg"
                 >
                   Sign In
-                </a>
+                </Link>
               </div>
             </div>
           )}
