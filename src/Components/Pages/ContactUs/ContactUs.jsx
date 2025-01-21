@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
+import ContactInfo from './ContactInfo';
+import FAQs from './FAQs';
 
-const ContactUs = () => {
+const ContactPage = () => {
   return (
-    <div>ContactUs</div>
-  )
-}
+    <div className="bg-white">
+      <ContactInfo />
+      <FAQs />
+    </div>
+  );
+};
 
-export default ContactUs
+export default ContactPage;
