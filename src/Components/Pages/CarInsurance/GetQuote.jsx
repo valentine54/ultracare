@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import { vehicleMakes } from "../../Constants/VehicleData";
 
 
-// Insurance cover types with comprehensive descriptions
+// Insurance cover types
 const coverTypes = [
   {
     value: "comprehensive",
@@ -34,7 +34,7 @@ const coverTypes = [
   },
 ];
 
-// Standard vehicle classifications
+// classifications
 const vehicleTypes = [
   { value: "sedan", label: "Sedan" },
   { value: "suv", label: "SUV / Crossover" },
@@ -48,7 +48,7 @@ const vehicleTypes = [
   { value: "motorcycle", label: "Motorcycle" },
 ];
 
-// Enhanced select component styling
+// Enhanced select 
 const customSelectStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -89,14 +89,14 @@ const GetQuote = () => {
   const [models, setModels] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form validation and submission handling
+  // Form 
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Form submission initiated");
     setIsSubmitting(true);
 
     try {
-      // Validate all form fields
+      // Validate 
       const errors = await formik.validateForm();
 
       if (Object.keys(errors).length === 0) {
@@ -109,14 +109,13 @@ const GetQuote = () => {
           referenceNumber: `QT-${Date.now().toString().slice(-6)}`,
         };
 
-        // Navigate to quote list with formatted values
+        // Navigate to quote list 
         navigate("/quote-list", {
           state: formattedValues,
           replace: true,
         });
       } else {
         console.log("Validation failed:", errors);
-        // Touch all fields to display validation errors
         Object.keys(formik.values).forEach((key) => {
           formik.setFieldTouched(key, true);
         });
@@ -128,7 +127,7 @@ const GetQuote = () => {
     }
   };
 
-  // Formik configuration
+  // Formik 
   const formik = useFormik({
     initialValues: {
       fullName: "",
@@ -177,7 +176,7 @@ const GetQuote = () => {
     },
   });
 
-  // Form state preservation warning
+  // Form state 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (formik.dirty && !formik.isSubmitting) {
@@ -190,7 +189,7 @@ const GetQuote = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [formik.dirty, formik.isSubmitting]);
 
-  // Debug logging for form state changes
+  // Debug logging
   useEffect(() => {
     console.log("Form values updated:", formik.values);
   }, [formik.values]);
@@ -207,7 +206,7 @@ const GetQuote = () => {
 
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <form onSubmit={formik.handleSubmit} className="space-y-8">
-            {/* Personal Information Section */}
+            {/* Personal Information  */}
             <div className="space-y-6">
               <h2 className="text-xl font-medium text-gray-900 pb-2 border-b">
                 Personal Information
@@ -252,7 +251,7 @@ const GetQuote = () => {
               </div>
             </div>
 
-            {/* Vehicle Information Section */}
+            {/* Vehicle Information */}
             <div className="space-y-6">
               <h2 className="text-xl font-medium text-gray-900 pb-2 border-b">
                 Vehicle Information

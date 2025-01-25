@@ -9,11 +9,11 @@ const QuoteList = () => {
   const [sortBy, setSortBy] = useState("relevance");
   const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data structure for API integration
+  // API
   const fetchQuotes = async () => {
     setIsLoading(true);
     try {
-      // Replace with actual API call
+      // API Call
       const response = await fetch("/api/quotes", {
         method: "POST",
         headers: {
@@ -62,7 +62,7 @@ const QuoteList = () => {
           </div>
           <div className="mt-4 flex gap-4">
             <button
-              onClick={() => {}} // Add benefits modal handler
+              onClick={() => {}} 
               className="text-blue-600 text-sm hover:text-blue-700 flex items-center gap-1"
             >
               <span>Add/View Benefits</span>
@@ -79,7 +79,7 @@ const QuoteList = () => {
 
         <div className="w-full md:w-auto">
           <button
-            onClick={() => {}} // Add buy plan handler
+            onClick={() => {}} 
             className="w-full md:w-auto px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center gap-2 font-medium"
           >
             <svg
@@ -105,7 +105,7 @@ const QuoteList = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Quote Summary Section */}
+        {/* Quote */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h1 className="text-2xl font-semibold text-blue-600 mb-6">
             Get A Quote For Car Insurance
@@ -184,7 +184,7 @@ const QuoteList = () => {
             </div>
           ) : (
             <div className="space-y-4">
-              {/* Sample quotes - replace with API data */}
+              {/* API Data */}
               <QuoteCard
                 company="GA Insurance Kenya"
                 price={50000}

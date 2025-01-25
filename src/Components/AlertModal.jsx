@@ -1,4 +1,3 @@
-// AlertModalContext.jsx
 import { createContext, useContext, useState, useCallback } from "react";
 
 const AlertModalContext = createContext();
@@ -8,7 +7,7 @@ export const AlertModalProvider = ({ children }) => {
     isOpen: false,
     title: "",
     message: "",
-    type: "info", // 'success', 'error', 'warning', 'info'
+    type: "info",
     onConfirm: null,
     showConfirmButton: true,
     confirmText: "OK",
@@ -37,7 +36,8 @@ export const useAlertModal = () => {
   return context;
 };
 
-// AlertModal.jsx
+// AlertModal File
+
 import React, { useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -176,7 +176,6 @@ const AlertModal = ({
   );
 };
 
-// Usage Example Component
 const ExampleComponent = () => {
   const { showModal } = useAlertModal();
 
@@ -186,7 +185,7 @@ const ExampleComponent = () => {
       title: "Validation Error",
       message: "Please enter a valid phone number.",
       onConfirm: () => {
-        // Optional callback when confirmed
+        // Callback
         console.log("Error acknowledged");
       },
     });
