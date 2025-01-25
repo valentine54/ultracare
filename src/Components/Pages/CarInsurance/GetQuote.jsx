@@ -7,7 +7,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { vehicleMakes } from "../../Constants/VehicleData";
 
-
 // Insurance cover types
 const coverTypes = [
   {
@@ -23,18 +22,16 @@ const coverTypes = [
   {
     value: "thirdPartyFireTheft",
     label: "Third Party, Fire & Theft",
-    description:
-      "Coverage for third party damage plus fire and theft protection",
+    description: "Coverage for third party damage plus fire and theft protection",
   },
   {
     value: "personalAccident",
     label: "Personal Accident Cover",
-    description:
-      "Additional coverage for personal injuries and medical expenses",
+    description: "Additional coverage for personal injuries and medical expenses",
   },
 ];
 
-// classifications
+// Vehicle classifications
 const vehicleTypes = [
   { value: "sedan", label: "Sedan" },
   { value: "suv", label: "SUV / Crossover" },
@@ -48,7 +45,7 @@ const vehicleTypes = [
   { value: "motorcycle", label: "Motorcycle" },
 ];
 
-// Enhanced select 
+// Enhanced select styles
 const customSelectStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -83,51 +80,11 @@ const customSelectStyles = {
 };
 
 const GetQuote = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [selectedMake, setSelectedMake] = useState(null);
   const [models, setModels] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log("Form submission initiated");
-    setIsSubmitting(true);
-
-    try {
-      // Validate 
-      const errors = await formik.validateForm();
-
-      if (Object.keys(errors).length === 0) {
-        console.log("Validation passed, proceeding with submission");
-
-        const formattedValues = {
-          ...formik.values,
-          vehicleValue: Number(formik.values.vehicleValue),
-          quoteRequestDate: new Date().toISOString(),
-          referenceNumber: `QT-${Date.now().toString().slice(-6)}`,
-        };
-
-        // Navigate to quote list 
-        navigate("/quote-list", {
-          state: formattedValues,
-          replace: true,
-        });
-      } else {
-        console.log("Validation failed:", errors);
-        Object.keys(formik.values).forEach((key) => {
-          formik.setFieldTouched(key, true);
-        });
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Formik 
   const formik = useFormik({
     initialValues: {
       fullName: "",
@@ -162,17 +119,25 @@ const GetQuote = () => {
       vehicleMake: Yup.string().required("Vehicle make is required"),
       vehicleModel: Yup.string().required("Vehicle model is required"),
     }),
-    onSubmit: (values) => {
-      const formattedValues = {
-        ...values,
-        vehicleValue: Number(values.vehicleValue),
-        quoteRequestDate: new Date().toISOString(),
-        referenceNumber: `QT-${Date.now().toString().slice(-6)}`,
-      };
+    onSubmit: async (values) => {
+      setIsSubmitting(true);
+      try {
+        const formattedValues = {
+          ...values,
+          vehicleValue: Number(values.vehicleValue),
+          quoteRequestDate: new Date().toISOString(),
+          referenceNumber: `QT-${Date.now().toString().slice(-6)}`,
+        };
 
-      navigate("/quote-list", {
-        state: formattedValues,
-      });
+        navigate("/quote-list", {
+          state: { quoteData: formattedValues },
+          replace: true,
+        });
+      } catch (error) {
+        console.error("Submission error:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
     },
   });
 
@@ -189,10 +154,6 @@ const GetQuote = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [formik.dirty, formik.isSubmitting]);
 
-  // Debug logging
-  useEffect(() => {
-    console.log("Form values updated:", formik.values);
-  }, [formik.values]);
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
@@ -206,7 +167,7 @@ const GetQuote = () => {
 
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <form onSubmit={formik.handleSubmit} className="space-y-8">
-            {/* Personal Information  */}
+            {/* Personal Information Section */}
             <div className="space-y-6">
               <h2 className="text-xl font-medium text-gray-900 pb-2 border-b">
                 Personal Information
@@ -248,10 +209,28 @@ const GetQuote = () => {
                     </p>
                   )}
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    ID Number
+                  </label>
+                  <input
+                    type="text"
+                    name="idNumber"
+                    {...formik.getFieldProps("idNumber")}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter your ID number"
+                  />
+                  {formik.touched.idNumber && formik.errors.idNumber && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {formik.errors.idNumber}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Vehicle Information */}
+            {/* Vehicle Information Section */}
             <div className="space-y-6">
               <h2 className="text-xl font-medium text-gray-900 pb-2 border-b">
                 Vehicle Information
@@ -278,6 +257,11 @@ const GetQuote = () => {
                       </div>
                     )}
                   />
+                  {formik.touched.coverType && formik.errors.coverType && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {formik.errors.coverType}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -292,6 +276,11 @@ const GetQuote = () => {
                       formik.setFieldValue("vehicleType", option.value)
                     }
                   />
+                  {formik.touched.vehicleType && formik.errors.vehicleType && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {formik.errors.vehicleType}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -308,6 +297,11 @@ const GetQuote = () => {
                       formik.setFieldValue("vehicleMake", option.value);
                     }}
                   />
+                  {formik.touched.vehicleMake && formik.errors.vehicleMake && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {formik.errors.vehicleMake}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -323,6 +317,31 @@ const GetQuote = () => {
                       formik.setFieldValue("vehicleModel", option.value)
                     }
                   />
+                  {formik.touched.vehicleModel &&
+                    formik.errors.vehicleModel && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {formik.errors.vehicleModel}
+                      </p>
+                    )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Vehicle Registration
+                  </label>
+                  <input
+                    type="text"
+                    name="vehicleRegistration"
+                    {...formik.getFieldProps("vehicleRegistration")}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter vehicle registration"
+                  />
+                  {formik.touched.vehicleRegistration &&
+                    formik.errors.vehicleRegistration && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {formik.errors.vehicleRegistration}
+                      </p>
+                    )}
                 </div>
               </div>
             </div>
@@ -345,6 +364,12 @@ const GetQuote = () => {
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter vehicle value"
                   />
+                  {formik.touched.vehicleValue &&
+                    formik.errors.vehicleValue && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {formik.errors.vehicleValue}
+                      </p>
+                    )}
                 </div>
 
                 <div>
@@ -358,21 +383,59 @@ const GetQuote = () => {
                     min={format(new Date(), "yyyy-MM-dd")}
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
+                  {formik.touched.coverStartDate &&
+                    formik.errors.coverStartDate && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {formik.errors.coverStartDate}
+                      </p>
+                    )}
                 </div>
               </div>
 
               <div className="flex items-center justify-end space-x-4 pt-6">
                 <button
                   type="button"
-                  className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    // Handle save draft 
+                    console.log("Saving draft...");
+                  }}
+                  className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Save Draft
                 </button>
                 <button
                   type="submit"
-                  className="px-8 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                  disabled={isSubmitting || !formik.isValid}
+                  className="px-8 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Get Quote
+                  {isSubmitting ? (
+                    <span className="flex items-center space-x-2">
+                      <svg
+                        className="animate-spin h-5 w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      <span>Processing...</span>
+                    </span>
+                  ) : (
+                    "Get Quote"
+                  )}
                 </button>
               </div>
             </div>
