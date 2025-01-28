@@ -131,7 +131,6 @@ const GetQuote = () => {
 
         navigate("/quote-list", {
           state: { quoteData: formattedValues },
-          replace: true,
         });
       } catch (error) {
         console.error("Submission error:", error);
