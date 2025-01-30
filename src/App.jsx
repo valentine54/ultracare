@@ -24,7 +24,11 @@ import CarInsurance from "./Components/Pages/CarInsurance/CarInsurance";
 import GetQuote from "./Components/Pages/CarInsurance/GetQuote";
 import { AlertModalProvider } from "./Components/AlertModal";
 import QuoteList from "./Components/Pages/CarInsurance/QuoteList";
-
+import BasicInformationForm from "./Components/Pages/PersonalAccident/BasicInformationForm";
+import { InsuranceFormProvider } from './Components/Context/InsuranceFormContext';
+import PersonalAccidentHealth from "./Components/Pages/PersonalAccident/PersonalAccidentHealth";
+import PersonalAccidentQuote from "./Components/Pages/PersonalAccident/PersonalAccidentQuote";
+import PersonalAccidentPayment from "./Components/Pages/PersonalAccident/PersonalAccidentPayment";
 
 
 // npm install -g npm@11.0.0
@@ -32,61 +36,74 @@ import QuoteList from "./Components/Pages/CarInsurance/QuoteList";
 const App = () => {
   return (
     <AlertModalProvider>
-      <BrowserRouter>
-        <div className="app-wrapper">
-          <Header />
+      <InsuranceFormProvider>
+        <BrowserRouter>
+          <div className="app-wrapper">
+            <Header />
 
-          <main>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
+            <main>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
 
-              {/* Types Routes */}
-              <Route path="/request-quote" element={<RequestQuotation />} />
-              <Route path="/compare-quotes" element={<CompareQuotes />} />
+                {/* Types Routes */}
+                <Route path="/request-quote" element={<RequestQuotation />} />
+                <Route path="/compare-quotes" element={<CompareQuotes />} />
 
-              {/* Quotes Routes */}
-              <Route
-                path="/individual-pension"
-                element={<IndividualPension />}
-              />
-              <Route
-                path="/occupational-pension"
-                element={<OccupationalPension />}
-              />
-              <Route path="/defined-benefit" element={<DefinedBenefit />} />
-              <Route
-                path="/umbrella-retirement"
-                element={<UmbrellaRetirement />}
-              />
-              <Route path="/accidental-death" element={<AccidentalDeath />} />
-              <Route
-                path="/disability-insurance"
-                element={<DisabilityInsurance />}
-              />
-              <Route path="/family-accident" element={<FamilyAccident />} />
+                {/* Personal Accident Insurance Flow */}
+                <Route path="/personal-accident">
+                  <Route
+                    path="basic-info"
+                    element={<BasicInformationForm />}
+                  />
+                  <Route path="health" element={<PersonalAccidentHealth />} />
+                  <Route path="quote" element={<PersonalAccidentQuote />} />
+                  <Route path="payment" element={<PersonalAccidentPayment />} />
+                </Route>
 
-              {/* Main Navigation Routes */}
-              <Route path="/services" element={<HomePageServices />} />
-              <Route path="/contact" element={<ContactUs />} />
-              <Route path="/insurance" element={<CompanyPageInsurance />} />
-              <Route path="/policies" element={<PoliciesDetails />} />
-              <Route path="/blogs" element={<Blogs />} />
-              <Route path="/car-insurance" element={<CarInsurance />} />
-              <Route path="/get-quote" element={<GetQuote />} />
-              <Route path="/quote-list" element={<QuoteList />} />
-              <Route path="/pension" element={<Pension />} />
-              <Route
-                path="/pension-calculator"
-                element={<PensionCalculator />}
-              />
+                {/* Quotes Routes */}
+                <Route
+                  path="/individual-pension"
+                  element={<IndividualPension />}
+                />
+                <Route
+                  path="/occupational-pension"
+                  element={<OccupationalPension />}
+                />
+                <Route path="/defined-benefit" element={<DefinedBenefit />} />
+                <Route
+                  path="/umbrella-retirement"
+                  element={<UmbrellaRetirement />}
+                />
+                <Route path="/accidental-death" element={<AccidentalDeath />} />
+                <Route
+                  path="/disability-insurance"
+                  element={<DisabilityInsurance />}
+                />
+                <Route path="/family-accident" element={<FamilyAccident />} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
+                {/* Main Navigation Routes */}
+                <Route path="/services" element={<HomePageServices />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/insurance" element={<CompanyPageInsurance />} />
+                <Route path="/policies" element={<PoliciesDetails />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/car-insurance" element={<CarInsurance />} />
+                <Route path="/get-quote" element={<GetQuote />} />
+                <Route path="/quote-list" element={<QuoteList />} />
+                <Route path="/pension" element={<Pension />} />
+                <Route
+                  path="/pension-calculator"
+                  element={<PensionCalculator />}
+                />
 
-          <Footer />
-        </div>
-      </BrowserRouter>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </InsuranceFormProvider>
     </AlertModalProvider>
   );
 };
