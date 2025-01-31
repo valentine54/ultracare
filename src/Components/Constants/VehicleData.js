@@ -1,0 +1,118 @@
+export const vehicleMakes = [
+  {
+    value: "toyota",
+    label: "Toyota",
+    models: [
+      { value: "camry", label: "Camry" },
+      { value: "corolla", label: "Corolla" },
+      { value: "rav4", label: "RAV4" },
+      { value: "highlander", label: "Highlander" },
+      { value: "land-cruiser", label: "Land Cruiser" },
+      { value: "prado", label: "Land Cruiser Prado" },
+      { value: "hilux", label: "Hilux" },
+      { value: "fortuner", label: "Fortuner" },
+      { value: "rush", label: "Rush" },
+      { value: "vitz", label: "Vitz" },
+    ],
+  },
+  {
+    value: "honda",
+    label: "Honda",
+    models: [
+      { value: "civic", label: "Civic" },
+      { value: "accord", label: "Accord" },
+      { value: "cr-v", label: "CR-V" },
+      { value: "hr-v", label: "HR-V" },
+      { value: "fit", label: "Fit" },
+      { value: "pilot", label: "Pilot" },
+    ],
+  },
+  {
+    value: "mazda",
+    label: "Mazda",
+    models: [
+      { value: "mazda3", label: "Mazda3" },
+      { value: "mazda6", label: "Mazda6" },
+      { value: "cx-5", label: "CX-5" },
+      { value: "cx-30", label: "CX-30" },
+      { value: "bt-50", label: "BT-50" },
+    ],
+  },
+  {
+    value: "volkswagen",
+    label: "Volkswagen",
+    models: [
+      { value: "golf", label: "Golf" },
+      { value: "polo", label: "Polo" },
+      { value: "tiguan", label: "Tiguan" },
+      { value: "touareg", label: "Touareg" },
+      { value: "passat", label: "Passat" },
+    ],
+  },
+  {
+    value: "nissan",
+    label: "Nissan",
+    models: [
+      { value: "x-trail", label: "X-Trail" },
+      { value: "qashqai", label: "Qashqai" },
+      { value: "navara", label: "Navara" },
+      { value: "patrol", label: "Patrol" },
+      { value: "juke", label: "Juke" },
+    ],
+  },
+  {
+    value: "subaru",
+    label: "Subaru",
+    models: [
+      { value: "forester", label: "Forester" },
+      { value: "outback", label: "Outback" },
+      { value: "xv", label: "XV" },
+      { value: "impreza", label: "Impreza" },
+      { value: "legacy", label: "Legacy" },
+    ],
+  },
+  {
+    value: "mitsubishi",
+    label: "Mitsubishi",
+    models: [
+      { value: "outlander", label: "Outlander" },
+      { value: "pajero", label: "Pajero" },
+      { value: "l200", label: "L200" },
+      { value: "asx", label: "ASX" },
+      { value: "eclipse-cross", label: "Eclipse Cross" },
+    ],
+  },
+  {
+    value: "mercedes",
+    label: "Mercedes-Benz",
+    models: [
+      { value: "c-class", label: "C-Class" },
+      { value: "e-class", label: "E-Class" },
+      { value: "glc", label: "GLC" },
+      { value: "gle", label: "GLE" },
+      { value: "s-class", label: "S-Class" },
+    ],
+  },
+  {
+    value: "bmw",
+    label: "BMW",
+    models: [
+      { value: "3-series", label: "3 Series" },
+      { value: "5-series", label: "5 Series" },
+      { value: "x3", label: "X3" },
+      { value: "x5", label: "X5" },
+      { value: "x6", label: "X6" },
+    ],
+  },
+  {
+    value: "audi",
+    label: "Audi",
+    models: [
+      { value: "a3", label: "A3" },
+      { value: "a4", label: "A4" },
+      { value: "q3", label: "Q3" },
+      { value: "q5", label: "Q5" },
+      { value: "q7", label: "Q7" },
+    ],
+  },
+].sort((a, b) => a.label.localeCompare(b.label));

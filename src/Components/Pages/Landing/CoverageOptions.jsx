@@ -1,51 +1,97 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Shield, Zap, Umbrella, Heart, Users } from "lucide-react";
 
+import { useInsuranceForm } from "../../Context/InsuranceFormContext";
+
 const CoverageOptions = () => {
+  const navigate = useNavigate();
+  const { resetForm } = useInsuranceForm();
+
+  const handleCardClick = (title) => {
+    switch (title) {
+      case "Personal Accident":
+        resetForm();
+        navigate("/personal-accident/basic-info");
+        break;
+      case "Individual Pension":
+        navigate("/individual-pension");
+        break;
+      case "Occupational Pension":
+        navigate("/payment-success");
+        break;
+      case "Defined Benefit":
+        navigate("/defined-benefit");
+        break;
+      case "Umbrella Retirement":
+        navigate("/umbrella-retirement");
+        break;
+      case "Accidental Death":
+        navigate("/accidental-death");
+        break;
+      case "Disability Insurance":
+        navigate("/disability-insurance");
+        break;
+      case "Family Accident":
+        navigate("/family-accident");
+        break;
+      default:
+        console.log("Route not yet implemented");
+    }
+  };
+
   const coverageCards = [
     {
       icon: (
         <Shield className="w-12 h-12 group-hover:text-white text-blue-500" />
       ),
       title: "Personal Accident",
+      path: "/request-quote",
     },
     {
       icon: <Zap className="w-12 h-12 group-hover:text-white text-blue-500" />,
       title: "Individual Pension",
+      path: "/individual-pension",
     },
     {
       icon: <Zap className="w-12 h-12 group-hover:text-white text-blue-500" />,
       title: "Occupational Pension",
+      path: "/occupational-pension",
     },
     {
       icon: (
         <Users className="w-12 h-12 group-hover:text-white text-blue-500" />
       ),
       title: "Defined Benefit",
+      path: "/defined-benefit",
     },
     {
       icon: (
         <Umbrella className="w-12 h-12 group-hover:text-white text-blue-500" />
       ),
       title: "Umbrella Retirement",
+      path: "/umbrella-retirement",
     },
     {
       icon: (
         <Shield className="w-12 h-12 group-hover:text-white text-blue-500" />
       ),
       title: "Accidental Death",
+      path: "/accidental-death",
     },
     {
       icon: (
         <Heart className="w-12 h-12 group-hover:text-white text-blue-500" />
       ),
       title: "Disability Insurance",
+      path: "/disability-insurance",
     },
     {
       icon: (
         <Users className="w-12 h-12 group-hover:text-white text-blue-500" />
       ),
       title: "Family Accident",
+      path: "/family-accident",
     },
   ];
 
@@ -68,6 +114,7 @@ const CoverageOptions = () => {
         {coverageCards.map((card, index) => (
           <button
             key={index}
+            onClick={() => handleCardClick(card.title)}
             className="group bg-gray-50 p-8 rounded-lg text-center transition-all hover:bg-blue-500 cursor-pointer"
           >
             <div className="flex justify-center mb-4">{card.icon}</div>

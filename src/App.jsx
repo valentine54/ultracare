@@ -3,43 +3,108 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./Components/Pages/Landing/LandingPage";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
-import RequestQuotation from "./Components/Pages/RequestQuotation/RequestQuotation";
+import RequestQuotation from "./Components/Pages/RequestQuotation/CompareQuotes";
 import HomePageServices from "./Components/Pages/HomepageServices/HomePageServices";
 import ContactUs from "./Components/Pages/ContactUs/ContactUs";
 import CompanyPageInsurance from "./Components/Pages/CompanyPageInsurance/CompanyPageInsurance";
 import PoliciesDetails from "./Components/Pages/PoliciesDetails/PoliciesDetails";
-import Blogs from "./Components/Pages/Blogs/Blogs"; // Add this import
+import Blogs from "./Components/Pages/Blogs/Blogs";
+import Pension from "./Components/Pages/Pension/Pension";
+import PensionCalculator from "./Components/Pages/PensionCalculator/PensionCalculator";
+import IndividualPension from "./Components/Pages/Insurance/IndividualPension";
+import OccupationalPension from "./Components/Pages/Insurance/OccupationalPension";
+import DefinedBenefit from "./Components/Pages/Insurance/DefinedBenefit";
+import UmbrellaRetirement from "./Components/Pages/Insurance/UmbrellaRetirement";
+import AccidentalDeath from "./Components/Pages/Insurance/AccidentalDeath";
+import DisabilityInsurance from "./Components/Pages/Insurance/DisabilityInsurance";
+import FamilyAccident from "./Components/Pages/Insurance/FamilyAccident";
+import CompareQuotes from "./Components/Pages/RequestQuotation/CompareQuotes";
+import NotFound from "./NotFound";
+import CarInsurance from "./Components/Pages/CarInsurance/CarInsurance";
+import GetQuote from "./Components/Pages/CarInsurance/GetQuote";
+import { AlertModalProvider } from "./Components/AlertModal";
+import QuoteList from "./Components/Pages/CarInsurance/QuoteList";
+import BasicInformationForm from "./Components/Pages/PersonalAccident/BasicInformationForm";
+import { InsuranceFormProvider } from './Components/Context/InsuranceFormContext';
+import PersonalAccidentHealth from "./Components/Pages/PersonalAccident/PersonalAccidentHealth";
+import PersonalAccidentQuote from "./Components/Pages/PersonalAccident/PersonalAccidentQuote";
+import PersonalAccidentPayment from "./Components/Pages/PersonalAccident/PersonalAccidentPayment";
+
+
+// npm install -g npm@11.0.0
 
 const App = () => {
   return (
-    <BrowserRouter>
-      {/* Wrapper div for entire application */}
-      <div className="app-wrapper">
-        {/* Header/Navbar */}
-        <Header />
+    <AlertModalProvider>
+      <InsuranceFormProvider>
+        <BrowserRouter>
+          <div className="app-wrapper">
+            <Header />
 
-        {/* Main content area with routes */}
-        <main>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/request-quotation" element={<RequestQuotation />} />
-            {/* <Route path="/services" element={<HomePageServices />} /> */}
-            <Route path="/contact" element={<ContactUs />} />
-            {/* <Route path="/insurance" element={<CompanyPageInsurance />} /> */}
-            {/* <Route path="/policies" element={<PoliciesDetails />} /> */}
+            <main>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
 
-            {/* Blog routes */}
-            <Route path="/blogs" element={<Blogs />} />
+                {/* Types Routes */}
+                <Route path="/request-quote" element={<RequestQuotation />} />
+                <Route path="/compare-quotes" element={<CompareQuotes />} />
 
-            {/* 404 route - should be last */}
-            {/* <Route path="*" element={<div>Page not found</div>} /> */}
-          </Routes>
-        </main>
+                {/* Personal Accident Insurance Flow */}
+                <Route path="/personal-accident">
+                  <Route
+                    path="basic-info"
+                    element={<BasicInformationForm />}
+                  />
+                  <Route path="health" element={<PersonalAccidentHealth />} />
+                  <Route path="quote" element={<PersonalAccidentQuote />} />
+                  <Route path="payment" element={<PersonalAccidentPayment />} />
+                </Route>
 
-        {/* Footer */}
-        <Footer />
-      </div>
-    </BrowserRouter>
+                {/* Quotes Routes */}
+                <Route
+                  path="/individual-pension"
+                  element={<IndividualPension />}
+                />
+                <Route
+                  path="/occupational-pension"
+                  element={<OccupationalPension />}
+                />
+                <Route path="/defined-benefit" element={<DefinedBenefit />} />
+                <Route
+                  path="/umbrella-retirement"
+                  element={<UmbrellaRetirement />}
+                />
+                <Route path="/accidental-death" element={<AccidentalDeath />} />
+                <Route
+                  path="/disability-insurance"
+                  element={<DisabilityInsurance />}
+                />
+                <Route path="/family-accident" element={<FamilyAccident />} />
+
+                {/* Main Navigation Routes */}
+                <Route path="/services" element={<HomePageServices />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/insurance" element={<CompanyPageInsurance />} />
+                <Route path="/policies" element={<PoliciesDetails />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/car-insurance" element={<CarInsurance />} />
+                <Route path="/get-quote" element={<GetQuote />} />
+                <Route path="/quote-list" element={<QuoteList />} />
+                <Route path="/pension" element={<Pension />} />
+                <Route
+                  path="/pension-calculator"
+                  element={<PensionCalculator />}
+                />
+
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </InsuranceFormProvider>
+    </AlertModalProvider>
   );
 };
 

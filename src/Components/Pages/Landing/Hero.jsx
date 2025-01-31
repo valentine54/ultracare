@@ -16,10 +16,10 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/10"></div>
       </div>
       {/* Content Container */}
-      <div className="ml-14 relative z-10 max-w-7xl sm:px-6 lg:px-8">
+      <div className="ml-16 relative z-10 max-w-7xl sm:px-6 lg:px-8">
         <div className="flex flex-col justify-center h-full max-w-2xl">
           {/* Heading */}
-          <h1 className="text-7xl font-bold text-gray-800 mb-6">
+          <h1 className="text-7xl mt-28 font-bold text-gray-800 mb-6">
             <span>Secure </span>
             <span className="text-blue-500">Your Future </span>
             <span>with </span>
