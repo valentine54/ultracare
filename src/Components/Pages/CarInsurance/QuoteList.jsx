@@ -40,6 +40,7 @@ const QuoteList = () => {
   const navigate = useNavigate();
   const [quotes, setQuotes] = useState(mockInsuranceCompanies);
   const [sortBy, setSortBy] = useState("relevance");
+  console.log(location?.state?.quoteData)
 
   // API integration
   const fetchQuotes = async (userData) => {
