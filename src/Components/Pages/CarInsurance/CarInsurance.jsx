@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PhoneInputField from "../../PhoneInputField";
 import { useAlertModal } from "../../AlertModal";
+import axios from "axios";
 
 const CarInsurance = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const CarInsurance = () => {
     if (validateForm()) {
       navigate("/get-quote", {
         state: {
-          category: selectedCategory,
+          vehicle_type: selectedCategory,
           phoneNumber: phoneNumber,
         },
       });
