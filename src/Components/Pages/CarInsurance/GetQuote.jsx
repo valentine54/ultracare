@@ -6,6 +6,9 @@ import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { vehicleMakes } from "../../Constants/VehicleData";
+import axios from "axios";
+
+const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
 
 // Insurance cover types
 const coverTypes = [
@@ -43,6 +46,14 @@ const vehicleTypes = [
   { value: "van", label: "Van" },
   { value: "minivan", label: "Minivan" },
   { value: "motorcycle", label: "Motorcycle" },
+  { value: "isuzu", label: "Isuzu" },
+  { value: "ford", label: "Ford" },
+  { value: "tata", label: "Tata" },
+  { value: "man", label: "MAN" },
+  { value: "scania", label: "Scania" },
+  { value: "iveco", label: "Iveco" },
+  { value: "hino", label: "Hino" },
+  { value: "ashok-leyland", label: "Ashok Leyland" },
 ];
 
 // Enhanced select styles
@@ -84,6 +95,8 @@ const GetQuote = () => {
   const [selectedMake, setSelectedMake] = useState(null);
   const [models, setModels] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const location = useLocation();
+  // console.log(location.state)
 
   const formik = useFormik({
     initialValues: {
@@ -93,8 +106,8 @@ const GetQuote = () => {
       coverType: "",
       vehicleValue: "",
       vehicleRegistration: "",
-      coverStartDate: format(new Date(), "yyyy-MM-dd"),
-      vehicleType: "",
+      coverStartDate: new Date().toISOString().split("T")[0], // Format as "yyyy-MM-dd"
+      // vehicleType: location.state?.vehicle_type || "", // Use vehicle_type from location.state
       vehicleMake: "",
       vehicleModel: "",
       hasBeenValued: "yes",
@@ -122,24 +135,76 @@ const GetQuote = () => {
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        const formattedValues = {
-          ...values,
-          vehicleValue: Number(values.vehicleValue),
-          quoteRequestDate: new Date().toISOString(),
-          referenceNumber: `QT-${Date.now().toString().slice(-6)}`,
-        };
+        console.log(values.fullName?.split(" "))
 
-        navigate("/quote-list", {
-          state: { quoteData: formattedValues },
-        });
+        // Split fullName into first_name and last_name
+        const [first_name, ...lastNameParts] = values.fullName.split(" ");
+        const last_name = lastNameParts.join(" "); // Handles cases with multiple last names
+        
+        console.log(first_name); // "james"
+        console.log(last_name);  // "kimani mwangi"
+        
+        // Prepare the data to match the backend's expected structure
+        const formattedValues = {
+          ...location?.state,
+          first_name: first_name || "", // Ensure first_name is not undefined
+          last_name: last_name || "", // Ensure last_name is not undefined
+          email: values.email,
+          id_no: values.idNumber,
+          // vehicle_type: values.vehicleType || location.state?.vehicle_type, // Use vehicle_type from form or location.state
+          vehicle_make: values.vehicleMake,
+          vehicle_model: values.vehicleModel,
+          vehicle_registration_number: values.vehicleRegistration,
+          cover_type: values.coverType,
+          vehicle_value: Number(values.vehicleValue),
+          cover_start_date: values.coverStartDate,
+          evaluated: values.hasBeenValued === "yes", // Convert to boolean
+          // phoneNumber: location.state?.phoneNumber, // Add phoneNumber from location.state
+        };
+  
+        // Log the formattedValues for debugging
+        console.log("Formatted Values:", formattedValues);
+
+        // Send a POST request to create a session cookie
+        const response = await axios.post(
+          "http://127.0.0.1:8000/api/v1.0/applicant/motor_session/", // Replace with your backend URL
+          formattedValues,
+          {
+            withCredentials: true, // Ensure cookies are sent and received
+            headers:
+             {
+              "Content-Type": "application/json",
+              "x-api-key": API_KEY,          }
+          },
+          
+        );
+
+        if (response.status === 201) {
+          // filter based on the response
+          const response_data = await axios.get("http://127.0.0.1:8000/api/v1.0/motorinsurance/filter/",
+            {
+            withCredentials: true, // Ensure cookies are sent and received
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": API_KEY,
+             }
+          })
+          console.log(response_data.data)
+          
+          // Navigate to the quote list page after successfully creating the session
+          // navigate("/quote-list", {
+          //   state: { quoteData: formattedValues },
+          // });
+        } else {
+          console.error("Failed to create session:", response.data);
+        }
       } catch (error) {
-        console.error("Submission error:", error);
+        console.error("Submission error:", error.response?.data);
       } finally {
         setIsSubmitting(false);
       }
     },
   });
-
   // Form state 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
