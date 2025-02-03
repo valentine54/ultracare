@@ -22,21 +22,21 @@ import CompareQuotes from "./Components/Pages/RequestQuotation/CompareQuotes";
 import NotFound from "./NotFound";
 import CarInsurance from "./Components/Pages/CarInsurance/CarInsurance";
 import GetQuote from "./Components/Pages/CarInsurance/GetQuote";
-import { AlertModalProvider } from "./Components/AlertModal";
 import QuoteList from "./Components/Pages/CarInsurance/QuoteList";
-import BasicInformationForm from "./Components/Pages/PersonalAccident/BasicInformationForm";
-import { InsuranceFormProvider } from './Components/Context/InsuranceFormContext';
-import PersonalAccidentHealth from "./Components/Pages/PersonalAccident/PersonalAccidentHealth";
-import PersonalAccidentQuote from "./Components/Pages/PersonalAccident/PersonalAccidentQuote";
-import PersonalAccidentPayment from "./Components/Pages/PersonalAccident/PersonalAccidentPayment";
 
-
-// npm install -g npm@11.0.0
+// Personal Accident imports
+import BasicInformation from "./Components/Pages/PersonalAccident/BasicInformation";
+import HealthLifestyle from "./Components/Pages/PersonalAccident/HealthAndLifestyle";
+import Quote from "./Components/Pages/PersonalAccident/QuotePage";
+import Payment from "./Components/Pages/PersonalAccident/PaymentPage";
+import MpesaPayment from "./Components/Pages/PersonalAccident/MpesaPayment";
+import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentContext";
+import { AlertModalProvider } from "./Components/AlertModal";
 
 const App = () => {
   return (
     <AlertModalProvider>
-      <InsuranceFormProvider>
+      <PersonalAccidentProvider>
         <BrowserRouter>
           <div className="app-wrapper">
             <Header />
@@ -45,20 +45,28 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<LandingPage />} />
 
+                {/* Personal Accident Routes */}
+                <Route
+                  path="/personal-accident"
+                  element={<BasicInformation />}
+                />
+                <Route
+                  path="/personal-accident/health-lifestyle"
+                  element={<HealthLifestyle />}
+                />
+                <Route path="/personal-accident/quote" element={<Quote />} />
+                <Route
+                  path="/personal-accident/payment"
+                  element={<Payment />}
+                />
+                <Route
+                  path="/personal-accident/mpesa-payment"
+                  element={<MpesaPayment />}
+                />
+
                 {/* Types Routes */}
                 <Route path="/request-quote" element={<RequestQuotation />} />
                 <Route path="/compare-quotes" element={<CompareQuotes />} />
-
-                {/* Personal Accident Insurance Flow */}
-                <Route path="/personal-accident">
-                  <Route
-                    path="basic-info"
-                    element={<BasicInformationForm />}
-                  />
-                  <Route path="health" element={<PersonalAccidentHealth />} />
-                  <Route path="quote" element={<PersonalAccidentQuote />} />
-                  <Route path="payment" element={<PersonalAccidentPayment />} />
-                </Route>
 
                 {/* Quotes Routes */}
                 <Route
@@ -103,7 +111,7 @@ const App = () => {
             <Footer />
           </div>
         </BrowserRouter>
-      </InsuranceFormProvider>
+      </PersonalAccidentProvider>
     </AlertModalProvider>
   );
 };
