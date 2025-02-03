@@ -5,6 +5,7 @@ export const vehicleMakes = [
     models: [
       { value: "camry", label: "Camry" },
       { value: "corolla", label: "Corolla" },
+      { value: "Premio", label:"Premio"},
       { value: "rav4", label: "RAV4" },
       { value: "highlander", label: "Highlander" },
       { value: "land-cruiser", label: "Land Cruiser" },
@@ -13,9 +14,18 @@ export const vehicleMakes = [
       { value: "fortuner", label: "Fortuner" },
       { value: "rush", label: "Rush" },
       { value: "vitz", label: "Vitz" },
+      { value: "yaris", label: "Yaris" },
+      { value: "avanza", label: "Avanza" },
+      { value: "sienta", label: "Sienta" },
+      { value: "prius", label: "Prius" },
+      { value: "c-hr", label: "C-HR" },
+      { value: "probox", label: "Probox" }, // Added
+      { value: "harrier", label: "Harrier" }, // Added
+      { value: "mark-x", label: "Mark X" }, // Added
       { value: "hiace", label: "Hiace" }, // Commercial
       { value: "coaster", label: "Coaster" }, // Commercial
       { value: "dyna", label: "Dyna" }, // Commercial
+      { value: "tundra", label: "Tundra" }, // Commercial
     ],
   },
   {
@@ -28,6 +38,11 @@ export const vehicleMakes = [
       { value: "hr-v", label: "HR-V" },
       { value: "fit", label: "Fit" },
       { value: "pilot", label: "Pilot" },
+      { value: "odyssey", label: "Odyssey" },
+      { value: "city", label: "City" },
+      { value: "br-v", label: "BR-V" },
+      { value: "jazz", label: "Jazz" },
+      { value: "freed", label: "Freed" }, // Added
     ],
   },
   {
@@ -36,9 +51,16 @@ export const vehicleMakes = [
     models: [
       { value: "mazda3", label: "Mazda3" },
       { value: "mazda6", label: "Mazda6" },
+      { value: "cx-3", label: "CX-3" },
+      { value: "Atenza", label: "Atenza" },
+      { value: "Axela", label: "Axela" },
+      { value: "Demio", label: "Demio"},
       { value: "cx-5", label: "CX-5" },
       { value: "cx-30", label: "CX-30" },
       { value: "bt-50", label: "BT-50" },
+      { value: "cx-9", label: "CX-9" },
+      { value: "mx-5", label: "MX-5" },
+      { value: "cx-8", label: "CX-8" }, // Added
     ],
   },
   {
@@ -50,8 +72,11 @@ export const vehicleMakes = [
       { value: "tiguan", label: "Tiguan" },
       { value: "touareg", label: "Touareg" },
       { value: "passat", label: "Passat" },
+      { value: "arteon", label: "Arteon" },
+      { value: "amarok", label: "Amarok" }, // Commercial
       { value: "crafter", label: "Crafter" }, // Commercial
       { value: "transporter", label: "Transporter" }, // Commercial
+      { value: "jetta", label: "Jetta" }, // Added
     ],
   },
   {
@@ -63,6 +88,9 @@ export const vehicleMakes = [
       { value: "navara", label: "Navara" },
       { value: "patrol", label: "Patrol" },
       { value: "juke", label: "Juke" },
+      { value: "altima", label: "Altima" },
+      { value: "sentra", label: "Sentra" },
+      { value: "march", label: "March" }, // Added
       { value: "nv350", label: "NV350" }, // Commercial
       { value: "urvan", label: "Urvan" }, // Commercial
     ],
@@ -76,6 +104,9 @@ export const vehicleMakes = [
       { value: "xv", label: "XV" },
       { value: "impreza", label: "Impreza" },
       { value: "legacy", label: "Legacy" },
+      { value: "brz", label: "BRZ" },
+      { value: "wrx", label: "WRX" },
+      { value: "levorg", label: "Levorg" }, // Added
     ],
   },
   {
@@ -87,6 +118,9 @@ export const vehicleMakes = [
       { value: "l200", label: "L200" },
       { value: "asx", label: "ASX" },
       { value: "eclipse-cross", label: "Eclipse Cross" },
+      { value: "mirage", label: "Mirage" },
+      { value: "xpander", label: "XPander" },
+      { value: "lancer", label: "Lancer" }, // Added
       { value: "canter", label: "Canter" }, // Commercial
     ],
   },
@@ -99,6 +133,9 @@ export const vehicleMakes = [
       { value: "glc", label: "GLC" },
       { value: "gle", label: "GLE" },
       { value: "s-class", label: "S-Class" },
+      { value: "a-class", label: "A-Class" },
+      { value: "g-class", label: "G-Class" },
+      { value: "v-class", label: "V-Class" }, // Added
       { value: "sprinter", label: "Sprinter" }, // Commercial
       { value: "atego", label: "Atego" }, // Commercial
     ],
@@ -112,6 +149,11 @@ export const vehicleMakes = [
       { value: "x3", label: "X3" },
       { value: "x5", label: "X5" },
       { value: "x6", label: "X6" },
+      { value: "x1", label: "X1" },
+      { value: "x7", label: "X7" },
+      { value: "m3", label: "M3" },
+      { value: "m5", label: "M5" },
+      { value: "2-series", label: "2 Series" }, // Added
     ],
   },
   {
@@ -123,21 +165,10 @@ export const vehicleMakes = [
       { value: "q3", label: "Q3" },
       { value: "q5", label: "Q5" },
       { value: "q7", label: "Q7" },
-    ],
-  },
-  {
-    value: "isuzu",
-    label: "Isuzu",
-    models: [
-      { value: "d-max", label: "D-Max" },
-      { value: "npr", label: "NPR" }, // Commercial (Truck)
-      { value: "nqr", label: "NQR" }, // Commercial (Truck)
-      { value: "fvr", label: "FVR" }, // Commercial (Truck)
-      { value: "journey", label: "Journey" }, // Bus
-      { value: "novo", label: "Novo" }, // Bus
-      { value: "n-series-bus", label: "N-Series Bus" }, // Bus
-      { value: "f-series-bus", label: "F-Series Bus" }, // Bus
-      { value: "giga-bus", label: "Giga Bus" }, // Bus
+      { value: "a6", label: "A6" },
+      { value: "a8", label: "A8" },
+      { value: "tt", label: "TT" },
+      { value: "q8", label: "Q8" }, // Added
     ],
   },
   {
@@ -148,6 +179,9 @@ export const vehicleMakes = [
       { value: "everest", label: "Everest" },
       { value: "transit", label: "Transit" }, // Commercial
       { value: "f-150", label: "F-150" },
+      { value: "explorer", label: "Explorer" },
+      { value: "mustang", label: "Mustang" },
+      { value: "bronco", label: "Bronco" }, // Added
     ],
   },
   {
@@ -157,6 +191,8 @@ export const vehicleMakes = [
       { value: "xenon", label: "Xenon" }, // Commercial
       { value: "ace", label: "Ace" }, // Commercial
       { value: "super-ace", label: "Super Ace" }, // Commercial
+      { value: "safari", label: "Safari" },
+      { value: "tiago", label: "Tiago" },
     ],
   },
   {
