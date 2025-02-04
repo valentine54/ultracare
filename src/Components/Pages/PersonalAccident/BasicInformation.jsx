@@ -4,6 +4,7 @@ import Header from "../PersonalAccident/Header";
 import Stepper from "../PersonalAccident/Stepper";
 import { ChevronDown } from "lucide-react";
 import { usePersonalAccident } from "../../Context/PersonalAccidentContext";
+import PhoneInputField from "../../PhoneInputField";
 
 const occupations = [
   "Software Engineer",
@@ -18,6 +19,7 @@ const occupations = [
   "Artist",
   "Other",
 ];
+
 const coverageTypes = [
   "Individual Coverage",
   "Family Coverage",
@@ -31,7 +33,7 @@ const BasicInformation = () => {
   const navigate = useNavigate();
   const { formData, updateFormData } = usePersonalAccident();
 
-  // Single state for form data
+  // Form Data - Single State
   const [form, setForm] = useState(() => ({
     fullName: formData.basicInfo?.fullName || "",
     dateOfBirth: formData.basicInfo?.dateOfBirth || "",
@@ -58,6 +60,13 @@ const BasicInformation = () => {
     }));
   };
 
+  const handlePhoneChange = (value) => {
+    setForm((prev) => ({
+      ...prev,
+      contactNumber: value,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -67,7 +76,11 @@ const BasicInformation = () => {
     if (!form.dateOfBirth) newErrors.dateOfBirth = "Required";
     if (!form.id) newErrors.id = "Required";
     if (!form.occupation) newErrors.occupation = "Required";
-    if (!form.contactNumber) newErrors.contactNumber = "Required";
+    if (!form.contactNumber) {
+      newErrors.contactNumber = "Required";
+    } else if (form.contactNumber.length < 10) {
+      newErrors.contactNumber = "Please enter a valid phone number";
+    }
     if (!form.gender) newErrors.gender = "Required";
     if (!form.desiredCoverage) newErrors.desiredCoverage = "Required";
     if (!form.typeOfCoverage) newErrors.typeOfCoverage = "Required";
@@ -117,20 +130,27 @@ const BasicInformation = () => {
               )}
             </div>
 
-            {/* Date of Birth */}
+            {/* Date of Birth - Modern Style */}
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-medium mb-2">
                 Date of Birth <span className="text-red-500">*</span>
               </label>
-              <input
-                name="dateOfBirth"
-                type="date"
-                value={form.dateOfBirth}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
-                  errors.dateOfBirth ? "border-red-500" : "border-gray-300"
-                }`}
-              />
+              <div className="relative">
+                <input
+                  name="dateOfBirth"
+                  type="date"
+                  value={form.dateOfBirth}
+                  onChange={handleChange}
+                  max={new Date().toISOString().split("T")[0]}
+                  className={`w-full px-4 py-3 rounded-lg border ${
+                    errors.dateOfBirth ? "border-red-500" : "border-gray-300"
+                  } appearance-none bg-white cursor-pointer hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors`}
+                  style={{
+                    colorScheme: "light",
+                  }}
+                />
+                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+              </div>
               {errors.dateOfBirth && (
                 <p className="mt-1 text-sm text-red-500">
                   {errors.dateOfBirth}
@@ -196,26 +216,16 @@ const BasicInformation = () => {
               )}
             </div>
 
-            {/* Contact Number */}
+            {/* Contact Number with PhoneInputField */}
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-medium mb-2">
                 Contact Number <span className="text-red-500">*</span>
               </label>
-              <input
-                name="contactNumber"
-                type="text"
+              <PhoneInputField
                 value={form.contactNumber}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
-                  errors.contactNumber ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Enter your contact number"
+                onChange={handlePhoneChange}
+                error={errors.contactNumber}
               />
-              {errors.contactNumber && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.contactNumber}
-                </p>
-              )}
             </div>
 
             {/* Gender */}

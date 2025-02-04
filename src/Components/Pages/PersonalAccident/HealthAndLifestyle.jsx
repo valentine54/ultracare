@@ -17,6 +17,7 @@ const transportModes = [
 ];
 
 const stressLevels = [
+  "None - No stress",
   "Low - Rarely feel stressed",
   "Moderate - Occasional stress",
   "High - Frequently stressed",
