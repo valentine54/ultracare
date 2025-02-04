@@ -1,5 +1,4 @@
-// src/Components/Context/PersonalAccidentContext.jsx
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 
 const PersonalAccidentContext = createContext();
 
@@ -11,12 +10,12 @@ export function PersonalAccidentProvider({ children }) {
     paymentInfo: {},
   });
 
-  const updateFormData = (section, data) => {
+  const updateFormData = useCallback((section, data) => {
     setFormData((prev) => ({
       ...prev,
-      [section]: data,
+      [section]: { ...prev[section], ...data },
     }));
-  };
+  }, []);
 
   return (
     <PersonalAccidentContext.Provider value={{ formData, updateFormData }}>

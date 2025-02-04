@@ -5,6 +5,9 @@ import Header from "../PersonalAccident/Header";
 import Stepper from "../PersonalAccident/Stepper";
 import { CreditCard, Building2, Lock, ArrowRight } from "lucide-react";
 import { usePersonalAccident } from "../../Context/PersonalAccidentContext";
+import MpesaLogo from "../../../assets/Mpesa.png"
+import PaypalLogo from "../../../assets/Paypal.png";
+import MastercardLogo from "../../../assets/Mastercard.png";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -124,7 +127,7 @@ const PaymentPage = () => {
                     name="M-Pesa"
                     logo={
                       <img
-                        src="/mpesa-logo.png"
+                        src={MpesaLogo}
                         alt="M-Pesa"
                         className="h-8 w-8"
                       />
@@ -138,7 +141,7 @@ const PaymentPage = () => {
                     name="PayPal"
                     logo={
                       <img
-                        src="/paypal-logo.png"
+                        src={PaypalLogo}
                         alt="PayPal"
                         className="h-8 w-8"
                       />

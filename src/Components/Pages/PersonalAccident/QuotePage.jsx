@@ -8,40 +8,57 @@ import { usePersonalAccident } from "../../Context/PersonalAccidentContext";
 
 const QuotePage = () => {
   const navigate = useNavigate();
-  const { formData: contextData } = usePersonalAccident();
-  const { basicInfo, healthInfo } = contextData;
+  const { formData } = usePersonalAccident();
+  const { basicInfo = {}, healthInfo = {} } = formData;
 
-  const displayValue = (value) => {
-    if (!value) return "Not provided";
-    if (Array.isArray(value)) return value.join(", ") || "None";
-    if (value === "Other" && contextData[`custom${key}`]) {
-      return contextData[`custom${key}`];
+  const displayValue = (value, customValueKey) => {
+    if (value === undefined || value === null || value === "") return "None";
+    if (Array.isArray(value)) {
+      return value.length > 0 ? value.join(", ") : "None";
+    }
+    if (value === "Other" && customValueKey && basicInfo[customValueKey]) {
+      return basicInfo[customValueKey];
     }
     return value;
   };
 
+  // Prepare user data with all form fields
   const userData = {
-    name: basicInfo?.fullName || "User",
+    name: basicInfo.fullName || "None",
     premium: {
       yearly: 3379,
       monthly: 320,
     },
     details: {
-      "Date of Birth": basicInfo?.dateOfBirth || "",
-      Gender: basicInfo?.gender || "",
-      Occupation: basicInfo?.occupation || "",
-      "Desired Coverage Amount": basicInfo?.desiredCoverage || "",
-      "Type of Coverage Selected": basicInfo?.typeOfCoverage || "",
-      "Pre-existing Medical Conditions": healthInfo?.medicalConditions || [],
-      "High-Risk Activities": healthInfo?.highRiskActivities || [],
-      "Claims Filed in Past 5 Years": healthInfo?.pastClaims || "",
-      "Family History": healthInfo?.familyHistory || "",
-      "Primary Mode of Transportation": healthInfo?.transportation || "",
-      "Tobacco Use": healthInfo?.tobaccoUse || "",
-      "Stress Level": healthInfo?.stressLevel || "",
-      Allergies: healthInfo?.allergies || [],
-      "Mental Health Condition": healthInfo?.mentalHealth || "",
-      "Current Medications": healthInfo?.medications || [],
+      "Date of Birth": displayValue(basicInfo.dateOfBirth),
+      Gender: displayValue(basicInfo.gender, "customGender"),
+      Occupation: displayValue(basicInfo.occupation, "customOccupation"),
+      "Contact Number": displayValue(basicInfo.contactNumber),
+      "Desired Coverage Amount": displayValue(basicInfo.desiredCoverage),
+      "Type of Coverage": displayValue(
+        basicInfo.typeOfCoverage,
+        "customCoverage"
+      ),
+      "Travel Coverage Required": displayValue(basicInfo.travelCoverage),
+      "Existing Coverage": displayValue(basicInfo.existingCoverage),
+      "Pre-existing Medical Conditions": displayValue(
+        healthInfo.medicalConditions
+      ),
+      "Current Medications": displayValue(healthInfo.medications),
+      "High-Risk Activities": displayValue(healthInfo.highRiskActivities),
+      "Claims Filed in Past 5 Years": displayValue(healthInfo.pastClaims),
+      "Family History": displayValue(
+        healthInfo.familyHistory,
+        "customFamilyHistory"
+      ),
+      "Primary Mode of Transportation": displayValue(
+        healthInfo.transportation,
+        "customTransportation"
+      ),
+      "Tobacco Use": displayValue(healthInfo.tobaccoUse),
+      "Stress Level": displayValue(healthInfo.stressLevel),
+      Allergies: displayValue(healthInfo.allergies),
+      "Mental Health Condition": displayValue(healthInfo.mentalHealth),
     },
   };
 
@@ -58,6 +75,7 @@ const QuotePage = () => {
         <Stepper currentStep={3} />
 
         <div className="space-y-6">
+          {/* Premium Summary Card */}
           <motion.div
             initial="initial"
             animate="animate"
@@ -77,8 +95,7 @@ const QuotePage = () => {
                     </h2>
                     <p className="text-2xl font-semibold text-blue-600">
                       ${userData.premium.yearly}/Year or $
-                      {userData.premium.monthly}
-                      /Month
+                      {userData.premium.monthly}/Month
                     </p>
                   </div>
                   <div className="text-right">
@@ -101,6 +118,7 @@ const QuotePage = () => {
             </div>
           </motion.div>
 
+          {/* Details Summary Card */}
           <motion.div
             initial="initial"
             animate="animate"
@@ -123,14 +141,13 @@ const QuotePage = () => {
                   <h4 className="text-sm font-medium text-gray-500 mb-1">
                     {key}:
                   </h4>
-                  <p className="text-gray-900 font-medium">
-                    {displayValue(value)}
-                  </p>
+                  <p className="text-gray-900 font-medium">{value}</p>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
+          {/* Disclaimer */}
           <motion.div
             initial="initial"
             animate="animate"
@@ -147,6 +164,7 @@ const QuotePage = () => {
             </div>
           </motion.div>
 
+          {/* Navigation Buttons */}
           <div className="flex justify-between mt-8">
             <motion.button
               onClick={() => navigate("/personal-accident/health-lifestyle")}
