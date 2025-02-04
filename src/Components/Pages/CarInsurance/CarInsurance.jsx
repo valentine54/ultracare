@@ -59,19 +59,19 @@ const CarInsurance = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
               {
-                id: "private",
+                id: "Private",
                 icon: "🚗",
                 label: "Private",
                 description: "Personal use vehicles",
               },
               {
-                id: "commercial",
+                id: "Commercial",
                 icon: "🚛",
                 label: "Commercial",
                 description: "Business use vehicles",
               },
               {
-                id: "public-service",
+                id: "PSV",
                 icon: "🚌",
                 label: "Public Service",
                 description: "Transport service vehicles",

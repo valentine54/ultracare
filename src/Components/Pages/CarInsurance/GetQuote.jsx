@@ -9,26 +9,27 @@ import { vehicleMakes } from "../../Constants/VehicleData";
 import axios from "axios";
 
 const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
+const API_URL = "http://127.0.0.1:8000/api/v1.0/"
 
 // Insurance cover types
 const coverTypes = [
   {
-    value: "comprehensive",
+    value: "Comprehensive",
     label: "Comprehensive Cover",
     description: "Full coverage for your vehicle, third party, fire, and theft",
   },
   {
-    value: "thirdParty",
+    value: "Third Party",
     label: "Third Party Only",
     description: "Basic coverage for damage to other vehicles and property",
   },
   {
-    value: "thirdPartyFireTheft",
+    value: "Third Party Fire and Theft",
     label: "Third Party, Fire & Theft",
     description: "Coverage for third party damage plus fire and theft protection",
   },
   {
-    value: "personalAccident",
+    value: "Personal Accident",
     label: "Personal Accident Cover",
     description: "Additional coverage for personal injuries and medical expenses",
   },
@@ -167,7 +168,7 @@ const GetQuote = () => {
 
         // Send a POST request to create a session cookie
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/v1.0/applicant/motor_session/", // Replace with your backend URL
+          `${API_URL}applicant/motor_session/`, // Replace with your backend URL
           formattedValues,
           {
             withCredentials: true, // Ensure cookies are sent and received
@@ -181,7 +182,7 @@ const GetQuote = () => {
 
         if (response.status === 201) {
           // filter based on the response
-          const response_data = await axios.get("http://127.0.0.1:8000/api/v1.0/motorinsurance/filter/",
+          const response_data = await axios.get(`${API_URL}motorinsurance/filter/`,
             {
             withCredentials: true, // Ensure cookies are sent and received
             headers: {
@@ -189,17 +190,24 @@ const GetQuote = () => {
               "x-api-key": API_KEY,
              }
           })
-          console.log(response_data.data)
+          // console.log(response_data)
+          if (response_data.status === 200){
+
+            // // Navigate to the quote list page after successfully creating the session
+            navigate("/quote-list", {
+              state: { server_response: response_data?.data, quoteData: formattedValues },
+
+            });
+          }
+          else{
+            console.error("Failed to filter:", response_data.data);
+          }
           
-          // Navigate to the quote list page after successfully creating the session
-          // navigate("/quote-list", {
-          //   state: { quoteData: formattedValues },
-          // });
         } else {
           console.error("Failed to create session:", response.data);
         }
       } catch (error) {
-        console.error("Submission error:", error.response?.data);
+        console.error("Submission error:", error.response);
       } finally {
         setIsSubmitting(false);
       }
