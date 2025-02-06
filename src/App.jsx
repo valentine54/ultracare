@@ -23,6 +23,7 @@ import NotFound from "./NotFound";
 import CarInsurance from "./Components/Pages/CarInsurance/CarInsurance";
 import GetQuote from "./Components/Pages/CarInsurance/GetQuote";
 import QuoteList from "./Components/Pages/CarInsurance/QuoteList";
+import Dashboard from "./Components/Pages/dashboard/index";
 
 // Personal Accident imports
 import BasicInformation from "./Components/Pages/PersonalAccident/BasicInformation";
@@ -44,6 +45,7 @@ const App = () => {
             <main>
               <Routes>
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
 
                 {/* Personal Accident Routes */}
                 <Route
