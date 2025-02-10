@@ -27,10 +27,10 @@ const NotificationMenu = () => {
       <motion.button
         whileTap={{ scale: 0.97 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-lg hover:bg-gray-100"
+        className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <Bell size={20} />
-        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+        <Bell size={20} className="text-gray-600" />
+        <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
           {notifications.length}
         </span>
       </motion.button>
@@ -44,9 +44,10 @@ const NotificationMenu = () => {
             className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg overflow-hidden z-50"
           >
             <div className="p-4 border-b border-gray-100">
-              <h3 className="font-semibold">Notifications</h3>
+              <h3 className="font-semibold text-gray-900">Notifications</h3>
             </div>
-            <div className="max-h-96 overflow-y-auto">
+
+            <div className="max-h-[320px] overflow-y-auto">
               {notifications.map((notification, index) => (
                 <motion.div
                   key={index}
@@ -55,7 +56,9 @@ const NotificationMenu = () => {
                   transition={{ delay: index * 0.1 }}
                   className="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
                 >
-                  <div className="font-medium">{notification.title}</div>
+                  <div className="font-medium text-gray-900">
+                    {notification.title}
+                  </div>
                   <div className="text-sm text-gray-500">
                     {notification.message}
                   </div>
@@ -65,6 +68,7 @@ const NotificationMenu = () => {
                 </motion.div>
               ))}
             </div>
+
             <div className="p-4 text-center border-t border-gray-100">
               <button className="text-blue-500 hover:text-blue-600 text-sm font-medium">
                 View All Notifications

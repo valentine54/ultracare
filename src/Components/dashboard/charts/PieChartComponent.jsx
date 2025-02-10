@@ -38,7 +38,6 @@ const PieChartComponent = () => {
     value,
     index,
   }) => {
-    // Only show label for the "Satisfied" segment
     if (index !== 0) return null;
 
     const RADIAN = Math.PI / 180;

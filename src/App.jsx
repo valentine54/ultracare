@@ -24,6 +24,10 @@ import CarInsurance from "./Components/Pages/CarInsurance/CarInsurance";
 import GetQuote from "./Components/Pages/CarInsurance/GetQuote";
 import QuoteList from "./Components/Pages/CarInsurance/QuoteList";
 import Dashboard from "./Components/Pages/dashboard/index";
+import Policies from "./Components/Pages/policies/index";
+import Claims from "./Components/Pages/claims/index";
+import Settings from "./Components/Pages/settings/index";
+import Notifications from "./Components/Pages/notifications/index";
 
 // Personal Accident imports
 import BasicInformation from "./Components/Pages/PersonalAccident/BasicInformation";
@@ -33,8 +37,10 @@ import Payment from "./Components/Pages/PersonalAccident/PaymentPage";
 import MpesaPayment from "./Components/Pages/PersonalAccident/MpesaPayment";
 import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentContext";
 import { AlertModalProvider } from "./Components/AlertModal";
+import CustomersPage from "./Components/common/customers/CustomerTable/index";
 
 const App = () => {
+
   return (
     <AlertModalProvider>
       <PersonalAccidentProvider>
@@ -46,6 +52,11 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/policies" element={<Policies />} />
+                <Route path="/customers" element={<CustomersPage />} />
+                <Route path="/claims" element={<Claims />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/notifications" element={<Notifications />} />
 
                 {/* Personal Accident Routes */}
                 <Route
