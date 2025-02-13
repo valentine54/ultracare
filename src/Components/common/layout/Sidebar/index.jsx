@@ -12,6 +12,7 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
+import PolicyCategories from "../Sidebar/PolicyCategories";
 
 const SidebarItem = ({ icon: Icon, label, active, onClick, isCollapsed }) => (
   <motion.button
@@ -80,11 +81,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         className={`fixed lg:static left-0 top-0 h-full bg-white shadow-lg z-50 transition-all duration-300`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
+        <div className="flex items-center justify-between p-6 border-b">
           {!isCollapsed && (
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
-              <span className="text-xl font-bold">Insurē</span>
+              <span className="text-xl font-bold">Insure</span>
             </div>
           )}
 

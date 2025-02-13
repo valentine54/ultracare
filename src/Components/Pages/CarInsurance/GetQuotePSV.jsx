@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { vehicleMakes } from "../../Constants/VehicleData";
 import axios from "axios";
 
-const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
-const API_URL = "http://127.0.0.1:8000/api/v1.0/"
+const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5";
+const API_URL = "http://127.0.0.1:8000/api/v1.0/";
 
 // Insurance cover types
 const coverTypes = [
@@ -28,38 +27,20 @@ const coverTypes = [
     label: "Third Party, Fire & Theft",
     description: "Coverage for third party damage plus fire and theft protection",
   },
-  {
-    value: "Personal Accident",
-    label: "Personal Accident Cover",
-    description: "Additional coverage for personal injuries and medical expenses",
-  },
 ];
 
-// Vehicle classifications
+const riskClassTypes = [
+  { value: "chauffer_driven", label: "Chauffer Driven" },
+  { value: "chauffer_driven_taxi", label: "Chauffer Driven - Taxis" },
+  { value: "motor_psv", label: "Motor PSV" },
+];
+
 const vehicleTypes = [
-  { value: "sedan", label: "Sedan" },
-  { value: "suv", label: "SUV / Crossover" },
-  { value: "hatchback", label: "Hatchback" },
-  { value: "wagon", label: "Station Wagon" },
-  { value: "coupe", label: "Coupe" },
-  { value: "convertible", label: "Convertible" },
-  { value: "pickup", label: "Pickup Truck" },
-  { value: "van", label: "Van" },
-  { value: "minivan", label: "Minivan" },
-  { value: "motorcycle", label: "Motorcycle" },
-  { value: "isuzu", label: "Isuzu" },
-  { value: "ford", label: "Ford" },
-  { value: "man", label: "MAN" },
-  { value: "scania", label: "Scania" },
-  { value: "iveco", label: "Iveco" },
-  { value: "hino", label: "Hino" },
-  { value: "ashok-leyland", label: "Ashok Leyland" },
+  { value: "saloon", label: "Saloon" },
+  { value: "matatu", label: "Matatu" },
+  { value: "bus", label: "Bus" },
 ];
 
-const riskClassTypes = [{ value: "Motor Private", label: "Motor Private" }];
-
-
-// Enhanced select styles
 const customSelectStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -93,13 +74,10 @@ const customSelectStyles = {
   }),
 };
 
-const GetQuote = () => {
+const GetQuotePSV = () => {
   const navigate = useNavigate();
-  const [selectedMake, setSelectedMake] = useState(null);
-  const [models, setModels] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
-  // console.log(location.state)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -107,17 +85,17 @@ const GetQuote = () => {
       email: "",
       idNumber: "",
       coverType: "",
+      vehicleType: "",
       vehicleValue: "",
       vehicleRegistration: "",
-      coverStartDate: new Date().toISOString().split("T")[0], // Format as "yyyy-MM-dd"
-      // vehicleType: location.state?.vehicle_type || "", // Use vehicle_type from location.state
-      vehicleMake: "",
-      vehicleModel: "",
-      riskClass: "Motor Private",
+      coverStartDate: new Date().toISOString().split("T")[0],
+      riskClass: "",
+      passengerCapacity: "",
       hasBeenValued: "yes",
     },
     validationSchema: Yup.object({
       fullName: Yup.string().required("Full name is required"),
+      vehicleType: Yup.string().required("Vehicle type is required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
@@ -132,51 +110,39 @@ const GetQuote = () => {
       coverStartDate: Yup.date()
         .required("Start date is required")
         .min(new Date(), "Date cannot be in the past"),
-      vehicleType: Yup.string().required("Vehicle type is required"),
-      vehicleMake: Yup.string().required("Vehicle make is required"),
-      vehicleModel: Yup.string().required("Vehicle model is required"),
       riskClass: Yup.string().required("Risk class is required"),
+      passengerCapacity: Yup.number()
+        .required("Passenger capacity is required")
+        .positive("Must be a positive number")
+        .integer("Must be a whole number"),
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        console.log(values.fullName?.split(" "));
-
-        // Split fullName into first_name and last_name
         const [first_name, ...lastNameParts] = values.fullName.split(" ");
-        const last_name = lastNameParts.join(" "); // Handles cases with multiple last names
+        const last_name = lastNameParts.join(" ");
 
-        console.log(first_name); // "james"
-        console.log(last_name); // "kimani mwangi"
-
-        // Prepare the data to match the backend's expected structure
         const formattedValues = {
           ...location?.state,
-          first_name: first_name || "", // Ensure first_name is not undefined
-          last_name: last_name || "", // Ensure last_name is not undefined
+          first_name: first_name || "",
+          last_name: last_name || "",
           email: values.email,
           id_no: values.idNumber,
-          // vehicle_type: values.vehicleType || location.state?.vehicle_type, // Use vehicle_type from form or location.state
-          vehicle_make: values.vehicleMake,
-          vehicle_model: values.vehicleModel,
           vehicle_registration_number: values.vehicleRegistration,
           cover_type: values.coverType,
+          vehicle_type: values.vehicleType,
           vehicle_value: Number(values.vehicleValue),
-          risk_class: values.riskClass,
           cover_start_date: values.coverStartDate,
-          evaluated: values.hasBeenValued === "yes", // Convert to boolean
-          // phoneNumber: location.state?.phoneNumber, // Add phoneNumber from location.state
+          evaluated: values.hasBeenValued === "yes",
+          risk_class: values.riskClass,
+          passenger_capacity: values.passengerCapacity,
         };
 
-        // Log the formattedValues for debugging
-        console.log("Formatted Values:", formattedValues);
-
-        // Send a POST request to create a session cookie
         const response = await axios.post(
-          `${API_URL}applicant/motor_session/`, // Replace with your backend URL
+          `${API_URL}applicant/motor_session/`,
           formattedValues,
           {
-            withCredentials: true, // Ensure cookies are sent and received
+            withCredentials: true,
             headers: {
               "Content-Type": "application/json",
               "x-api-key": API_KEY,
@@ -185,31 +151,25 @@ const GetQuote = () => {
         );
 
         if (response.status === 201) {
-          // filter based on the response
           const response_data = await axios.get(
             `${API_URL}motorinsurance/filter/`,
             {
-              withCredentials: true, // Ensure cookies are sent and received
+              withCredentials: true,
               headers: {
                 "Content-Type": "application/json",
                 "x-api-key": API_KEY,
               },
             }
           );
-          // console.log(response_data)
+
           if (response_data.status === 200) {
-            // // Navigate to the quote list page after successfully creating the session
             navigate("/quote-list", {
               state: {
                 server_response: response_data?.data,
                 quoteData: formattedValues,
               },
             });
-          } else {
-            console.error("Failed to filter:", response_data.data);
           }
-        } else {
-          console.error("Failed to create session:", response.data);
         }
       } catch (error) {
         console.error("Submission error:", error.response);
@@ -218,18 +178,6 @@ const GetQuote = () => {
       }
     },
   });
-  // Form state 
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      if (formik.dirty && !formik.isSubmitting) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [formik.dirty, formik.isSubmitting]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
@@ -239,7 +187,7 @@ const GetQuote = () => {
         className="max-w-4xl mx-auto"
       >
         <h1 className="text-center text-3xl font-semibold text-blue-500 mb-8">
-          Get Your Car Insurance Quote
+          Get Your PSV Insurance Quote
         </h1>
 
         <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -343,25 +291,6 @@ const GetQuote = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Risk Class
-                  </label>
-                  <Select
-                    options={riskClassTypes}
-                    styles={customSelectStyles}
-                    placeholder="Select risk class"
-                    onChange={(option) =>
-                      formik.setFieldValue("riskClass", option.value)
-                    }
-                  />
-                  {formik.touched.riskClass && formik.errors.riskClass && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {formik.errors.riskClass}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Vehicle Type
                   </label>
                   <Select
@@ -381,42 +310,38 @@ const GetQuote = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Vehicle Make
+                    Risk Class
                   </label>
                   <Select
-                    options={vehicleMakes}
+                    options={riskClassTypes}
                     styles={customSelectStyles}
-                    placeholder="Select vehicle make"
-                    onChange={(option) => {
-                      setSelectedMake(option);
-                      setModels(option.models);
-                      formik.setFieldValue("vehicleMake", option.value);
-                    }}
+                    placeholder="Select risk class"
+                    onChange={(option) =>
+                      formik.setFieldValue("riskClass", option.value)
+                    }
                   />
-                  {formik.touched.vehicleMake && formik.errors.vehicleMake && (
+                  {formik.touched.riskClass && formik.errors.riskClass && (
                     <p className="mt-1 text-sm text-red-600">
-                      {formik.errors.vehicleMake}
+                      {formik.errors.riskClass}
                     </p>
                   )}
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Vehicle Model
+                    Passenger Capacity
                   </label>
-                  <Select
-                    options={models}
-                    styles={customSelectStyles}
-                    placeholder="Select vehicle model"
-                    isDisabled={!selectedMake}
-                    onChange={(option) =>
-                      formik.setFieldValue("vehicleModel", option.value)
-                    }
+                  <input
+                    type="number"
+                    name="passengerCapacity"
+                    {...formik.getFieldProps("passengerCapacity")}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter passenger capacity"
                   />
-                  {formik.touched.vehicleModel &&
-                    formik.errors.vehicleModel && (
+                  {formik.touched.passengerCapacity &&
+                    formik.errors.passengerCapacity && (
                       <p className="mt-1 text-sm text-red-600">
-                        {formik.errors.vehicleModel}
+                        {formik.errors.passengerCapacity}
                       </p>
                     )}
                 </div>
@@ -480,6 +405,7 @@ const GetQuote = () => {
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                   {formik.touched.coverStartDate &&
+                    formik.errors.coverStartDate &&
                     formik.errors.coverStartDate && (
                       <p className="mt-1 text-sm text-red-600">
                         {formik.errors.coverStartDate}
@@ -509,22 +435,21 @@ const GetQuote = () => {
                     />
                   </svg>
                   <span>Back</span>
-                </button>{" "}
+                </button>
                 {/* <button
                   type="button"
                   disabled={isSubmitting}
                   onClick={() => {
-                    // Handle save draft
                     console.log("Saving draft...");
                   }}
-                  className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 bg-white border-2 border-gray-200 text-gray-600 rounded-xl hover:border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                 >
                   Save Draft
                 </button> */}
                 <button
                   type="submit"
                   disabled={isSubmitting || !formik.isValid}
-                  className="px-8 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-sm hover:shadow-md"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center space-x-2">
@@ -563,4 +488,4 @@ const GetQuote = () => {
   );
 };
 
-export default GetQuote;
+export default GetQuotePSV;

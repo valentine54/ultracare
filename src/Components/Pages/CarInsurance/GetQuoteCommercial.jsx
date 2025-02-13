@@ -5,11 +5,10 @@ import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { vehicleMakes } from "../../Constants/VehicleData";
 import axios from "axios";
 
-const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
-const API_URL = "http://127.0.0.1:8000/api/v1.0/"
+const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5";
+const API_URL = "http://127.0.0.1:8000/api/v1.0/";
 
 // Insurance cover types
 const coverTypes = [
@@ -28,38 +27,49 @@ const coverTypes = [
     label: "Third Party, Fire & Theft",
     description: "Coverage for third party damage plus fire and theft protection",
   },
-  {
-    value: "Personal Accident",
-    label: "Personal Accident Cover",
-    description: "Additional coverage for personal injuries and medical expenses",
-  },
 ];
 
-// Vehicle classifications
 const vehicleTypes = [
-  { value: "sedan", label: "Sedan" },
-  { value: "suv", label: "SUV / Crossover" },
-  { value: "hatchback", label: "Hatchback" },
-  { value: "wagon", label: "Station Wagon" },
-  { value: "coupe", label: "Coupe" },
-  { value: "convertible", label: "Convertible" },
-  { value: "pickup", label: "Pickup Truck" },
-  { value: "van", label: "Van" },
-  { value: "minivan", label: "Minivan" },
-  { value: "motorcycle", label: "Motorcycle" },
-  { value: "isuzu", label: "Isuzu" },
-  { value: "ford", label: "Ford" },
-  { value: "man", label: "MAN" },
-  { value: "scania", label: "Scania" },
-  { value: "iveco", label: "Iveco" },
-  { value: "hino", label: "Hino" },
-  { value: "ashok-leyland", label: "Ashok Leyland" },
+  { value: "pickup", label: "Pickup (Single Cabin)" },
+  { value: "small_truck", label: "Small Truck" },
+  { value: "trailer", label: "Trailer" },
+  { value: "matatu", label: "Matatu" },
+  { value: "bus", label: "Bus" },
+  { value: "saloon", label: "Saloon" },
+  { value: "prime_mover", label: "Prime Mover" },
+  { value: "tanker", label: "Tanker" },
 ];
 
-const riskClassTypes = [{ value: "Motor Private", label: "Motor Private" }];
+const riskClassTypes = [
+  { value: "general_cartage", label: "General Cartage" },
+  { value: "institutional_vehicle", label: "Institutional Vehicle" },
+  { value: "online_taxi", label: "Online Taxi" },
+  { value: "own_goods", label: "Own Goods" },
+  { value: "other", label: "Other" },
+];
 
+const otherRiskTypes = [
+  { value: "agricultural", label: "Agricultural & Forestry Vehicles" },
+  { value: "ambulance", label: "Ambulance Hearse & Firefighters" },
+  { value: "chauffer", label: "Chauffer Driven" },
+  { value: "construction", label: "Construction Vehicles" },
+  { value: "driving_schools", label: "Driving Schools" },
+  { value: "prime_mover", label: "Prime Mover" },
+  { value: "tractors", label: "Tractors" },
+];
 
-// Enhanced select styles
+const tonnageOptions = [
+  { value: "1-3", label: "1-3 Tonnes" },
+  { value: "3-8", label: "3-8 Tonnes" },
+  { value: "8-12", label: "8-12 Tonnes" },
+  { value: "12-15", label: "12-15 Tonnes" },
+  { value: "15-20", label: "15-20 Tonnes" },
+  { value: "20-25", label: "20-25 Tonnes" },
+  { value: "25-30", label: "25-30 Tonnes" },
+  { value: "30+", label: "30+ Tonnes" },
+  { value: "8+", label: "8+ Tonnes" },
+];
+
 const customSelectStyles = {
   control: (provided, state) => ({
     ...provided,
@@ -93,13 +103,13 @@ const customSelectStyles = {
   }),
 };
 
-const GetQuote = () => {
+const GetQuoteCommercial = () => {
   const navigate = useNavigate();
-  const [selectedMake, setSelectedMake] = useState(null);
-  const [models, setModels] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
-  // console.log(location.state)
+  const [showOtherRiskClass, setShowOtherRiskClass] = useState(false);
+  const [showTonnage, setShowTonnage] = useState(false);
+  const [showPassengers, setShowPassengers] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -109,11 +119,12 @@ const GetQuote = () => {
       coverType: "",
       vehicleValue: "",
       vehicleRegistration: "",
-      coverStartDate: new Date().toISOString().split("T")[0], // Format as "yyyy-MM-dd"
-      // vehicleType: location.state?.vehicle_type || "", // Use vehicle_type from location.state
-      vehicleMake: "",
-      vehicleModel: "",
-      riskClass: "Motor Private",
+      coverStartDate: new Date().toISOString().split("T")[0],
+      vehicleType: "",
+      riskClass: "",
+      otherRiskClass: "",
+      tonnage: "",
+      numberOfPassengers: "",
       hasBeenValued: "yes",
     },
     validationSchema: Yup.object({
@@ -133,50 +144,55 @@ const GetQuote = () => {
         .required("Start date is required")
         .min(new Date(), "Date cannot be in the past"),
       vehicleType: Yup.string().required("Vehicle type is required"),
-      vehicleMake: Yup.string().required("Vehicle make is required"),
-      vehicleModel: Yup.string().required("Vehicle model is required"),
       riskClass: Yup.string().required("Risk class is required"),
+      otherRiskClass: Yup.string().when("riskClass", {
+        is: "other",
+        then: Yup.string().required("Other risk class is required"),
+      }),
+      tonnage: Yup.string().when("vehicleType", {
+        is: (type) =>
+          !["trailer", "bus", "matatu", "prime_mover", "tanker"].includes(type),
+        then: Yup.string().required("Tonnage is required"),
+      }),
+      numberOfPassengers: Yup.number().when("vehicleType", {
+        is: (type) => ["matatu", "bus", "saloon"].includes(type),
+        then: Yup.number()
+          .required("Number of passengers is required")
+          .positive("Must be a positive number")
+          .integer("Must be a whole number"),
+      }),
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        console.log(values.fullName?.split(" "));
-
-        // Split fullName into first_name and last_name
         const [first_name, ...lastNameParts] = values.fullName.split(" ");
-        const last_name = lastNameParts.join(" "); // Handles cases with multiple last names
+        const last_name = lastNameParts.join(" ");
 
-        console.log(first_name); // "james"
-        console.log(last_name); // "kimani mwangi"
-
-        // Prepare the data to match the backend's expected structure
         const formattedValues = {
           ...location?.state,
-          first_name: first_name || "", // Ensure first_name is not undefined
-          last_name: last_name || "", // Ensure last_name is not undefined
+          first_name: first_name || "",
+          last_name: last_name || "",
           email: values.email,
           id_no: values.idNumber,
-          // vehicle_type: values.vehicleType || location.state?.vehicle_type, // Use vehicle_type from form or location.state
-          vehicle_make: values.vehicleMake,
-          vehicle_model: values.vehicleModel,
+          vehicle_type: values.vehicleType,
           vehicle_registration_number: values.vehicleRegistration,
           cover_type: values.coverType,
           vehicle_value: Number(values.vehicleValue),
-          risk_class: values.riskClass,
           cover_start_date: values.coverStartDate,
-          evaluated: values.hasBeenValued === "yes", // Convert to boolean
-          // phoneNumber: location.state?.phoneNumber, // Add phoneNumber from location.state
+          evaluated: values.hasBeenValued === "yes",
+          risk_class:
+            values.riskClass === "other"
+              ? values.otherRiskClass
+              : values.riskClass,
+          tonnage: values.tonnage,
+          number_of_passengers: values.numberOfPassengers,
         };
 
-        // Log the formattedValues for debugging
-        console.log("Formatted Values:", formattedValues);
-
-        // Send a POST request to create a session cookie
         const response = await axios.post(
-          `${API_URL}applicant/motor_session/`, // Replace with your backend URL
+          `${API_URL}applicant/motor_session/`,
           formattedValues,
           {
-            withCredentials: true, // Ensure cookies are sent and received
+            withCredentials: true,
             headers: {
               "Content-Type": "application/json",
               "x-api-key": API_KEY,
@@ -185,31 +201,25 @@ const GetQuote = () => {
         );
 
         if (response.status === 201) {
-          // filter based on the response
           const response_data = await axios.get(
             `${API_URL}motorinsurance/filter/`,
             {
-              withCredentials: true, // Ensure cookies are sent and received
+              withCredentials: true,
               headers: {
                 "Content-Type": "application/json",
                 "x-api-key": API_KEY,
               },
             }
           );
-          // console.log(response_data)
+
           if (response_data.status === 200) {
-            // // Navigate to the quote list page after successfully creating the session
             navigate("/quote-list", {
               state: {
                 server_response: response_data?.data,
                 quoteData: formattedValues,
               },
             });
-          } else {
-            console.error("Failed to filter:", response_data.data);
           }
-        } else {
-          console.error("Failed to create session:", response.data);
         }
       } catch (error) {
         console.error("Submission error:", error.response);
@@ -218,18 +228,20 @@ const GetQuote = () => {
       }
     },
   });
-  // Form state 
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      if (formik.dirty && !formik.isSubmitting) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [formik.dirty, formik.isSubmitting]);
+  // Handle vehicle conditional fields
+  useEffect(() => {
+    const type = formik.values.vehicleType;
+    setShowTonnage(
+      !["trailer", "bus", "matatu", "prime_mover", "tanker"].includes(type)
+    );
+    setShowPassengers(["matatu", "bus", "saloon"].includes(type));
+  }, [formik.values.vehicleType]);
+
+  // Handle risk class - other
+  useEffect(() => {
+    setShowOtherRiskClass(formik.values.riskClass === "other");
+  }, [formik.values.riskClass]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
@@ -239,7 +251,7 @@ const GetQuote = () => {
         className="max-w-4xl mx-auto"
       >
         <h1 className="text-center text-3xl font-semibold text-blue-500 mb-8">
-          Get Your Car Insurance Quote
+          Get Your Commercial Vehicle Insurance Quote
         </h1>
 
         <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -343,34 +355,18 @@ const GetQuote = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Risk Class
-                  </label>
-                  <Select
-                    options={riskClassTypes}
-                    styles={customSelectStyles}
-                    placeholder="Select risk class"
-                    onChange={(option) =>
-                      formik.setFieldValue("riskClass", option.value)
-                    }
-                  />
-                  {formik.touched.riskClass && formik.errors.riskClass && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {formik.errors.riskClass}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Vehicle Type
                   </label>
                   <Select
                     options={vehicleTypes}
                     styles={customSelectStyles}
                     placeholder="Select vehicle type"
-                    onChange={(option) =>
-                      formik.setFieldValue("vehicleType", option.value)
-                    }
+                    onChange={(option) => {
+                      formik.setFieldValue("vehicleType", option.value);
+                      // Reset related fields
+                      formik.setFieldValue("tonnage", "");
+                      formik.setFieldValue("numberOfPassengers", "");
+                    }}
                   />
                   {formik.touched.vehicleType && formik.errors.vehicleType && (
                     <p className="mt-1 text-sm text-red-600">
@@ -381,45 +377,89 @@ const GetQuote = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Vehicle Make
+                    Risk Class
                   </label>
                   <Select
-                    options={vehicleMakes}
+                    options={riskClassTypes}
                     styles={customSelectStyles}
-                    placeholder="Select vehicle make"
+                    placeholder="Select risk class"
                     onChange={(option) => {
-                      setSelectedMake(option);
-                      setModels(option.models);
-                      formik.setFieldValue("vehicleMake", option.value);
+                      formik.setFieldValue("riskClass", option.value);
+                      if (option.value !== "other") {
+                        formik.setFieldValue("otherRiskClass", "");
+                      }
                     }}
                   />
-                  {formik.touched.vehicleMake && formik.errors.vehicleMake && (
+                  {formik.touched.riskClass && formik.errors.riskClass && (
                     <p className="mt-1 text-sm text-red-600">
-                      {formik.errors.vehicleMake}
+                      {formik.errors.riskClass}
                     </p>
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Vehicle Model
-                  </label>
-                  <Select
-                    options={models}
-                    styles={customSelectStyles}
-                    placeholder="Select vehicle model"
-                    isDisabled={!selectedMake}
-                    onChange={(option) =>
-                      formik.setFieldValue("vehicleModel", option.value)
-                    }
-                  />
-                  {formik.touched.vehicleModel &&
-                    formik.errors.vehicleModel && (
+                {showOtherRiskClass && (
+                  <div className="animate-fadeIn">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Other Risk Class Type
+                    </label>
+                    <Select
+                      options={otherRiskTypes}
+                      styles={customSelectStyles}
+                      placeholder="Select other risk class type"
+                      onChange={(option) =>
+                        formik.setFieldValue("otherRiskClass", option.value)
+                      }
+                    />
+                    {formik.touched.otherRiskClass &&
+                      formik.errors.otherRiskClass && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {formik.errors.otherRiskClass}
+                        </p>
+                      )}
+                  </div>
+                )}
+
+                {showTonnage && (
+                  <div className="animate-fadeIn">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tonnage
+                    </label>
+                    <Select
+                      options={tonnageOptions}
+                      styles={customSelectStyles}
+                      placeholder="Select tonnage"
+                      onChange={(option) =>
+                        formik.setFieldValue("tonnage", option.value)
+                      }
+                    />
+                    {formik.touched.tonnage && formik.errors.tonnage && (
                       <p className="mt-1 text-sm text-red-600">
-                        {formik.errors.vehicleModel}
+                        {formik.errors.tonnage}
                       </p>
                     )}
-                </div>
+                  </div>
+                )}
+
+                {showPassengers && (
+                  <div className="animate-fadeIn">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Number of Passengers
+                    </label>
+                    <input
+                      type="number"
+                      name="numberOfPassengers"
+                      {...formik.getFieldProps("numberOfPassengers")}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Enter number of passengers"
+                    />
+                    {formik.touched.numberOfPassengers &&
+                      formik.errors.numberOfPassengers && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {formik.errors.numberOfPassengers}
+                        </p>
+                      )}
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -492,7 +532,7 @@ const GetQuote = () => {
                 <button
                   type="button"
                   onClick={() => navigate("/car-insurance")}
-                  className="px-8 py-3 bg-white border-2 border-blue-500 text-blue-500 rounded-xl hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 flex items-center space-x-2 font-medium"
+                  className="px-8 py-3 bg-white border-2 border-blue-400 text-blue-500 rounded-xl hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 flex items-center space-x-2 font-medium"
                 >
                   <svg
                     className="w-5 h-5 transition-transform group-hover:-translate-x-1"
@@ -509,22 +549,21 @@ const GetQuote = () => {
                     />
                   </svg>
                   <span>Back</span>
-                </button>{" "}
+                </button>
                 {/* <button
                   type="button"
                   disabled={isSubmitting}
                   onClick={() => {
-                    // Handle save draft
                     console.log("Saving draft...");
                   }}
-                  className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 bg-white border-2 border-gray-200 text-gray-600 rounded-xl hover:border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                 >
                   Save Draft
                 </button> */}
                 <button
                   type="submit"
                   disabled={isSubmitting || !formik.isValid}
-                  className="px-8 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-sm hover:shadow-md"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center space-x-2">
@@ -563,4 +602,4 @@ const GetQuote = () => {
   );
 };
 
-export default GetQuote;
+export default GetQuoteCommercial;

@@ -13,10 +13,12 @@ import {
   Calendar,
   DollarSign,
 } from "lucide-react";
+import { useParams } from "react-router-dom";
 import DashboardLayout from "../../../Components/common/layout/DashboardLayout";
 import { demoPolicies } from "../../../data/demoData";
 
 const PoliciesPage = () => {
+  const { category } = useParams();
   const [policies, setPolicies] = useState([]);
   const [filteredPolicies, setFilteredPolicies] = useState([]);
   const [search, setSearch] = useState("");
@@ -36,6 +38,15 @@ const PoliciesPage = () => {
     setPolicies(demoPolicies);
     setFilteredPolicies(demoPolicies);
   }, []);
+
+    useEffect(() => {
+      if (category) {
+        setFilters((prev) => ({
+          ...prev,
+          type: category.charAt(0).toUpperCase() + category.slice(1),
+        }));
+      }
+    }, [category]);
 
   // Search and filter 
   useEffect(() => {
