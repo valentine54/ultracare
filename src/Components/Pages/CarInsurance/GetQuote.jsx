@@ -9,7 +9,9 @@ import { vehicleMakes } from "../../Constants/VehicleData";
 import axios from "axios";
 
 const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
-const API_URL = "http://127.0.0.1:8000/api/v1.0/"
+// const API_URL = "http://192.168.1.61:8000/api/v1.0/"
+const API_URL = "http://127.0.0.1:8000/api/v1.0/";
+
 
 // Insurance cover types
 const coverTypes = [
@@ -19,7 +21,7 @@ const coverTypes = [
     description: "Full coverage for your vehicle, third party, fire, and theft",
   },
   {
-    value: "Third Party",
+    value: "Third Party Only",
     label: "Third Party Only",
     description: "Basic coverage for damage to other vehicles and property",
   },
@@ -28,11 +30,11 @@ const coverTypes = [
     label: "Third Party, Fire & Theft",
     description: "Coverage for third party damage plus fire and theft protection",
   },
-  {
-    value: "Personal Accident",
-    label: "Personal Accident Cover",
-    description: "Additional coverage for personal injuries and medical expenses",
-  },
+  // {
+  //   value: "Personal Accident",
+  //   label: "Personal Accident Cover",
+  //   description: "Additional coverage for personal injuries and medical expenses",
+  // },
 ];
 
 // Vehicle classifications
@@ -56,7 +58,7 @@ const vehicleTypes = [
   { value: "ashok-leyland", label: "Ashok Leyland" },
 ];
 
-const riskClassTypes = [{ value: "Motor Private", label: "Motor Private" }];
+const riskClassTypes = [{ value: "Motor_Private", label: "Motor Private" }];
 
 
 // Enhanced select styles
@@ -113,7 +115,7 @@ const GetQuote = () => {
       // vehicleType: location.state?.vehicle_type || "", // Use vehicle_type from location.state
       vehicleMake: "",
       vehicleModel: "",
-      riskClass: "Motor Private",
+      riskClass: "Motor_Private",
       hasBeenValued: "yes",
     },
     validationSchema: Yup.object({
@@ -140,14 +142,11 @@ const GetQuote = () => {
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        console.log(values.fullName?.split(" "));
+        console.log(values);
 
         // Split fullName into first_name and last_name
         const [first_name, ...lastNameParts] = values.fullName.split(" ");
         const last_name = lastNameParts.join(" "); // Handles cases with multiple last names
-
-        console.log(first_name); // "james"
-        console.log(last_name); // "kimani mwangi"
 
         // Prepare the data to match the backend's expected structure
         const formattedValues = {
@@ -156,13 +155,13 @@ const GetQuote = () => {
           last_name: last_name || "", // Ensure last_name is not undefined
           email: values.email,
           id_no: values.idNumber,
-          // vehicle_type: values.vehicleType || location.state?.vehicle_type, // Use vehicle_type from form or location.state
+          vehicle_type: values.vehicleType,
           vehicle_make: values.vehicleMake,
           vehicle_model: values.vehicleModel,
           vehicle_registration_number: values.vehicleRegistration,
           cover_type: values.coverType,
           vehicle_value: Number(values.vehicleValue),
-          risk_class: values.riskClass,
+          risk_name: values.riskClass,
           cover_start_date: values.coverStartDate,
           evaluated: values.hasBeenValued === "yes", // Convert to boolean
           // phoneNumber: location.state?.phoneNumber, // Add phoneNumber from location.state
@@ -212,7 +211,7 @@ const GetQuote = () => {
           console.error("Failed to create session:", response.data);
         }
       } catch (error) {
-        console.error("Submission error:", error.response);
+        console.error("Submission error:", error.response?.data);
       } finally {
         setIsSubmitting(false);
       }

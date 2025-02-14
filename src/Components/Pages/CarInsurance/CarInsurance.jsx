@@ -33,12 +33,12 @@ const CarInsurance = () => {
       const routes = {
         Private: "/get-quote",
         Commercial: "/get-quote-commercial",
-        PSV: "/get-quote-psv",
+        Public_Service: "/get-quote-psv",
       };
 
       navigate(routes[selectedCategory], {
         state: {
-          vehicle_type: selectedCategory,
+          vehicle_category: selectedCategory,
           phoneNumber: phoneNumber,
         },
       });
@@ -77,7 +77,7 @@ const CarInsurance = () => {
                 description: "Business use vehicles",
               },
               {
-                id: "PSV",
+                id: "Public_Service2",
                 icon: "🚌",
                 label: "Public Service",
                 description: "Transport service vehicles",
