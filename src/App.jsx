@@ -31,6 +31,7 @@ import PersonalAccidentQuote from "./Components/Pages/PersonalAccident/PersonalA
 import PersonalAccidentPayment from "./Components/Pages/PersonalAccident/PersonalAccidentPayment";
 import SignupPage from "./Components/Pages/Registration/SignupPage";
 import LoginPage from "./Components/Pages/Registration/LoginPage";
+import UserDashboard from "./Components/Pages/Dashboard/UserDashboard";
 
 // npm install -g npm@11.0.0
 
@@ -100,7 +101,8 @@ const App = () => {
                 />
 
                 <Route path="*" element={<NotFound />} />
-                
+                <Route path="/UserDashboard" element={<UserDashboard/>} />
+
               </Routes>
             </main>
 
