@@ -11,6 +11,7 @@ import {
   FaWhatsapp 
 } from "react-icons/fa6";
 import logo from "../assets/logo.png";
+// import LoginPage from "./Pages/Registration/LoginPage";
 
 const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -19,6 +20,7 @@ const Header = () => {
   const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+  // const location = useLocation();
 
   // Navigation Links Configuration
   const navigationLinks = {
@@ -294,7 +296,7 @@ const Header = () => {
             <div className="flex items-center">
               <div className="border-l border-gray-200 pl-6">
                 <Link
-                  to="/signin"
+                  to="/signup"
                   className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors font-medium"
                 >
                   Sign In

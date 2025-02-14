@@ -29,6 +29,15 @@ import Dashboard from "./Components/Pages/dashboard/index";
 import GetQuoteCommercial from "./Components/Pages/CarInsurance/GetQuoteCommercial";
 import GetQuotePSV from "./Components/Pages/CarInsurance/GetQuotePSV";
 
+// import BasicInformationForm from "./Components/Pages/PersonalAccident/BasicInformationForm";
+// import { InsuranceFormProvider } from "./Components/Context/InsuranceFormContext";
+// import PersonalAccidentHealth from "./Components/Pages/PersonalAccident/PersonalAccidentHealth";
+// import PersonalAccidentQuote from "./Components/Pages/PersonalAccident/PersonalAccidentQuote";
+// import PersonalAccidentPayment from "./Components/Pages/PersonalAccident/PersonalAccidentPayment";
+import SignupPage from "./Components/Pages/Registration/SignupPage";
+import LoginPage from "./Components/Pages/Registration/LoginPage";
+// import UserDashboard from "./Components/Pages/Dashboard/UserDashboard";
+
 import Policies from "./Components/Pages/policies/index";
 import Claims from "./Components/Pages/claims/index";
 import Settings from "./Components/Pages/settings/index";
@@ -49,7 +58,7 @@ const RoutedContent = () => {
   const location = useLocation();
   const dashboardRoutes = [
     "/signin",
-    "/dashboard", 
+    "/dashboard",
     "/policies",
     "/customers",
     "/claims",
@@ -65,6 +74,18 @@ const RoutedContent = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          {/* Types Routes */}
+          <Route path="/request-quote" element={<RequestQuotation />} />
+          <Route path="/compare-quotes" element={<CompareQuotes />} />
+          {/* Personal Accident Insurance Flow */}
+          {/* <Route path="/personal-accident">
+            <Route path="basic-info" element={<BasicInformationForm />} />
+            <Route path="health" element={<PersonalAccidentHealth />} />
+            <Route path="quote" element={<PersonalAccidentQuote />} />
+            <Route path="payment" element={<PersonalAccidentPayment />} />
+          </Route> */}
           <Route path="/dashboard" element={<Dashboard />} />{" "}
           {/* Dashboard route */}
           <Route path="/policies" element={<Policies />} />
@@ -85,6 +106,7 @@ const RoutedContent = () => {
             path="/personal-accident/mpesa-payment"
             element={<MpesaPayment />}
           />
+          <Route path="/individual-pension" element={<IndividualPension />} />
           {/* Types Routes */}
           <Route path="/request-quote" element={<RequestQuotation />} />
           <Route path="/compare-quotes" element={<CompareQuotes />} />

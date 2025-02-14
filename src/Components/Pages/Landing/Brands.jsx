@@ -1,5 +1,5 @@
 import React from "react";
-import Mastercard from "../../../assets/mastercard.png";
+import Mastercard from "../../../assets/masterCard.png";
 import Mpesa from "../../../assets/Mpesa.png";
 import Visa from "../../../assets/Visa.png";
 import Paypal from "../../../assets/Paypal.png";
