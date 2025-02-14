@@ -1,18 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Shield, Zap, Umbrella, Heart, Users } from "lucide-react";
+import { usePersonalAccident } from "../../Context/PersonalAccidentContext";
 
-import { useInsuranceForm } from "../../Context/InsuranceFormContext";
 
 const CoverageOptions = () => {
   const navigate = useNavigate();
-  const { resetForm } = useInsuranceForm();
+  const { updateFormData } = usePersonalAccident();
 
   const handleCardClick = (title) => {
     switch (title) {
       case "Personal Accident":
-        resetForm();
-        navigate("/personal-accident/basic-info");
+        // Reset form data when starting fresh
+        updateFormData("basicInfo", {});
+        updateFormData("healthInfo", {});
+        updateFormData("quoteInfo", {});
+        updateFormData("paymentInfo", {});
+        navigate("/personal-accident");
         break;
       case "Individual Pension":
         navigate("/individual-pension");

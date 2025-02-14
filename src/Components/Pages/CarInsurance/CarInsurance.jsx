@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PhoneInputField from "../../PhoneInputField";
 import { useAlertModal } from "../../AlertModal";
+import axios from "axios";
 
 const CarInsurance = () => {
   const navigate = useNavigate();
@@ -28,15 +29,21 @@ const CarInsurance = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      navigate("/get-quote", {
+      // Routes - Types
+      const routes = {
+        Private: "/get-quote",
+        Commercial: "/get-quote-commercial",
+        Public_Service: "/get-quote-psv",
+      };
+
+      navigate(routes[selectedCategory], {
         state: {
-          category: selectedCategory,
+          vehicle_category: selectedCategory,
           phoneNumber: phoneNumber,
         },
       });
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -58,19 +65,19 @@ const CarInsurance = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
               {
-                id: "private",
+                id: "Private",
                 icon: "🚗",
                 label: "Private",
                 description: "Personal use vehicles",
               },
               {
-                id: "commercial",
+                id: "Commercial",
                 icon: "🚛",
                 label: "Commercial",
                 description: "Business use vehicles",
               },
               {
-                id: "public-service",
+                id: "Public_Service2",
                 icon: "🚌",
                 label: "Public Service",
                 description: "Transport service vehicles",

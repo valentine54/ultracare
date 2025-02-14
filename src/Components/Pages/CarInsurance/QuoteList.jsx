@@ -6,62 +6,72 @@ import GAInsurance from "../../../assets/GAInsurance.png";
 import CIC from "../../../assets/CIC.png";
 import FirstAssurance from "../../../assets/FirstAssurance.png";
 import QuoteHeader from "./QuoteHeader";
+import axios from "axios";
 
-// Mock data 
-const mockInsuranceCompanies = [
-  {
-    id: 1,
-    name: "GA Insurance Kenya",
-    logo: GAInsurance,
-    price: 50000,
-    benefits:
-      "Comprehensive global coverage, 24/7 customer support, extensive network of providers.",
-  },
-  {
-    id: 2,
-    name: "First Assurance",
-    logo: FirstAssurance,
-    price: 50000,
-    benefits:
-      "Comprehensive global coverage, 24/7 customer support, extensive network of providers.",
-  },
-  {
-    id: 3,
-    name: "CIC General Insurance",
-    logo: CIC,
-    price: 50000,
-    benefits:
-      "Comprehensive global coverage, 24/7 customer support, extensive network of providers.",
-  },
-];
+const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
+const API_URL = "http://127.0.0.1:8000/api/v1.0/"
+
+
 
 const QuoteList = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [quotes, setQuotes] = useState(mockInsuranceCompanies);
+  const [insurance,setInsurance] = useState([])
   const [sortBy, setSortBy] = useState("relevance");
+  console.log("at q list",insurance)
 
-  // API integration
-  const fetchQuotes = async (userData) => {
-    try {
-      // API 
-      const response = await fetch("/api/quotes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-      const data = await response.json();
-      setQuotes(data);
-    } catch (error) {
-      console.error("Error fetching quotes:", error);
-      setQuotes(mockInsuranceCompanies); // Fallback 
+  useEffect(()=>{
+    const insuranceFilter = async ()=>{
+
+      try{
+        const response_data = await axios.get(`${API_URL}motorinsurance/filter/`,
+          {
+          withCredentials: true, // Ensure cookies are sent and received
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY,
+           }
+        })
+        
+        if (response_data.status === 200) {
+          console.log("response data", response_data.data)
+          setInsurance(response_data.data.data)
+        } else {
+          console.error("Failed to filter:", response_data.data);
+        }
+      }catch{
+        console.log("error")
+  
+      }finally{
+        console.log("finally")
+      }
     }
-  };
+insuranceFilter()
 
-  const handleViewBenefits = (companyId) => {
-    // Handle benefits
-    console.log("Viewing benefits for:", companyId);
-  };
+  },[])
+
+
+  // // API integration
+  // const fetchQuotes = async (userData) => {
+  //   try {
+  //     // API 
+  //     const response = await fetch("/api/quotes", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(userData),
+  //     });
+  //     const data = await response.json();
+  //     setQuotes(data);
+  //   } catch (error) {
+  //     console.error("Error fetching quotes:", error);
+  //     setQuotes(mockInsuranceCompanies); // Fallback 
+  //   }
+  // };
+
+  // const handleViewBenefits = (companyId) => {
+  //   // Handle benefits
+  //   console.log("Viewing benefits for:", companyId);
+  // };
 
   const handleBuyPlan = (price, companyName) => {
     navigate("/payment-success", {
@@ -73,7 +83,7 @@ const QuoteList = () => {
     });
   };
 
-  const QuoteCard = ({ company, price, benefits, logo }) => (
+  const QuoteCard = ({ company, price, description, logo }) => (
     
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
   
@@ -106,18 +116,12 @@ const QuoteList = () => {
         <div className="col-span-8 p-6">
           <div className="flex flex-col h-full">
             <div className="mb-4">
-              <span className="text-gray-700 font-medium">Key Benefits:</span>
+              <span className="text-gray-700 font-medium">Descriptions</span>
               <p className="text-gray-600 mt-2 text-sm leading-relaxed">
-                {benefits}
+                {description}
               </p>
             </div>
-            <button
-              onClick={() => handleViewBenefits(company)}
-              className="text-blue-500 hover:text-blue-600 text-sm self-end mt-auto flex items-center gap-1"
-            >
-              <span className="text-[15px]">Add/View Benefits</span>
-              <span className="text-lg ml-1">+</span>
-            </button>
+
           </div>
         </div>
       </div>
@@ -137,7 +141,7 @@ const QuoteList = () => {
               <h2 className="text-gray-900 font-medium">
                 All Companies
                 <span className="text-sm text-gray-500 ml-2">
-                  Showing {quotes.length} results
+                  Showing {insurance.length} results
                 </span>
               </h2>
             </div>
@@ -159,7 +163,7 @@ const QuoteList = () => {
 
         {/* Quote Cards */}
         <div className="space-y-4">
-          {quotes.map((quote) => (
+          {insurance?.map((quote) => (
             <motion.div
               key={quote.id}
               initial={{ opacity: 0, y: 10 }}
@@ -167,10 +171,11 @@ const QuoteList = () => {
               transition={{ duration: 0.3 }}
             >
               <QuoteCard
-                company={quote.name}
-                price={quote.price}
-                benefits={quote.benefits}
-                logo={quote.logo}
+                company={quote.company_name}
+                price={quote.premium}
+                benefits={quote.insurance_title}
+                description={quote.description}
+                logo={quote.logo || CIC }
               />
             </motion.div>
           ))}
