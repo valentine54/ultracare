@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import QuoteSummary from "./QuoteSummary";
+import { FaPlus, FaShoppingCart } from "react-icons/fa";
 import GAInsurance from "../../../assets/GAInsurance.png";
 import CIC from "../../../assets/CIC.png";
 import FirstAssurance from "../../../assets/FirstAssurance.png";
@@ -34,23 +35,21 @@ const QuoteList = () => {
         })
         
         if (response_data.status === 200) {
-          console.log("response data", response_data.data)
+          // console.log("response data", response_data.data)
           setInsurance(response_data.data.data)
         } else {
           console.error("Failed to filter:", response_data.data);
         }
-      }catch{
-        console.log("error")
+      }catch(e){
+        console.log("error",e.response.data)
   
       }finally{
         console.log("finally")
       }
-    }
+    }   
 insuranceFilter()
-
   },[])
-
-
+  
   // // API integration
   // const fetchQuotes = async (userData) => {
   //   try {
@@ -74,7 +73,7 @@ insuranceFilter()
   // };
 
   const handleBuyPlan = (price, companyName) => {
-    navigate("/payment-success", {
+    navigate("/payment", {
       state: {
         amount: price,
         email: location.state?.quoteData?.email,
@@ -84,9 +83,7 @@ insuranceFilter()
   };
 
   const QuoteCard = ({ company, price, description, logo }) => (
-    
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-  
       <div className="grid grid-cols-12 gap-0">
         {/* Company Info */}
         <div className="col-span-4 p-6 border-r border-gray-100 flex flex-col items-center text-center">
@@ -99,15 +96,23 @@ insuranceFilter()
             {company}
           </h3>
           <p className="text-blue-500 font-bold text-xl mb-4">
-            Ksh. {price.toLocaleString()}
-          </p>
+            Ksh. {price?.toLocaleString()}
+          </p>{" "}
+          <button
+            onClick={() => {
+              console.log("")
+              alert("ngoja nimalize mambo yangu")
+            }}
+            className="w-1/2 mb-3 bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm"
+          >
+            <FaPlus />
+            Add Benefits
+          </button>
           <button
             onClick={() => handleBuyPlan(price, company)}
             className="w-1/2 bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm"
           >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-            </svg>
+            <FaShoppingCart />
             Buy Plan
           </button>
         </div>
@@ -121,7 +126,6 @@ insuranceFilter()
                 {description}
               </p>
             </div>
-
           </div>
         </div>
       </div>
@@ -172,7 +176,7 @@ insuranceFilter()
             >
               <QuoteCard
                 company={quote.company_name}
-                price={quote.premium}
+                price={quote.base_premium}
                 benefits={quote.insurance_title}
                 description={quote.description}
                 logo={quote.logo || CIC }

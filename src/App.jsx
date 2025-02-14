@@ -139,6 +139,7 @@ const RoutedContent = () => {
           <Route path="/get-quote" element={<GetQuote />} />
           <Route path="/quote-list" element={<QuoteList />} />
           <Route path="/pension" element={<Pension />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/pension-calculator" element={<PensionCalculator />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
