@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   FileText,
@@ -11,23 +11,105 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  ChevronDown,
+  Shield,
+  Heart,
+  Car,
+  UserCheck,
 } from "lucide-react";
-import PolicyCategories from "../Sidebar/PolicyCategories";
 
-const SidebarItem = ({ icon: Icon, label, active, onClick, isCollapsed }) => (
+const SidebarItem = ({
+  icon: Icon,
+  label,
+  active,
+  onClick,
+  isCollapsed,
+  hasDropdown,
+  isOpen,
+  onToggle,
+  children,
+}) => {
+  const itemContent = (
+    <motion.button
+      whileHover={{ x: 2 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+      className={`
+        flex items-center justify-between w-full p-3 
+        ${hasDropdown ? "rounded-t-lg" : "rounded-lg"} 
+        transition-colors
+        ${
+          active || (hasDropdown && isOpen)
+            ? "bg-blue-500 text-white"
+            : "text-gray-600 hover:bg-gray-100"
+        }
+      `}
+      title={isCollapsed ? label : ""}
+    >
+      <div className="flex items-center space-x-3">
+        <Icon size={20} className="flex-shrink-0" />
+        {!isCollapsed && <span className="font-medium">{label}</span>}
+      </div>
+      {hasDropdown && !isCollapsed && (
+        <ChevronDown
+          size={16}
+          className={`transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      )}
+    </motion.button>
+  );
+
+  return (
+    <div className="relative">
+      {itemContent}
+      {hasDropdown && !isCollapsed && (
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="flex flex-col gap-1 mt-1">{children}</div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+    </div>
+  );
+};
+
+const PolicyCategory = ({ icon: Icon, label, active, onClick }) => (
   <motion.button
-    whileHover={{ x: 4 }}
-    whileTap={{ scale: 0.95 }}
+    whileHover={{ x: 2 }}
+    whileTap={{ scale: 0.98 }}
     onClick={onClick}
-    className={`flex items-center ${
-      isCollapsed ? "justify-center" : "space-x-3"
-    } w-full p-3 rounded-lg transition-colors ${
-      active ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-100"
-    }`}
-    title={isCollapsed ? label : ""}
+    className={`
+      flex items-center w-full p-3 rounded-lg
+      border border-gray-200 
+      transition-colors
+      ${
+        active
+          ? "bg-blue-500 text-white border-transparent"
+          : "bg-gray-50 text-gray-600 hover:bg-gray-100"
+      }
+    `}
   >
-    <Icon size={20} />
-    {!isCollapsed && <span className="font-medium">{label}</span>}
+    <div className="flex items-center space-x-3">
+      <Icon
+        size={20}
+        className={`flex-shrink-0 ${active ? "text-white" : "text-gray-500"}`}
+      />
+      <span
+        className={`font-medium ${active ? "text-white" : "text-gray-600"}`}
+      >
+        {label}
+      </span>
+    </div>
   </motion.button>
 );
 
@@ -36,34 +118,49 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [isPoliciesOpen, setIsPoliciesOpen] = useState(
+    location.pathname.includes("policies")
+  );
+
+  const policyCategories = [
+    { path: "/policies/health", icon: Heart, label: "Health" },
+    { path: "/policies/personal", icon: UserCheck, label: "Personal" },
+    { path: "/policies/motor", icon: Car, label: "Motor" },
+  ];
 
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
-      if (!mobile && !isOpen) {
-        setIsOpen(true);
-      }
+      if (!mobile && !isOpen) setIsOpen(true);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [setIsOpen, isOpen]);
 
-  const menuItems = [
+  const handlePolicyClick = (categoryPath) => {
+    navigate(categoryPath);
+    if (isMobile) setIsOpen(false);
+  };
+
+  const baseMenuItems = [
     { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-    { path: "/policies", icon: FileText, label: "All Policies" },
+    {
+      path: "/policies",
+      icon: FileText,
+      label: "Policies",
+      hasDropdown: true,
+      categories: policyCategories,
+    },
     { path: "/customers", icon: Users, label: "Customers" },
     { path: "/claims", icon: ClipboardList, label: "Claims & Payment" },
     { path: "/settings", icon: Settings, label: "Settings" },
     { path: "/notifications", icon: Bell, label: "Notifications" },
   ];
 
-  const sidebarWidth = isCollapsed ? "w-20" : "w-64";
-
   return (
     <>
-      {/* Mobile */}
       {isMobile && isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
@@ -71,16 +168,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         />
       )}
 
-      {/* Sidebar */}
       <motion.div
         initial={false}
         animate={{
           width: isCollapsed ? 80 : 256,
           x: !isMobile || isOpen ? 0 : -256,
         }}
-        className={`fixed lg:static left-0 top-0 h-full bg-white shadow-lg z-50 transition-all duration-300`}
+        className="fixed lg:static left-0 top-0 h-full bg-white shadow-lg z-50 transition-all duration-300"
       >
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           {!isCollapsed && (
             <div className="flex items-center space-x-2">
@@ -89,7 +184,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </div>
           )}
 
-          {/* Mobile close button */}
           {isMobile ? (
             <button
               onClick={() => setIsOpen(false)}
@@ -98,7 +192,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               <X size={20} />
             </button>
           ) : (
-            /* Desktop collapse button */
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
               className="p-2 hover:bg-gray-100 rounded-lg mx-auto"
@@ -112,22 +205,38 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           )}
         </div>
 
-        {/* Menu Items */}
         <nav className="p-4 space-y-2">
-          {menuItems.map((item) => (
+          {baseMenuItems.map((item) => (
             <SidebarItem
               key={item.path}
               icon={item.icon}
               label={item.label}
               active={location.pathname === item.path}
               isCollapsed={isCollapsed}
+              hasDropdown={item.hasDropdown}
+              isOpen={isPoliciesOpen && item.hasDropdown}
               onClick={() => {
-                navigate(item.path);
-                if (isMobile) {
-                  setIsOpen(false);
+                if (item.hasDropdown) {
+                  setIsPoliciesOpen(!isPoliciesOpen);
+                  if (!isPoliciesOpen) {
+                    navigate("/policies");
+                  }
+                } else {
+                  navigate(item.path);
+                  if (isMobile) setIsOpen(false);
                 }
               }}
-            />
+            >
+              {item.categories?.map((category) => (
+                <PolicyCategory
+                  key={category.path}
+                  icon={category.icon}
+                  label={category.label}
+                  active={location.pathname === category.path}
+                  onClick={() => handlePolicyClick(category.path)}
+                />
+              ))}
+            </SidebarItem>
           ))}
         </nav>
       </motion.div>

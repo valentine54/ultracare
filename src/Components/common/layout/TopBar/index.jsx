@@ -20,9 +20,9 @@ const TopBar = ({
         </button>
 
         {/* Title */}
-        <h1 className="text-lg font-semibold text-gray-800 hidden md:block">
+        {/* <h1 className="text-lg font-semibold text-gray-800 hidden md:block">
           CIC Insurance
-        </h1>
+        </h1> */}
       </div>
 
       {/* Search */}
