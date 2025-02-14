@@ -3,6 +3,7 @@ import { Phone, Clock } from "lucide-react";
 import Logo from '../assets/logo.png'
 
 const Footer = () => {
+  
   return (
     <footer className="bg-blue-900 text-white py-16 px-4 md:px-8">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">

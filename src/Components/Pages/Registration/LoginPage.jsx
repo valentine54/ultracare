@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
+
 export default function LoginPage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -52,7 +53,7 @@ export default function LoginPage() {
           </button>
 
           <p className="text-gray-500 mt-4">
-            Don't have an account? <a href="#" className="text-blue-500">Sign Up here!</a>
+            Don't have an account? <a href="/signup" className="text-blue-500">Sign Up here!</a>
           </p>
         </div>
       </div>

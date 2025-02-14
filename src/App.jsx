@@ -29,7 +29,8 @@ import { InsuranceFormProvider } from './Components/Context/InsuranceFormContext
 import PersonalAccidentHealth from "./Components/Pages/PersonalAccident/PersonalAccidentHealth";
 import PersonalAccidentQuote from "./Components/Pages/PersonalAccident/PersonalAccidentQuote";
 import PersonalAccidentPayment from "./Components/Pages/PersonalAccident/PersonalAccidentPayment";
-
+import SignupPage from "./Components/Pages/Registration/SignupPage";
+import LoginPage from "./Components/Pages/Registration/LoginPage";
 
 // npm install -g npm@11.0.0
 
@@ -44,6 +45,8 @@ const App = () => {
             <main>
               <Routes>
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/login" element={<LoginPage />} />
 
                 {/* Types Routes */}
                 <Route path="/request-quote" element={<RequestQuotation />} />
@@ -97,8 +100,7 @@ const App = () => {
                 />
 
                 <Route path="*" element={<NotFound />} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/login" element={<LoginPage />} />
+                
               </Routes>
             </main>
 

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { X, Menu } from "lucide-react";
 import logo from "../assets/logo.png";
+// import LoginPage from "./Pages/Registration/LoginPage";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +10,11 @@ const Header = () => {
   const location = useLocation();
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  // const location = useLocation();
+
+  if (location.pathname === "/login") {
+    return null; // Do not render the header on the login page
+  }
 
   const insuranceCategories = {
     VEHICLE: [
@@ -203,7 +209,7 @@ const Header = () => {
             {/* Sign In Button + Mobile Menu Button */}
             <div className="font-bold flex items-center">
               <Link
-                to="/signin"
+                to="/login"
                 className="hidden md:block bg-blue-600 text-white px-7 py-2 rounded-lg hover:bg-blue-700 mx-6"
               >
                 Sign In
@@ -319,7 +325,7 @@ const Header = () => {
                 </Link>
                 <div className="h-px bg-gray-200 my-2"></div>
                 <Link
-                  to="/signin"
+                  to="/login"
                   className="bg-blue-600 text-white text-center py-2 rounded-lg"
                 >
                   Sign In
