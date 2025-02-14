@@ -7,7 +7,7 @@ import { CreditCard, Building2, Lock, ArrowRight } from "lucide-react";
 import { usePersonalAccident } from "../../Context/PersonalAccidentContext";
 import MpesaLogo from "../../../assets/Mpesa.png"
 import PaypalLogo from "../../../assets/Paypal.png";
-import MastercardLogo from "../../../assets/Mastercard.png";
+import MastercardLogo from "../../../assets/masterCard.png";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
