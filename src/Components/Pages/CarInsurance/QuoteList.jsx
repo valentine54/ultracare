@@ -9,51 +9,48 @@ import FirstAssurance from "../../../assets/FirstAssurance.png";
 import QuoteHeader from "./QuoteHeader";
 import axios from "axios";
 
-const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
-const API_URL = "http://127.0.0.1:8000/api/v1.0/"
-
-
+const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5";
+const API_URL = "http://127.0.0.1:8000/api/v1.0/";
 
 const QuoteList = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [insurance,setInsurance] = useState([])
+  const [insurances, setInsurance] = useState([]);
   const [sortBy, setSortBy] = useState("relevance");
-  console.log("at q list",insurance)
 
-  useEffect(()=>{
-    const insuranceFilter = async ()=>{
-
-      try{
-        const response_data = await axios.get(`${API_URL}motorinsurance/filter/`,
+  useEffect(() => {
+    const insuranceFilter = async () => {
+      try {
+        const response_data = await axios.get(
+          `${API_URL}motorinsurance/filter/`,
           {
-          withCredentials: true, // Ensure cookies are sent and received
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": API_KEY,
-           }
-        })
-        
+            withCredentials: true, // Ensure cookies are sent and received
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": API_KEY,
+            },
+          }
+        );
+
         if (response_data.status === 200) {
           // console.log("response data", response_data.data)
-          setInsurance(response_data.data.data)
+          setInsurance(response_data.data.data);
         } else {
           console.error("Failed to filter:", response_data.data);
         }
-      }catch(e){
-        console.log("error",e.response.data)
-  
-      }finally{
-        console.log("finally")
+      } catch (e) {
+        console.log("error", e.response.data);
+      } finally {
+        console.log("finally");
       }
-    }   
-insuranceFilter()
-  },[])
-  
+    };
+    insuranceFilter();
+  }, []);
+
   // // API integration
   // const fetchQuotes = async (userData) => {
   //   try {
-  //     // API 
+  //     // API
   //     const response = await fetch("/api/quotes", {
   //       method: "POST",
   //       headers: { "Content-Type": "application/json" },
@@ -63,7 +60,7 @@ insuranceFilter()
   //     setQuotes(data);
   //   } catch (error) {
   //     console.error("Error fetching quotes:", error);
-  //     setQuotes(mockInsuranceCompanies); // Fallback 
+  //     setQuotes(mockInsuranceCompanies); // Fallback
   //   }
   // };
 
@@ -82,26 +79,30 @@ insuranceFilter()
     });
   };
 
-  const QuoteCard = ({ company, price, description, logo }) => (
+  const QuoteCard = ({ quote }) => (
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
       <div className="grid grid-cols-12 gap-0">
         {/* Company Info */}
         <div className="col-span-4 p-6 border-r border-gray-100 flex flex-col items-center text-center">
           <img
-            src={logo}
-            alt={`${company} logo`}
+            src={quote?.logo || CIC}
+            alt={`${quote.company} logo`}
             className="w-18 h-16 object-cover mb-3"
           />
           <h3 className="text-[#1e3a8a] font-semibold text-lg mb-2">
-            {company}
+            {quote.company_name}
           </h3>
           <p className="text-blue-500 font-bold text-xl mb-4">
-            Ksh. {price?.toLocaleString()}
+            Ksh. {quote.base_premium?.toLocaleString()}
           </p>{" "}
           <button
             onClick={() => {
-              console.log("")
-              alert("ngoja nimalize mambo yangu")
+              navigate("/addbenefits", {
+                state: {
+                  insurances: insurances,
+                  quote:quote
+                },
+              });
             }}
             className="w-1/2 mb-3 bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm"
           >
@@ -109,7 +110,7 @@ insuranceFilter()
             Add Benefits
           </button>
           <button
-            onClick={() => handleBuyPlan(price, company)}
+            onClick={() => handleBuyPlan(quote.price, quote.company)}
             className="w-1/2 bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <FaShoppingCart />
@@ -123,7 +124,7 @@ insuranceFilter()
             <div className="mb-4">
               <span className="text-gray-700 font-medium">Descriptions</span>
               <p className="text-gray-600 mt-2 text-sm leading-relaxed">
-                {description}
+                {quote?.description}
               </p>
             </div>
           </div>
@@ -135,7 +136,11 @@ insuranceFilter()
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <QuoteHeader />
+        <div className="max-w-4xl mx-auto bg-[#F8FAFC] rounded-lg shadow-sm px-4 py-6 mt-8 mb-6">
+          <h1 className="text-center text-[#3B82F6] text-2xl sm:text-3xl font-medium">
+            Get A Quote For Car Insurance
+          </h1>
+        </div>
         <QuoteSummary />
 
         {/* Companies Header */}
@@ -145,7 +150,7 @@ insuranceFilter()
               <h2 className="text-gray-900 font-medium">
                 All Companies
                 <span className="text-sm text-gray-500 ml-2">
-                  Showing {insurance.length} results
+                  Showing {insurances.length} results
                 </span>
               </h2>
             </div>
@@ -167,19 +172,16 @@ insuranceFilter()
 
         {/* Quote Cards */}
         <div className="space-y-4">
-          {insurance?.map((quote) => (
+          {insurances?.map((quote) => (
             <motion.div
-              key={quote.id}
+              key={quote.insurance_id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
               <QuoteCard
-                company={quote.company_name}
-                price={quote.base_premium}
-                benefits={quote.insurance_title}
-                description={quote.description}
-                logo={quote.logo || CIC }
+                quote={quote}
+
               />
             </motion.div>
           ))}

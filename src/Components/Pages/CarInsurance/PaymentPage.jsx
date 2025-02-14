@@ -75,8 +75,17 @@ const PaymentPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <Header />
-        <Stepper currentStep={4} />
+         <motion.div
+           initial={{ opacity: 0, y: -20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.5 }}
+           className="w-full bg-gradient-to-r from-blue-50 to-blue-100 p-8 rounded-lg mb-8"
+         >
+           <h1 className="text-2xl md:text-4xl font-semibold text-blue-500 text-center">
+             Get A Quote For Motor Insurance 
+           </h1>
+         </motion.div>
+        {/* <Stepper currentStep={4} /> */}
 
         <div className="grid md:grid-cols-3 gap-8">
           <motion.div
@@ -92,35 +101,7 @@ const PaymentPage = () => {
               </div>
 
               <div className="p-6">
-                <div className="flex gap-4 mb-8">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setPaymentType("yearly")}
-                    className={`flex-1 p-4 rounded-lg border-2 transition-all duration-300
-                      ${
-                        paymentType === "yearly"
-                          ? "border-blue-600 bg-blue-50 text-blue-600"
-                          : "border-gray-200 text-gray-700"
-                      }`}
-                  >
-                    $3,379/Year
-                  </motion.button>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setPaymentType("monthly")}
-                    className={`flex-1 p-4 rounded-lg border-2 transition-all duration-300
-                      ${
-                        paymentType === "monthly"
-                          ? "border-blue-600 bg-blue-50 text-blue-600"
-                          : "border-gray-200 text-gray-700"
-                      }`}
-                  >
-                    $320/Month
-                  </motion.button>
-                </div>
 
                 <div className="space-y-4">
                   <PaymentOption
@@ -222,7 +203,7 @@ const PaymentPage = () => {
 
         <div className="flex justify-between mt-8">
           <motion.button
-            onClick={() => navigate("/personal-accident/quote")}
+            onClick={() => navigate(-1)}
             className="bg-white text-blue-500 font-semibold py-3 px-8 rounded-lg
             border-2 border-blue-500 hover:bg-gray-50 transition-colors duration-200"
             whileHover={{ scale: 1.02 }}
