@@ -58,7 +58,6 @@ import PoliciesPage from "./Components/Pages/policies/index";
 import { MotorFormProvider } from "./Components/Pages/policies/motor/context/MotorFormContext";
 import VehicleCategory from "./Components/Pages/policies/motor/components/VehicleCategory";
 import MotorPolicyForm from "./Components/Pages/policies/motor/MotorPolicyForm";
-import CoverDetails from "./Components/Pages/policies/motor/components/CoverDetails";
 import PremiumSetup from "./Components/Pages/policies/motor/components/PremiumSetup";
 import Benefits from "./Components/Pages/policies/motor/components/Benefits";
 import AgeExperience from "./Components/Pages/policies/motor/components/AgeExperience";

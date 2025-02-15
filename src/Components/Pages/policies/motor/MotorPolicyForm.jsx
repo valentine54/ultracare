@@ -5,15 +5,17 @@ import DashboardLayout from "../../../common/layout/DashboardLayout";
 import { useMotorForm } from "./context/MotorFormContext";
 
 import BasicInformationStep from "./components/BasicInformation";
+import CoverTypeStep from "./components/CoverType"; // New import
 import PremiumSetupStep from "./components/PremiumSetup";
 import ExcessChargesStep from "./components/ExcessCharges";
 import AgeExperienceStep from "./components/AgeExperience";
 
 const steps = [
   { id: 1, name: "Basic Information" },
-  { id: 2, name: "Premium Setup" },
-  { id: 3, name: "Excess Charges" },
-  { id: 4, name: "Age & Experience" },
+  { id: 2, name: "Cover Type" }, // New step
+  { id: 3, name: "Premium Setup" },
+  { id: 4, name: "Excess Charges" },
+  { id: 5, name: "Age & Experience" },
 ];
 
 const MotorPolicyForm = () => {
@@ -26,10 +28,12 @@ const MotorPolicyForm = () => {
       case 1:
         return <BasicInformationStep />;
       case 2:
-        return <PremiumSetupStep />;
+        return <CoverTypeStep />; // New case
       case 3:
-        return <ExcessChargesStep />;
+        return <PremiumSetupStep />;
       case 4:
+        return <ExcessChargesStep />;
+      case 5:
         return <AgeExperienceStep />;
       default:
         return null;
@@ -90,13 +94,13 @@ const MotorPolicyForm = () => {
                     </div>
                     <span
                       className={`
-                      mt-2 text-xs sm:text-sm font-medium text-center
-                      ${
-                        currentStep >= step.id
-                          ? "text-blue-500"
-                          : "text-gray-500"
-                      }
-                    `}
+                        mt-2 text-xs sm:text-sm font-medium text-center
+                        ${
+                          currentStep >= step.id
+                            ? "text-blue-500"
+                            : "text-gray-500"
+                        }
+                      `}
                     >
                       {step.name}
                     </span>
