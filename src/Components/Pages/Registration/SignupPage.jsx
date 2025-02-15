@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Toast from "../../Toast/Toast";
 import { Signup } from "../../helper/insurances";
@@ -72,7 +73,14 @@ const SignupPage = () => {
     // Disable submission during API call
     setLoading(true);
 
-    const userData = { firstName,lastName,email, password, id_no, phone_number };
+    const userData = {
+      firstName,
+      lastName,
+      email,
+      password,
+      id_no,
+      phone_number,
+    };
 
     await Signup(userData, showToast, setLoading);
   };
@@ -228,16 +236,11 @@ const SignupPage = () => {
               <p className="text-gray-500 mt-4">
                 Already have an account?{" "}
                 <Link to="/login" className="text-blue-500">
-                 Login here!
+                  Login here!
                 </Link>
               </p>
 
               {/* Return to Login (for Signup Page) */}
-              <p className="text-gray-500 mt-2">
-                <Link to="/login" className="text-blue-500">
-                  Return to Login
-                </Link>
-              </p>
 
               {/* Submit Button */}
               <button
@@ -248,6 +251,13 @@ const SignupPage = () => {
                 {loading ? "Creating Account..." : "Create Account"}
               </button>
             </form>
+            {/* Google Login Button */}
+            <button
+              onClick={() => showToast("google comming soon", "info")}
+              className="w-full flex items-center justify-center border p-3 rounded-lg my-4 hover:bg-gray-100"
+            >
+              <FaGoogle className="mr-2" /> Continue with Google
+            </button>
           </div>
         </div>
         <div className="w-full md:w-1/2 bg-blue-100 p-8 hidden md:flex items-center justify-center">
