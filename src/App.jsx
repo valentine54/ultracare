@@ -26,6 +26,7 @@ import CarInsurance from "./Components/Pages/CarInsurance/CarInsurance";
 import GetQuote from "./Components/Pages/CarInsurance/GetQuote";
 import QuoteList from "./Components/Pages/CarInsurance/QuoteList";
 import Dashboard from "./Components/Pages/dashboard/index";
+import AddBenefits from "./Components/Pages/CarInsurance/AddBenefits";
 import GetQuoteCommercial from "./Components/Pages/CarInsurance/GetQuoteCommercial";
 import GetQuotePSV from "./Components/Pages/CarInsurance/GetQuotePSV";
 
@@ -49,6 +50,7 @@ import BasicInformation from "./Components/Pages/PersonalAccident/BasicInformati
 import HealthLifestyle from "./Components/Pages/PersonalAccident/HealthAndLifestyle";
 import Quote from "./Components/Pages/PersonalAccident/QuotePage";
 import Payment from "./Components/Pages/PersonalAccident/PaymentPage";
+import CarPayment from './Components/Pages/CarInsurance/PaymentPage'
 import MpesaPayment from "./Components/Pages/PersonalAccident/MpesaPayment";
 import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentContext";
 import { AlertModalProvider } from "./Components/AlertModal";
@@ -168,6 +170,8 @@ const RoutedContent = () => {
           <Route path="/get-quote" element={<GetQuote />} />
           <Route path="/quote-list" element={<QuoteList />} />
           <Route path="/pension" element={<Pension />} />
+          <Route path="/addbenefits" element={<AddBenefits />} />
+          <Route path="/payment" element={<CarPayment />} />
           <Route path="/pension-calculator" element={<PensionCalculator />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
