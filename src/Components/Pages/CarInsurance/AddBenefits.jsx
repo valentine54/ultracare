@@ -36,14 +36,11 @@ export default function AddBenefits() {
   const sendData = () => {
     const dataToSend = {
       insurance_id: selectedInsurance?.insurance_id,
-      selected_excess_charges: selectedItems, // This now contains the selected IDs
+      selected_excess_charges: selectedItems, 
       total_premium: selectedInsurance?.total_premium,
     };
 
     sendExcesses(dataToSend,navigate);
-    //   console.log("Data to send:", dataToSend);
-
-    // You can now send this `dataToSend` object to your backend via API
   };
 
   return (
