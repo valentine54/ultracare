@@ -1,13 +1,93 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
+import Toast from "../../Toast/Toast";
+import { Signup } from "../../helper/insurances";
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state
+  const [toast, setToast] = useState({ message: "", type: "", visible: false });
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    id_no: "",
+    phone_number: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // Handles form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value.trim(), // Trim input to avoid unnecessary spaces
+    }));
+  };
+
+  // Show toast notification
+  const showToast = (message, type = "success") => {
+    setToast({ message, type, visible: true });
+    setTimeout(() => setToast({ ...toast, visible: false }), 3000);
+  };
+
+  // Handles form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validation: Ensure required fields are filled
+    const {
+      firstName,
+      lastName,
+      email,
+      id_no,
+      phone_number,
+      password,
+      confirmPassword,
+    } = formData;
+
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !id_no ||
+      !phone_number ||
+      !password ||
+      !confirmPassword
+    ) {
+      showToast("All fields are required.", "error");
+      return;
+    }
+
+    // Validation: Passwords match
+    if (password !== confirmPassword) {
+      showToast("Passwords do not match. Please try again.", "error");
+      return;
+    }
+
+    // Disable submission during API call
+    setLoading(true);
+
+    const userData = { firstName,lastName,email, password, id_no, phone_number };
+
+    await Signup(userData, showToast, setLoading);
+  };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center ">
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      {/* Toast Notification */}
+      {toast.visible && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ ...toast, visible: false })}
+        />
+      )}
+
       <div className="rounded-2xl overflow-hidden p-4 w-full flex flex-col md:flex-row">
         {/* Form Section */}
         <div className="w-full md:w-1/2 p-8">
@@ -17,8 +97,8 @@ const SignupPage = () => {
               We are very happy to see you here!
             </p>
 
-            <form className="space-y-6">
-              {/* Name Fields */}
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {/* Input Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -26,8 +106,11 @@ const SignupPage = () => {
                   </label>
                   <input
                     type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
                     placeholder="John"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
                   />
                 </div>
                 <div>
@@ -36,8 +119,11 @@ const SignupPage = () => {
                   </label>
                   <input
                     type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
                     placeholder="Doe"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
                   />
                 </div>
               </div>
@@ -49,8 +135,11 @@ const SignupPage = () => {
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Enter your email"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
                 />
               </div>
 
@@ -61,8 +150,11 @@ const SignupPage = () => {
                 </label>
                 <input
                   type="text"
+                  name="id_no"
+                  value={formData.id_no}
+                  onChange={handleChange}
                   placeholder="ID"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
                 />
               </div>
 
@@ -73,8 +165,11 @@ const SignupPage = () => {
                 </label>
                 <input
                   type="tel"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleChange}
                   placeholder="+254700000000"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
                 />
               </div>
 
@@ -86,12 +181,15 @@ const SignupPage = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
                     placeholder="•••••••••"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+                    className="absolute right-3 top-3"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -107,12 +205,15 @@ const SignupPage = () => {
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
                     placeholder="•••••••••"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+                    className="absolute right-3 top-3"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
@@ -123,28 +224,15 @@ const SignupPage = () => {
                   </button>
                 </div>
               </div>
+              {/* Signup Link */}
+              <p className="text-gray-500 mt-4">
+                Already have an account?{" "}
+                <Link to="/login" className="text-blue-500">
+                 Login here!
+                </Link>
+              </p>
 
-              {/* Terms */}
-              <div className="text-sm text-gray-600">
-                By signing up, you are creating an Insure account, and you agree
-                to our
-                <a
-                  href="/terms-of-use"
-                  className="text-blue-500 hover:text-blue-600"
-                >
-                  {" "}
-                  Terms of Use{" "}
-                </a>
-                and
-                <a
-                  href="/privacy-policy"
-                  className="text-blue-500 hover:text-blue-600"
-                >
-                  {" "}
-                  Privacy Policy
-                </a>
-                .
-              </div>
+              {/* Return to Login (for Signup Page) */}
               <p className="text-gray-500 mt-2">
                 <Link to="/login" className="text-blue-500">
                   Return to Login
@@ -154,15 +242,14 @@ const SignupPage = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white p-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors duration-200"
+                className="w-full bg-blue-500 text-white p-3 rounded-lg font-semibold hover:bg-blue-600 transition"
+                disabled={loading}
               >
-                Create Account
+                {loading ? "Creating Account..." : "Create Account"}
               </button>
             </form>
           </div>
         </div>
-
-        {/* Image Section */}
         <div className="w-full md:w-1/2 bg-blue-100 p-8 hidden md:flex items-center justify-center">
           <img
             src="/signup-image.png"

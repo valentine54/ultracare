@@ -141,80 +141,98 @@ const GetQuote = () => {
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
-      try {
-        console.log(values);
+try {
+  console.log("Form Values:", values);
 
-        // Split fullName into first_name and last_name
-        const [first_name, ...lastNameParts] = values.fullName.split(" ");
-        const last_name = lastNameParts.join(" "); // Handles cases with multiple last names
+  // Ensure fullName is properly handled
+  const fullName = values.fullName?.trim() || "";
+  const [first_name, ...lastNameParts] = fullName.split(/\s+/); // Handle multiple spaces
+  const last_name = lastNameParts.join(" ");
 
-        // Prepare the data to match the backend's expected structure
-        const formattedValues = {
-          ...location?.state,
-          first_name: first_name || "", // Ensure first_name is not undefined
-          last_name: last_name || "", // Ensure last_name is not undefined
-          email: values.email,
-          id_no: values.idNumber,
-          vehicle_type: values.vehicleType,
-          vehicle_make: values.vehicleMake,
-          vehicle_model: values.vehicleModel,
-          vehicle_registration_number: values.vehicleRegistration,
-          cover_type: values.coverType,
-          vehicle_value: Number(values.vehicleValue),
-          risk_name: values.riskClass,
-          cover_start_date: values.coverStartDate,
-          evaluated: values.hasBeenValued === "yes", // Convert to boolean
-          // phoneNumber: location.state?.phoneNumber, // Add phoneNumber from location.state
-        };
+  // Prepare data for API
+  const formattedValues = {
+    ...location?.state,
+    first_name: first_name || "Unknown", // Default to 'Unknown' if empty
+    last_name: last_name || "Unknown",
+    email: values.email,
+    id_no: values.idNumber,
+    vehicle_type: values.vehicleType,
+    vehicle_make: values.vehicleMake,
+    vehicle_model: values.vehicleModel,
+    vehicle_registration_number: values.vehicleRegistration,
+    cover_type: values.coverType,
+    vehicle_value: Number(values.vehicleValue) || 0, // Ensure it's a number
+    risk_name: values.riskClass,
+    cover_start_date: values.coverStartDate,
+    evaluated: values.hasBeenValued?.toLowerCase() === "yes", // Normalize and convert to boolean
+  };
 
-        // Log the formattedValues for debugging
-        console.log("Formatted Values:", formattedValues);
+  console.log("Formatted Data:", formattedValues);
 
-        // Send a POST request to create a session cookie
-        const response = await axios.post(
-          `${API_URL}applicant/motor_session/`, // Replace with your backend URL
-          formattedValues,
-          {
-            withCredentials: true, // Ensure cookies are sent and received
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-key": API_KEY,
-            },
-          }
-        );
+  // Attempt to create a session
+  const response = await axios.post(
+    `${API_URL}applicant/motor_session/`,
+    formattedValues,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": API_KEY,
+      },
+    }
+  );
 
-        if (response.status === 201) {
-          // filter based on the response
-          const response_data = await axios.get(
-            `${API_URL}motorinsurance/filter/`,
-            {
-              withCredentials: true, // Ensure cookies are sent and received
-              headers: {
-                "Content-Type": "application/json",
-                "x-api-key": API_KEY,
-              },
-            }
-          );
-          // console.log(response_data)
-          if (response_data.status === 200) {
-            // // Navigate to the quote list page after successfully creating the session
-            navigate("/quote-list", {
-              state: {
-                server_response: response_data?.data,
-                quoteData: formattedValues,
-              },
-            });
-          } else {
-            console.error("Failed to filter:", response_data.data);
-          }
-        } else {
-          console.error("Failed to create session:", response.data);
+  if (response.status === 201) {
+    console.log("Session created successfully.");
+
+    try {
+      // Fetch filtered data
+      const response_data = await axios.get(
+        `${API_URL}motorinsurance/filter/`,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY,
+          },
         }
-      } catch (error) {
-        console.error("Submission error:", error.response?.data);
-      } finally {
-        setIsSubmitting(false);
+      );
+
+      if (response_data.status === 200) {
+        console.log("Filtered data retrieved:", response_data.data);
+
+        navigate("/quote-list", {
+          state: {
+            server_response: response_data?.data,
+            quoteData: formattedValues,
+          },
+        });
+      } else {
+        console.error("Failed to filter data:", response_data);
+        // alert("Something went wrong while fetching quotes. Please try again.");
       }
+    } catch (filterError) {
+      console.error("Error fetching filtered data:", filterError.response?.data);
+      if (filterError.response?.data?.message) {
+        alert(filterError.response?.data.message);
+      }
+    }
+  } else {
+    console.error("Session creation failed:", response);
+    // alert(
+    //   "Failed to create a session. Please check your details and try again."
+    // );
+  }
+} catch (error) {
+  console.error("Submission error:", error);
+  alert(
+    error.response?.data?.message ||
+      "An unexpected error occurred. Please try again."
+  );
+} finally {
+  setIsSubmitting(false);
+}
+
     },
   });
   // Form state 
