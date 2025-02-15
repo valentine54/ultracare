@@ -1,32 +1,38 @@
-import React from "react";
+import React,{useState} from "react";
 import { motion } from "framer-motion";
 import { useMotorForm } from "../../context/MotorFormContext";
 import { Check, Shield, ShieldCheck, AlertTriangle } from "lucide-react";
 
 const CoverTypeStep = () => {
   const { formData, updateFormData } = useMotorForm();
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const coverTypes = [
     {
-      id: "comprehensive",
+      id: "Comprehensive",
       title: "Comprehensive Insurance Cover",
       description: "Full coverage for your vehicle and third-party damages",
       icon: ShieldCheck,
     },
     {
-      id: "thirdParty",
+      id: "Third Party Only",
       title: "Third-Party Insurance Cover",
       description: "Basic coverage for third-party damages only",
       icon: Shield,
     },
     {
-      id: "thirdPartyFireTheft",
+      id: "Third Party Fire and Theft",
       title: "Third-Party Fire and Theft Insurance Cover",
       description:
         "Third-party coverage plus protection against fire and theft",
       icon: AlertTriangle,
     },
   ];
+
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category.id);
+    updateFormData({ cover_type: selectedCategory.id });
+  };
 
   const CoverTypeCard = ({ coverType, isSelected }) => {
     const Icon = coverType.icon;
@@ -35,7 +41,7 @@ const CoverTypeStep = () => {
       <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        onClick={() => updateFormData({ coverType: coverType.id })}
+        onClick={() => updateFormData({ cover_type: coverType.id })}
         className={`
           relative p-5 rounded-lg cursor-pointer
           transition-all duration-200 border
@@ -113,13 +119,13 @@ const CoverTypeStep = () => {
             >
               <CoverTypeCard
                 coverType={coverType}
-                isSelected={formData.coverType === coverType.id}
+                isSelected={formData.cover_type === coverType.id}
               />
             </motion.div>
           ))}
         </div>
 
-        {formData.coverType && (
+        {formData.cover_type && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -130,7 +136,7 @@ const CoverTypeStep = () => {
               <Check size={16} className="mr-2" />
               <span>
                 You've selected{" "}
-                {coverTypes.find((c) => c.id === formData.coverType)?.title}
+                {coverTypes.find((c) => c.id === formData.cover_type)?.title}
               </span>
             </div>
           </motion.div>

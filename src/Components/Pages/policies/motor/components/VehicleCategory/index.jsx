@@ -32,7 +32,7 @@ const VehicleCategory = () => {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category.id);
-    updateFormData({ category: category.id });
+    updateFormData({ vehicle_type: category.id });
   };
 
   const handleBack = () => {

@@ -55,7 +55,6 @@ const useCategories = [
 const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
   const { formData } = useMotorForm();
   const [modalData, setModalData] = useState({
-    cover_type: "",
     min_value: "",
     max_value: "",
     max_age: "",
@@ -112,7 +111,6 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
         (st) => st.id === modalData.riskClassSubType
       );
       const newData = {
-        cover_type: modalData.cover_type,
         vehicle_type: modalData.category,
         risk_type: modalData.risk_type,
         rate_ranges: [
@@ -191,55 +189,6 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                         >
                           <X size={20} />
                         </button>
-                      </div>
-                      {/* Risk Class Selection */}
-                      <div className="space-y-4 mb-6">
-                        <h4 className="text-sm font-medium text-gray-700">
-                          Cover Type
-                        </h4>
-                        <div className="space-y-4">
-                          <select
-                            value={modalData.cover_type}
-                            onChange={(e) => {
-                              setModalData({
-                                ...modalData,
-                                cover_type: e.target.value,
-                              });
-                            }}
-                            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                            required
-                          >
-                            <option value="">Select Cover Type</option>
-                            {coverTypes.map((cover_type) => (
-                              <option key={cover_type.id} value={cover_type.id}>
-                                {cover_type.label}
-                              </option>
-                            ))}
-                          </select>
-
-                          {modalData.risk_type === "other" && (
-                            <select
-                              value={modalData.riskClassSubType}
-                              onChange={(e) =>
-                                setModalData({
-                                  ...modalData,
-                                  riskClassSubType: e.target.value,
-                                })
-                              }
-                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                              required
-                            >
-                              <option value="">Select Specific Type</option>
-                              {availableRiskClasses
-                                .find((rc) => rc.id === "other")
-                                ?.subTypes.map((subType) => (
-                                  <option key={subType.id} value={subType.id}>
-                                    {subType.label}
-                                  </option>
-                                ))}
-                            </select>
-                          )}
-                        </div>
                       </div>
                       {/* Risk Class Selection */}
                       <div className="space-y-4 mb-6">
@@ -454,23 +403,6 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                           Configuration Summary
                         </h4>
                         <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <span className="text-gray-600">Cover Type</span>
-                            <span className="ml-2 font-medium">
-                              {modalData.cover_type
-                                ? modalData.cover_type
-                                : "Not set"}
-
-                              {modalData.riskClassSubType &&
-                                ` - ${
-                                  riskClasses.Commercial.find(
-                                    (rc) => rc.id === "other"
-                                  )?.subTypes.find(
-                                    (st) => st.id === modalData.riskClassSubType
-                                  )?.label
-                                }`}
-                            </span>
-                          </div>
                           <div>
                             <span className="text-gray-600">Risk Class:</span>
                             <span className="ml-2 font-medium">

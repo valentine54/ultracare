@@ -5,8 +5,8 @@ const MotorFormContext = createContext();
 export const MotorFormProvider = ({ children }) => {
   const [formData, setFormData] = useState({
     // Category Selection
-    category: "", // private, commercial, psv
-    cover_type:"",
+    vehicle_type: "", // private, commercial, psv
+    cover_type: "",
 
     // Basic Information
     company_name: "",
