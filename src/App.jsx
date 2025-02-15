@@ -50,7 +50,7 @@ import BasicInformation from "./Components/Pages/PersonalAccident/BasicInformati
 import HealthLifestyle from "./Components/Pages/PersonalAccident/HealthAndLifestyle";
 import Quote from "./Components/Pages/PersonalAccident/QuotePage";
 import Payment from "./Components/Pages/PersonalAccident/PaymentPage";
-import CarPayment from './Components/Pages/CarInsurance/PaymentPage'
+import CarPayment from "./Components/Pages/CarInsurance/PaymentPage";
 import MpesaPayment from "./Components/Pages/PersonalAccident/MpesaPayment";
 import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentContext";
 import { AlertModalProvider } from "./Components/AlertModal";
@@ -64,7 +64,7 @@ import CoverDetails from "./Components/Pages/policies/motor/components/CoverDeta
 import PremiumSetup from "./Components/Pages/policies/motor/components/PremiumSetup";
 import Benefits from "./Components/Pages/policies/motor/components/Benefits";
 import AgeExperience from "./Components/Pages/policies/motor/components/AgeExperience";
-
+import { useSelector } from "react-redux";
 const RoutedContent = () => {
   const location = useLocation();
   const protectedRoutes = [
@@ -109,7 +109,6 @@ const RoutedContent = () => {
           <Route path="/claims" element={<Claims />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/notifications" element={<Notifications />} />
-
           {/* Motor Policy Routes */}
           <Route
             path="/policies/motor/*"
@@ -122,7 +121,6 @@ const RoutedContent = () => {
               </MotorFormProvider>
             }
           />
-
           {/* Personal Accident Routes */}
           <Route path="/personal-accident" element={<BasicInformation />} />
           <Route
@@ -136,11 +134,9 @@ const RoutedContent = () => {
             element={<MpesaPayment />}
           />
           <Route path="/individual-pension" element={<IndividualPension />} />
-
           {/* Types Routes */}
           <Route path="/request-quote" element={<RequestQuotation />} />
           <Route path="/compare-quotes" element={<CompareQuotes />} />
-
           {/* Quotes Routes */}
           <Route path="/individual-pension" element={<IndividualPension />} />
           <Route
@@ -155,7 +151,6 @@ const RoutedContent = () => {
             element={<DisabilityInsurance />}
           />
           <Route path="/family-accident" element={<FamilyAccident />} />
-
           {/* Main Navigation Routes */}
           <Route path="/services" element={<HomePageServices />} />
           <Route path="/contact" element={<ContactUs />} />
