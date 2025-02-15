@@ -159,7 +159,7 @@ export default function AddBenefits() {
             }}
             className="flex items-center gap-2 text-sm"
           >
-            Send
+            proceed to paymnet
             <FaChevronRight size={15} />
           </button>
         </div>
