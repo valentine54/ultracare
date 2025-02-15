@@ -4,50 +4,52 @@ import { X, Plus, Check } from "lucide-react";
 import { useMotorForm } from "../../context/MotorFormContext";
 
 const riskClasses = {
-  private: [
-    { id: 'motorPrivate', label: 'Motor Private' }
+  Private: [{ id: "Motor_Private", label: "Motor Private" }],
+  Commercial: [
+    { id: "generalCartage", label: "General Cartage" },
+    { id: "institutional", label: "Institutional Vehicles" },
+    { id: "onlineTaxis", label: "Online Taxis" },
+    { id: "ownGoods", label: "Own Goods" },
+    {
+      id: "other",
+      label: "Other",
+      subTypes: [
+        { id: "agricultural", label: "Agricultural and Forestry Vehicles" },
+        { id: "emergency", label: "Ambulance, Hearse and Firefighters" },
+        { id: "chauffeur", label: "Chauffeur Driven" },
+        { id: "construction", label: "Construction Vehicles" },
+        { id: "drivingSchool", label: "Driving Schools" },
+        { id: "primeMover", label: "Prime Mover and Tractors" },
+      ],
+    },
   ],
-  commercial: [
-    { id: 'generalCartage', label: 'General Cartage' },
-    { id: 'institutional', label: 'Institutional Vehicles' },
-    { id: 'onlineTaxis', label: 'Online Taxis' },
-    { id: 'ownGoods', label: 'Own Goods' },
-    { id: 'other', label: 'Other', subTypes: [
-      { id: 'agricultural', label: 'Agricultural and Forestry Vehicles' },
-      { id: 'emergency', label: 'Ambulance, Hearse and Firefighters' },
-      { id: 'chauffeur', label: 'Chauffeur Driven' },
-      { id: 'construction', label: 'Construction Vehicles' },
-      { id: 'drivingSchool', label: 'Driving Schools' },
-      { id: 'primeMover', label: 'Prime Mover and Tractors' }
-    ]}
+  Public_Service: [
+    { id: "motorPsv", label: "Motor PSV" },
+    { id: "chauffeurTaxi", label: "Chauffeur Driven-Taxis" },
+    { id: "chauffeurDriven", label: "Chauffeur Driven" },
   ],
-  psv: [
-    { id: 'motorPsv', label: 'Motor PSV' },
-    { id: 'chauffeurTaxi', label: 'Chauffeur Driven-Taxis' },
-    { id: 'chauffeurDriven', label: 'Chauffeur Driven' }
-  ]
 };
 
 const tonnageRanges = [
-  { id: '1-3', label: '1-3 Tons' },
-  { id: '3-8', label: '3-8 Tons' },
-  { id: '12-15', label: '12-15 Tons' },
-  { id: '15-20', label: '15-20 Tons' },
-  { id: '20-25', label: '20-25 Tons' },
-  { id: '30+', label: '30+ Tons' }
+  { id: "1-3", label: "1-3 Tons" },
+  { id: "3-8", label: "3-8 Tons" },
+  { id: "12-15", label: "12-15 Tons" },
+  { id: "15-20", label: "15-20 Tons" },
+  { id: "20-25", label: "20-25 Tons" },
+  { id: "30+", label: "30+ Tons" },
 ];
 
 const capacityRanges = [
-  { id: '1-7', label: '1-7 Seats' },
-  { id: '8-14', label: '8-14 Seats' },
-  { id: '15-25', label: '15-25 Seats' },
-  { id: '26-35', label: '26-35 Seats' },
-  { id: '36+', label: '36+ Seats' }
+  { id: "1-7", label: "1-7 Seats" },
+  { id: "8-14", label: "8-14 Seats" },
+  { id: "15-25", label: "15-25 Seats" },
+  { id: "26-35", label: "26-35 Seats" },
+  { id: "36+", label: "36+ Seats" },
 ];
 
 const useCategories = [
-  { id: 'fleet', label: 'Fleet' },
-  { id: 'standard', label: 'Standard' }
+  { id: "fleet", label: "Fleet" },
+  { id: "standard", label: "Standard" },
 ];
 
 const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
@@ -57,14 +59,14 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
     maxValue: "",
     rate: "",
     minPremium: "",
-    selectedRanges: [], // tonnage & capacity 
+    selectedRanges: [], // tonnage & capacity
     useCategories: [],
-    riskClass: "", // risk class
+    risk_type: "", // risk class
     riskClassSubType: "", // commercial, other
   });
 
-  const isCommercial = formData.category === "commercial";
-  const isPSV = formData.category === "psv";
+  const isCommercial = formData.category === "Commercial";
+  const isPSV = formData.category === "Public_Service";
   const ranges = isPSV ? capacityRanges : tonnageRanges;
   const availableRiskClasses = riskClasses[formData.category] || [];
 
@@ -92,15 +94,16 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
       modalData.minValue &&
       modalData.maxValue &&
       modalData.rate &&
-      modalData.riskClass
+      modalData.risk_type
     ) {
       const selectedRiskClass = availableRiskClasses.find(
-        (rc) => rc.id === modalData.riskClass
+        (rc) => rc.id === modalData.risk_type
       );
       const riskClassSubType = selectedRiskClass?.subTypes?.find(
         (st) => st.id === modalData.riskClassSubType
       );
-
+ 
+  
       onSubmit({
         ...modalData,
         minValue: parseFloat(modalData.minValue),
@@ -118,9 +121,10 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
         minPremium: "",
         selectedRanges: [],
         useCategories: [],
-        riskClass: "",
+        risk_type: "",
         riskClassSubType: "",
       });
+      onClose();
     }
   };
 
@@ -168,30 +172,30 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                       {/* Risk Class Selection */}
                       <div className="space-y-4 mb-6">
                         <h4 className="text-sm font-medium text-gray-700">
-                          Risk Class
+                          Risk Type
                         </h4>
                         <div className="space-y-4">
                           <select
-                            value={modalData.riskClass}
-                            onChange={(e) =>
+                            value={modalData.risk_type}
+                            onChange={(e) => {
                               setModalData({
                                 ...modalData,
-                                riskClass: e.target.value,
+                                risk_type: e.target.value,
                                 riskClassSubType: "",
-                              })
-                            }
+                              });
+                            }}
                             className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             required
                           >
-                            <option value="">Select Risk Class</option>
-                            {availableRiskClasses.map((riskClass) => (
-                              <option key={riskClass.id} value={riskClass.id}>
-                                {riskClass.label}
+                            <option value="">Select Risk Type</option>
+                            {availableRiskClasses.map((risk_type) => (
+                              <option key={risk_type.id} value={risk_type.id}>
+                                {risk_type.label}
                               </option>
                             ))}
                           </select>
 
-                          {modalData.riskClass === "other" && (
+                          {modalData.risk_type === "other" && (
                             <select
                               value={modalData.riskClassSubType}
                               onChange={(e) =>
@@ -381,9 +385,9 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                           <div>
                             <span className="text-gray-600">Risk Class:</span>
                             <span className="ml-2 font-medium">
-                              {modalData.riskClass
+                              {modalData.risk_type
                                 ? riskClasses[formData.category]?.find(
-                                    (rc) => rc.id === modalData.riskClass
+                                    (rc) => rc.id === modalData.risk_type
                                   )?.label
                                 : "Not set"}
                               {modalData.riskClassSubType &&

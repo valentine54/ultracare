@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import DashboardLayout from "../../../common/layout/DashboardLayout";
@@ -48,6 +48,13 @@ const MotorPolicyForm = () => {
       setCurrentStep((prev) => prev - 1);
     }
   };
+  useEffect(() => {
+    //+
+    console.log(formData)
+    if (!formData.category) {
+      navigate("/policies/motor"); //+
+    } //+
+  }, [formData]); //
 
   // Render the correct step and pass `setValidateStep`
   const renderStep = () => {

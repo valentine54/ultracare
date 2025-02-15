@@ -11,19 +11,19 @@ const VehicleCategory = () => {
 
   const categories = [
     {
-      id: "private",
+      id: "Private",
       title: "Private",
       icon: "🚗",
       description: "Personal use vehicles",
     },
     {
-      id: "commercial",
+      id: "Commercial",
       title: "Commercial",
       icon: "🚛",
       description: "Business use vehicles",
     },
     {
-      id: "psv",
+      id: "Public_Service",
       title: "Public Service",
       icon: "🚌",
       description: "Transport service vehicles",

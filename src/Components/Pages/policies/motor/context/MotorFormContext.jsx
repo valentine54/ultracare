@@ -16,7 +16,7 @@ export const MotorFormProvider = ({ children }) => {
     // Premium Setup
     riskClasses: [], // Selected risk classes
     useCategory: [], // Fleet, Standard
-    premiumRanges: [], // premium ranges
+    rate_ranges: [], // premium ranges
     selectedTonnageRanges: [], // predefined ranges
 
     // Excess Charges
@@ -43,14 +43,14 @@ export const MotorFormProvider = ({ children }) => {
   const addPremiumRange = (range) => {
     setFormData((prev) => ({
       ...prev,
-      premiumRanges: [...prev.premiumRanges, { ...range, id: Date.now() }],
+      rate_ranges: [...prev.rate_ranges, { ...range, id: Date.now() }],
     }));
   };
 
   const removePremiumRange = (rangeId) => {
     setFormData((prev) => ({
       ...prev,
-      premiumRanges: prev.premiumRanges.filter((r) => r.id !== rangeId),
+      rate_ranges: prev.rate_ranges.filter((r) => r.id !== rangeId),
     }));
   };
 

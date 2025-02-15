@@ -66,7 +66,7 @@ const validate = async () => {
   };
 
   try {
-    await UploadMotorInsurance(formData2);
+    // await UploadMotorInsurance(formData2);
     console.log("Data successfully sent to the backend!");
     return true;
   } catch (error) {

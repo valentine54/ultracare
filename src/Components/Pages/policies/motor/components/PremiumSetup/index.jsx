@@ -9,21 +9,21 @@ const PremiumSetup = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handleDeleteRange = (rangeId) => {
-    const updatedRanges = formData.premiumRanges.filter(
+    const updatedRanges = formData.rate_ranges.filter(
       (range) => range.id !== rangeId
     );
-    updateFormData({ premiumRanges: updatedRanges });
+    updateFormData({ rate_ranges: updatedRanges });
   };
 
   const handleAddPremiumRange = (range) => {
     const updatedRanges = [
-      ...(formData.premiumRanges || []),
+      ...(formData.rate_ranges || []),
       {
         ...range,
         id: Date.now(),
       },
     ];
-    updateFormData({ premiumRanges: updatedRanges });
+    updateFormData({ rate_ranges: updatedRanges });
   };
 
   return (
@@ -44,7 +44,7 @@ const PremiumSetup = () => {
           </button>
         </div>
 
-        {formData.premiumRanges?.length > 0 ? (
+        {formData.rate_ranges?.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -82,7 +82,7 @@ const PremiumSetup = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {formData.premiumRanges.map((range) => (
+                {formData.rate_ranges.map((range) => (
                   <motion.tr
                     key={range.id}
                     initial={{ opacity: 0 }}
