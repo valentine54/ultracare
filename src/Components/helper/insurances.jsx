@@ -93,14 +93,14 @@ export const UploadMotorInsurance = async (data) => {
     const response = await axiosInstance.post("motorinsurance/", data);
     if (response.status === 201) {
       console.log("Motor Insurance uploaded successfully:", response.data);
-      return true
+      return response
     } else {
       console.error("Failed to upload motor insurance:", response.data);
-      return false;
+      return response;
     }
   } catch (error) {
     console.error("Error uploading motor insurance:", error.response.data);
-    return false;
+    return error.response;
   }
   
 }
@@ -108,15 +108,21 @@ export const UploadMotorInsurance = async (data) => {
 export const MotorInsuranceDetails = async (data) => {
   try {
     const response = await axiosInstance.post(`motorinsurance/details/`, data);
-    if (response.status === 200) {
-      console.log("Motor Insurance details:", response.data);
-      return response.data
-    } else {
-      console.error("Failed to fetch motor insurance details:", response.data);
-      return false;
-    }
+    console.log("Motor Insurance details:", response);
+    return response
   } catch (error) {
-    console.error("Error fetching motor insurance details:", error.response.data);
+    console.error("Error fetching motor insurance details:", error.response);
+    return false;
+  }
+}
+
+export const Additionalcharge = async (data) => {
+  try {
+    const response = await  axiosInstance.post(`motorinsurance/optionalcharges/`,data);
+    console.log("Additional charges:", response);
+    return response
+  } catch (error) {
+    console.error("Error fetching additional charges:", error.response);
     return false;
   }
 }

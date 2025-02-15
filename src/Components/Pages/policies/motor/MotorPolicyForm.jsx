@@ -57,19 +57,18 @@ const MotorPolicyForm = () => {
     } //+
   }, [formData]); //
 
-
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <BasicInformationStep setValidateStep={setValidateStep} />;
+        return <BasicInformationStep handleNext={handleNext} />;
       case 2:
-        return <CoverTypeStep setValidateStep={setValidateStep} />; // New case
+        return <CoverTypeStep handleNext={handleNext} />; // New case
       case 3:
-        return <PremiumSetupStep setValidateStep={setValidateStep} />;
+        return <PremiumSetupStep handleNext={handleNext} />;
       case 4:
-        return <ExcessChargesStep setValidateStep={setValidateStep} />;
+        return <ExcessChargesStep handleNext={handleNext} />;
       case 5:
-        return <AgeExperienceStep setValidateStep={setValidateStep} />;
+        return <AgeExperienceStep handleNext={handleNext} />;
       default:
         return null;
     }
@@ -162,12 +161,12 @@ const MotorPolicyForm = () => {
           >
             Back
           </button>
-          <button
+          {/* <button
             onClick={handleNext}
             className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200"
           >
             {currentStep === steps.length ? "Submit Policy" : "Continue"}
-          </button>
+          </button> */}
         </div>
       </div>
     </DashboardLayout>

@@ -21,12 +21,12 @@ export const MotorFormProvider = ({ children }) => {
     selectedTonnageRanges: [], // predefined ranges
 
     // Excess Charges
-    excessCharges: [],
+    excess_charges: [],
 
     // Driver Requirements
     driverRequirements: {
-      minimumAge: "",
-      minimumExperience: "",
+      is_under_21: "",
+      is_unexperienced: "",
       loadings: {
         youngDriver: "",
         inexperienced: "",
@@ -58,14 +58,14 @@ export const MotorFormProvider = ({ children }) => {
   const addExcessCharge = (charge) => {
     setFormData((prev) => ({
       ...prev,
-      excessCharges: [...prev.excessCharges, { ...charge, id: Date.now() }],
+      excess_charges: [...prev.excess_charges, { ...charge, id: Date.now() }],
     }));
   };
 
   const removeExcessCharge = (chargeId) => {
     setFormData((prev) => ({
       ...prev,
-      excessCharges: prev.excessCharges.filter((c) => c.id !== chargeId),
+      excess_charges: prev.excess_charges.filter((c) => c.id !== chargeId),
     }));
   };
 

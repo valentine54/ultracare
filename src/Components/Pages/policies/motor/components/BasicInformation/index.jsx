@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Upload, Building2, FileText, X } from "lucide-react";
 import { useMotorForm } from "../../context/MotorFormContext";
-import {UploadMotorInsurance} from '../../../../../helper/insurances'
-const BasicInformationStep = ({ setValidateStep }) => {
+import { UploadMotorInsurance } from "../../../../../helper/insurances";
+const BasicInformationStep = ({ handleNext }) => {
   const { formData, updateFormData } = useMotorForm();
   const [previewUrl, setPreviewUrl] = useState(null);
   const [errors, setErrors] = useState({});
@@ -24,57 +24,55 @@ const BasicInformationStep = ({ setValidateStep }) => {
     setPreviewUrl(null);
     updateFormData({ companyLogo: null });
   };
-  const handleSubmit = () => {
-    if (validate()) {
-      handleNext(); // Proceed to the next step
+
+  // const handleSubmit = async () => {
+  //   const isValid = await validate();
+  //   if (isValid) {
+  //     handleNext(); // Proceed to the next step
+  //   }
+  // };
+
+  const handleSubmit = async () => {
+    let newErrors = {};
+
+    // Check for missing fields
+    if (!formData.title) {
+      newErrors.title = "Policy title is required.";
+    }
+    if (!formData.description) {
+      newErrors.description = "Policy description is required.";
+    }
+    if (!formData.company_name) {
+      newErrors.company_name = "Company name is required.";
+    }
+
+    // Update state with errors
+    setErrors(newErrors);
+
+    // Stop execution if there are validation errors
+    if (Object.keys(newErrors).length > 0) {
+      return false;
+    }
+
+    // Prepare form data for submission
+    const formData2 = {
+      title: formData.title,
+      description: formData.description,
+      company_name: formData.company_name,
+    };
+
+    try {
+      const res = await UploadMotorInsurance(formData2);
+      if (res.status === 201) {
+        console.log("Data successfully sent to the backend!");
+        handleNext()
+      }
+      return true;
+    } catch (error) {
+      console.error("Error sending data:", error);
+      return false;
     }
   };
-
-
-  useEffect(() => {
-    setValidateStep(() => validate);
-  }, [setValidateStep, formData]);
-
-
-const validate = async () => {
-  let newErrors = {};
-
-  // Check for missing fields
-  if (!formData.title) {
-    newErrors.title = "Policy title is required.";
-  }
-  if (!formData.description) {
-    newErrors.description = "Policy description is required.";
-  }
-  if (!formData.company_name) {
-    newErrors.company_name = "Company name is required.";
-  }
-
-  // Update state with errors
-  setErrors(newErrors);
-
-  // Stop execution if there are validation errors
-  if (Object.keys(newErrors).length > 0) {
-    return false;
-  }
-
-  // Prepare form data for submission
-  const formData2 = {
-    title: formData.title,
-    description: formData.description,
-    company_name: formData.company_name,
-  };
-
-  try {
-    // await UploadMotorInsurance(formData2);
-    console.log("Data successfully sent to the backend!");
-    return true;
-  } catch (error) {
-    console.error("Error sending data:", error);
-    return false;
-  }
-};
-
 
   return (
     <motion.div
@@ -242,6 +240,12 @@ const validate = async () => {
             </div>
           </div>
         </div>
+        <button
+          onClick={handleSubmit}
+          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200"
+        >
+          Continue
+        </button>
       </div>
     </motion.div>
   );

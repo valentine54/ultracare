@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useMotorForm } from "../../context/MotorFormContext";
 import { Check, Shield, ShieldCheck, AlertTriangle } from "lucide-react";
 
-const CoverTypeStep = () => {
+const CoverTypeStep = ({ handleNext }) => {
   const { formData, updateFormData } = useMotorForm();
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -33,6 +33,12 @@ const CoverTypeStep = () => {
     setSelectedCategory(category.id);
     updateFormData({ cover_type: selectedCategory.id });
   };
+
+  const handleSubmit = () => {
+    if (formData.cover_type) {
+      handleNext();
+    }
+  }
 
   const CoverTypeCard = ({ coverType, isSelected }) => {
     const Icon = coverType.icon;
@@ -142,6 +148,12 @@ const CoverTypeStep = () => {
           </motion.div>
         )}
       </div>
+      <button
+        onClick={handleSubmit}
+        className="px-6 py-2 my-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200"
+      >
+        Continue
+      </button>
     </div>
   );
 };

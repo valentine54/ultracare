@@ -53,7 +53,7 @@ const useCategories = [
 ];
 
 const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
-  const { formData } = useMotorForm();
+  const { formData, updateFormData } = useMotorForm();
   const [modalData, setModalData] = useState({
     min_value: "",
     max_value: "",
@@ -66,16 +66,10 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
     riskClassriskClassSubTypeSubType: "", // commercial, other
   });
 
-  const isCommercial = formData.category === "Commercial";
-  const isPSV = formData.category === "Public_Service";
+  const isCommercial = formData.vehicle_type === "Commercial";
+  const isPSV = formData.vehicle_type === "Public_Service";
   const ranges = isPSV ? capacityRanges : tonnageRanges;
-  const availableRiskClasses = riskClasses[formData.category] || [];
-
-  const coverTypes = [
-    { id: "Comprehensive", label: "Comprehensive" },
-    { id: "Third Party Only", label: "Third Party Only" },
-    { id: "Third Party Fire and Theft", label: "Third Party Fire and Theft" },
-  ];
+  const availableRiskClasses = riskClasses[formData.vehicle_type] || [];
 
   const handleRangeToggle = (rangeId) => {
     setModalData((prev) => ({
@@ -94,9 +88,12 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
         : [...prev.useCategories, categoryId],
     }));
   };
-
+  const addRateRange = (newRateRange) => {
+    updateFormData({
+      rate_ranges: [...formData.rate_ranges, newRateRange],
+    });
+  };
   const handleSubmit = (e) => {
-    console.log(formData.rate_ranges);
     e.preventDefault();
     if (
       modalData.min_value &&
@@ -110,31 +107,19 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
       const riskClassSubType = selectedRiskClass?.subTypes?.find(
         (st) => st.id === modalData.riskClassSubType
       );
-      const newData = {
-        vehicle_type: modalData.category,
-        risk_type: modalData.risk_type,
-        rate_ranges: [
-          {
-            min_value: 2000000,
-            max_value: 4000000,
-            max_age: 5,
-            min_premium: 40000,
-            rate: 4.0,
-          },
-        ],
-      };
-
-      onSubmit({
-        ...modalData,
+      const newRate = {
+        id: Date.now(),
         min_value: parseFloat(modalData.min_value),
         max_value: parseFloat(modalData.max_value),
         rate: parseFloat(modalData.rate),
         min_premium: modalData.min_premium
           ? parseFloat(modalData.min_premium)
           : 0,
-        riskClassName: selectedRiskClass?.label,
+        risk_type: selectedRiskClass?.label,
         riskClassSubTypeName: riskClassSubType?.label,
-      });
+      };
+
+      onSubmit(newRate);
 
       setModalData({
         min_value: "",
@@ -404,10 +389,10 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                         </h4>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <span className="text-gray-600">Risk Class:</span>
+                            <span className="text-gray-600">Risk Type:</span>
                             <span className="ml-2 font-medium">
                               {modalData.risk_type
-                                ? riskClasses[formData.category]?.find(
+                                ? riskClasses[formData.vehicle_type]?.find(
                                     (rc) => rc.id === modalData.risk_type
                                   )?.label
                                 : "Not set"}
@@ -506,6 +491,7 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                 </motion.div>
               </div>
             </div>
+            
           </div>
         </div>
       )}

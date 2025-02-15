@@ -4,7 +4,7 @@ import { Plus, Settings, AlertCircle, X } from "lucide-react";
 import { useMotorForm } from "../../context/MotorFormContext";
 import PremiumSetupModal from "./PremiumSetupModal";
 
-const PremiumSetup = () => {
+const PremiumSetup = ({handleNext}) => {
   const { formData, updateFormData } = useMotorForm();
   const [showModal, setShowModal] = useState(false);
 
@@ -15,16 +15,20 @@ const PremiumSetup = () => {
     updateFormData({ rate_ranges: updatedRanges });
   };
 
-  const handleAddPremiumRange = (range) => {
-    const updatedRanges = [
-      ...(formData.rate_ranges || []),
-      {
-        ...range,
-        id: Date.now(),
-      },
-    ];
-    updateFormData({ rate_ranges: updatedRanges });
+  const handleAddPremiumRange = (newRateRange) => {
+    updateFormData({
+      rate_ranges: [...formData.rate_ranges, newRateRange],
+    });
+
   };
+  console.log("login usser data",formData);
+
+  const handleSubmit = () => {
+    if (formData.rate_ranges?.length>0) {
+      
+      handleNext();
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -50,7 +54,7 @@ const PremiumSetup = () => {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Risk Class
+                    Risk Type
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Value Range (KSH)
@@ -91,7 +95,7 @@ const PremiumSetup = () => {
                   >
                     <td className="px-6 py-4">
                       <span className="text-sm text-gray-900">
-                        {range.riskClassName}
+                        {range.risk_type}
                         {range.riskClassSubTypeName && (
                           <span className="text-gray-500">
                             {" - "}
@@ -172,6 +176,12 @@ const PremiumSetup = () => {
           </div>
         )}
       </div>
+        <button
+          onClick={handleSubmit}
+          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200"
+        >
+          Continue
+        </button>
 
       {/* Premium Setup Modal */}
       <PremiumSetupModal

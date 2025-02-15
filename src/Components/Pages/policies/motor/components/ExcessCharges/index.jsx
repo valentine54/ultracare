@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X, Shield } from "lucide-react";
 import { useMotorForm } from "../../context/MotorFormContext";
+import { MotorInsuranceDetails } from "../../../../../helper/insurances";
 
 const LiabilityModal = ({ isOpen, onClose, onSelect }) => {
   const [selectedLimit, setSelectedLimit] = useState(null);
@@ -112,38 +113,99 @@ const LiabilityModal = ({ isOpen, onClose, onSelect }) => {
   );
 };
 
-const ExcessChargesStep = () => {
+const ExcessChargesStep = ({ handleNext }) => {
   const { formData, updateFormData } = useMotorForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errors, setErrors] = useState({});
   const [newCharge, setNewCharge] = useState({
-    limitOfLiability: "",
-    rate: "",
-    minPremium: "",
+    limit_of_liability: "",
+    excess_rate: "",
+    min_price: "",
     description: "",
   });
 
   const handleAddCharge = (e) => {
+    console.log(formData);
     e.preventDefault();
-    if (newCharge.limitOfLiability && newCharge.rate) {
+    if (newCharge.limit_of_liability && newCharge.excess_rate) {
       const updatedCharges = [
-        ...(formData.excessCharges || []),
+        ...(formData.excess_charges || []),
         { ...newCharge, id: Date.now() },
       ];
-      updateFormData({ excessCharges: updatedCharges });
+      updateFormData({ excess_charges: updatedCharges });
       setNewCharge({
-        limitOfLiability: "",
-        rate: "",
-        minPremium: "",
+        limit_of_liability: "",
+        excess_rate: "",
+        min_price: "",
         description: "",
       });
     }
   };
 
   const handleDeleteCharge = (chargeId) => {
-    const updatedCharges = formData.excessCharges.filter(
+    const updatedCharges = formData.excess_charges.filter(
       (charge) => charge.id !== chargeId
     );
-    updateFormData({ excessCharges: updatedCharges });
+    updateFormData({ excess_charges: updatedCharges });
+  };
+
+  // console.log(formData);
+  const handleSubmit = async () => {
+    let newErrors = {};
+
+    // Check for missing fields
+    if (!formData.title) {
+      newErrors.title = "Policy title is required.";
+    }
+
+    // Update state with errors
+    setErrors(newErrors);
+
+    // Stop execution if there are validation errors
+    if (Object.keys(newErrors).length > 0) {
+      return false;
+    }
+
+    // Prepare form data for submission
+
+    const formData2 = {
+      cover_type: formData.cover_type,
+      vehicle_type: formData.vehicle_type,
+
+      risk_type: formData.risk_type || "Motor_Private",
+
+      // Map rate_ranges properly
+      rate_ranges: formData.rate_ranges.map((rate) => ({
+        min_value: rate.min_value,
+
+        max_value: rate.max_value,
+        rate: rate.rate,
+        min_premium: rate.min_premium,
+        risk_type: rate.risk_type,
+      })),
+
+      // Map excess_charges properly
+      excess_charges: formData.excess_charges.map((charge) => ({
+        description: charge.description,
+        excess_rate: charge.excess_rate,
+        limit_of_liability: charge.limit_of_liability,
+        min_price: charge.min_price,
+      })),
+    };
+
+    try {
+      const res = await MotorInsuranceDetails(formData2);
+      if (formData.excess_charges?.length > 0&&res.status === 201) {
+        handleNext();
+      } else {
+        alert("jaza kila kitu")
+      }
+      console.log("Data successfully sent to the backend!");
+      return res;
+    } catch (error) {
+      console.error("Error sending data:", error);
+      return false;
+    }
   };
 
   return (
@@ -166,7 +228,7 @@ const ExcessChargesStep = () => {
                 onClick={() => setIsModalOpen(true)}
                 className="w-full p-2 border border-gray-300 rounded-lg text-left hover:border-blue-300 focus:ring-2 focus:ring-blue-500"
               >
-                {newCharge.limitOfLiability || "Select limit of liability"}
+                {newCharge.limit_of_liability || "Select limit of liability"}
               </button>
             </div>
             <div>
@@ -175,11 +237,11 @@ const ExcessChargesStep = () => {
               </label>
               <input
                 type="number"
-                value={newCharge.rate}
+                value={newCharge.excess_rate}
                 onChange={(e) =>
                   setNewCharge({
                     ...newCharge,
-                    rate: e.target.value,
+                    excess_rate: e.target.value,
                   })
                 }
                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -194,11 +256,11 @@ const ExcessChargesStep = () => {
               </label>
               <input
                 type="number"
-                value={newCharge.minPremium}
+                value={newCharge.min_price}
                 onChange={(e) =>
                   setNewCharge({
                     ...newCharge,
-                    minPremium: e.target.value,
+                    min_price: e.target.value,
                   })
                 }
                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -239,7 +301,7 @@ const ExcessChargesStep = () => {
       {/* Excess Charges List */}
       <div className="bg-white rounded-lg shadow p-4">
         <h3 className="text-lg font-medium mb-4">Configured Excess Charges</h3>
-        {formData.excessCharges?.length > 0 ? (
+        {formData.excess_charges?.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -262,7 +324,7 @@ const ExcessChargesStep = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {formData.excessCharges.map((charge) => (
+                {formData.excess_charges.map((charge) => (
                   <motion.tr
                     key={charge.id}
                     initial={{ opacity: 0 }}
@@ -270,13 +332,13 @@ const ExcessChargesStep = () => {
                     className="hover:bg-gray-50"
                   >
                     <td className="px-4 py-3 whitespace-nowrap">
-                      {charge.limitOfLiability}
+                      {charge.limit_of_liability}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      {charge.rate}%
+                      {charge.excess_rate}%
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      KSH {Number(charge.minPremium).toLocaleString()}
+                      KSH {Number(charge.min_price).toLocaleString()}
                     </td>
                     <td className="px-4 py-3">{charge.description}</td>
                     <td className="px-4 py-3 whitespace-nowrap text-right">
@@ -305,7 +367,7 @@ const ExcessChargesStep = () => {
         onSelect={(limit) => {
           setNewCharge({
             ...newCharge,
-            limitOfLiability: limit,
+            limit_of_liability: limit,
           });
         }}
       />
@@ -319,14 +381,16 @@ const ExcessChargesStep = () => {
           <div className="flex justify-between border-b border-gray-100 py-2">
             <span className="text-gray-600">Total Charges:</span>
             <span className="font-medium">
-              {formData.excessCharges?.length || 0}
+              {formData.excess_charges?.length || 0}
             </span>
           </div>
           <div className="flex justify-between border-b border-gray-100 py-2">
             <span className="text-gray-600">Highest Rate:</span>
             <span className="font-medium">
-              {formData.excessCharges?.length
-                ? Math.max(...formData.excessCharges.map((c) => Number(c.rate)))
+              {formData.excess_charges?.length
+                ? Math.max(
+                    ...formData.excess_charges.map((c) => Number(c.excess_rate))
+                  )
                 : 0}
               %
             </span>
@@ -334,14 +398,22 @@ const ExcessChargesStep = () => {
           <div className="flex justify-between border-b border-gray-100 py-2">
             <span className="text-gray-600">Lowest Rate:</span>
             <span className="font-medium">
-              {formData.excessCharges?.length
-                ? Math.min(...formData.excessCharges.map((c) => Number(c.rate)))
+              {formData.excess_charges?.length
+                ? Math.min(
+                    ...formData.excess_charges.map((c) => Number(c.excess_rate))
+                  )
                 : 0}
               %
             </span>
           </div>
         </div>
       </div>
+      <button
+        onClick={handleSubmit}
+        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200"
+      >
+        Continue
+      </button>
     </div>
   );
 };

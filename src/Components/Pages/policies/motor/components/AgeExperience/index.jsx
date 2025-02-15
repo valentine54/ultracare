@@ -3,7 +3,9 @@ import { motion } from "framer-motion";
 import { Users, AlertCircle } from "lucide-react";
 import { useMotorForm } from "../../context/MotorFormContext";
 
-const AgeExperienceStep = () => {
+import { Additionalcharge } from "../../../../../helper/insurances";
+
+const AgeExperienceStep = ({handleNext}) => {
   const { formData, updateFormData } = useMotorForm();
 
   const updateDriverRequirements = (field, value) => {
@@ -27,6 +29,20 @@ const AgeExperienceStep = () => {
     });
   };
 
+  const handleSubmit = async () => {
+    const data = {
+      is_under_21: formData.driverRequirements.is_under_21,
+      is_unexperienced: formData.driverRequirements?.is_unexperienced,
+
+    };
+    const res = await Additionalcharge(data)
+    if (res.status === 201){
+      
+      handleNext();
+    }
+
+  }
+
   return (
     <div className="space-y-6">
       {/* Age Requirements */}
@@ -44,16 +60,16 @@ const AgeExperienceStep = () => {
             <div className="flex gap-4">
               <input
                 type="number"
-                value={formData.driverRequirements?.minimumAge || ""}
+                value={formData.driverRequirements?.is_under_21 || ""}
                 onChange={(e) =>
-                  updateDriverRequirements("minimumAge", e.target.value)
+                  updateDriverRequirements("is_under_21", e.target.value)
                 }
                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="e.g., 18"
               />
             </div>
           </div>
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Loading Amount for Young Drivers (KSH)
             </label>
@@ -64,7 +80,7 @@ const AgeExperienceStep = () => {
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., 5000"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -82,15 +98,15 @@ const AgeExperienceStep = () => {
             </label>
             <input
               type="number"
-              value={formData.driverRequirements?.minimumExperience || ""}
+              value={formData.driverRequirements?.is_unexperienced || ""}
               onChange={(e) =>
-                updateDriverRequirements("minimumExperience", e.target.value)
+                updateDriverRequirements("is_unexperienced", e.target.value)
               }
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., 2"
             />
           </div>
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Loading Amount for Inexperienced Drivers (KSH)
             </label>
@@ -101,7 +117,7 @@ const AgeExperienceStep = () => {
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., 5000"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -114,29 +130,35 @@ const AgeExperienceStep = () => {
           <div className="flex justify-between">
             <span className="text-gray-600">Minimum Age Required :</span>
             <span className="font-medium">
-              {formData.driverRequirements?.minimumAge || "-"} years
+              {formData.driverRequirements?.is_under_21 || "-"} years
             </span>
           </div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-gray-600">Young Driver :</span>
             <span className="font-medium">
               KSH {formData.driverRequirements?.loadings?.youngDriver || "-"}
             </span>
-          </div>
+          </div> */}
           <div className="flex justify-between">
             <span className="text-gray-600">Minimum Experience Required :</span>
             <span className="font-medium">
-              {formData.driverRequirements?.minimumExperience || "-"} years
+              {formData.driverRequirements?.is_unexperienced || "-"} years
             </span>
           </div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-gray-600">Inexperienced Driver :</span>
             <span className="font-medium">
               KSH {formData.driverRequirements?.loadings?.inexperienced || "-"}
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
+      <button
+        onClick={handleSubmit}
+        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-200"
+      >
+        Continue
+      </button>
     </div>
   );
 };
