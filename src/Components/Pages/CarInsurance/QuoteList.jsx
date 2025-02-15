@@ -33,7 +33,7 @@ const QuoteList = () => {
         );
 
         if (response_data.status === 200) {
-          // console.log("response data", response_data.data)
+          console.log("response data:", response_data.data)
           setInsurance(response_data.data.data);
         } else {
           console.error("Failed to filter:", response_data.data);

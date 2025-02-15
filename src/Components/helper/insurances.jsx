@@ -1,30 +1,86 @@
 import axios from "axios";
 
-
 const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5";
 const API_URL = "http://127.0.0.1:8000/api/v1.0/";
 
-export const sendExcesses = async (data,navigate) => {
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  withCredentials: true, // If you're using cookies or authentication
+  headers: {
+    "Content-Type": "application/json",
+    "x-api-key": API_KEY,
+  },
+});
 
-    try {
-        const response = await axios.patch(
-          `${API_URL}motorinsurance/filter/`,
-          data,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-key": API_KEY,
-            },
-          }
-        );
-        if (response.status === 200) {
-            console.log( response.data);
-            navigate(`/login`, { replace: true });
-        }
+// Optional: Add an interceptor to handle errors globally
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error("API Error:", error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
 
-    } catch (error) {
-        console.error("Error sending excess charges:", error.response.data);
+export const sendExcesses = async (userData, navigate, setLoading) => {
+  try {
+    const response = await axiosInstance.patch(
+      `motorinsurance/filter/`,
+      userData
+    );
+    if (response.status === 200) {
+      console.log(response.data);
+      navigate(`/login`, { replace: true });
     }
-}
+  } catch (error) {
+    console.error("Error sending excess charges:", error.response.data);
+  }
+};
 
+export const Signup = async (data, showToast,setLoading) => {
+  console.log(data);
+  try {
+    const response = await axiosInstance.post(`applicant/signup/`, data);
+
+    if (response.status === 201) {
+      showToast(
+        "Account created successfully! Redirecting to login...",
+        "success"
+      );
+      console.log(response.data);
+
+      // setTimeout(() => {
+      //   window.location.href = "/login";
+      // }, 3000);
+    }
+  } catch (error) {
+    console.error("Error signing up:", error);
+    const errorMessage =
+      error.response?.data?.error || "Signup failed. Please try again.";
+    showToast(errorMessage, "error");
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const Login = async (data, showToast, setLoading) => {
+  try {
+    setLoading(true); // Start loading
+    const response = await axiosInstance.post("applicant/login/", data);
+
+    if (response.status === 200) {
+      showToast("Login successful!", "success");
+      console.log("User Data:", response.data);
+      return response.data; // Return user data if needed
+    } else {
+      showToast("Login failed. Please try again.", "error");
+    }
+  } catch (error) {
+    console.error("Error logging in:", error?.response?.data || error.message);
+    showToast(
+      error?.response?.data?.error || "Login failed. Try again.",
+      "error"
+    );
+  } finally {
+    setLoading(false); // Stop loading
+  }
+};
