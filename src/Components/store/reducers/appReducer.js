@@ -1,6 +1,6 @@
 const initialState = {
   darkMode: localStorage.getItem("darkMode") === "true",
-  policyDetails:{}
+  motorPolicy: {},
 };
 
 const appReducer = (state = initialState, action) => {

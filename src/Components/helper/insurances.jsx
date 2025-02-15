@@ -65,7 +65,10 @@ export const Signup = async (data, showToast,setLoading) => {
 export const Login = async (data, showToast, setLoading) => {
   try {
     setLoading(true); // Start loading
-    const response = await axiosInstance.post("applicant/login/", data);
+    const response = await axiosInstance.post(
+      "organisation/login/",
+      data
+    );
 
     if (response.status === 200) {
       showToast("Login successful!", "success");
@@ -84,3 +87,20 @@ export const Login = async (data, showToast, setLoading) => {
     setLoading(false); // Stop loading
   }
 };
+
+export const UploadMotorInsurance = async (data) => {
+  try {
+    const response = await axiosInstance.post("motorinsurance/", data);
+    if (response.status === 201) {
+      console.log("Motor Insurance uploaded successfully:", response.data);
+      return true
+    } else {
+      console.error("Failed to upload motor insurance:", response.data);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error uploading motor insurance:", error.response.data);
+    return false;
+  }
+  
+}

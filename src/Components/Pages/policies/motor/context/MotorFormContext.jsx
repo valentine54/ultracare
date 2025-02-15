@@ -8,10 +8,10 @@ export const MotorFormProvider = ({ children }) => {
     category: "", // private, commercial, psv
 
     // Basic Information
-    companyName: "",
+    company_name: "",
     companyLogo: null,
-    policyTitle: "",
-    policyDescription: "",
+    title: "",
+    description: "",
 
     // Premium Setup
     riskClasses: [], // Selected risk classes
@@ -20,7 +20,7 @@ export const MotorFormProvider = ({ children }) => {
     selectedTonnageRanges: [], // predefined ranges
 
     // Excess Charges
-    excessCharges: [], 
+    excessCharges: [],
 
     // Driver Requirements
     driverRequirements: {

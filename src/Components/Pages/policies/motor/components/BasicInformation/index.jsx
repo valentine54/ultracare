@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Upload, Building2, FileText, X } from "lucide-react";
 import { useMotorForm } from "../../context/MotorFormContext";
-
-const BasicInformationStep = () => {
+import {UploadMotorInsurance} from '../../../../../helper/insurances'
+const BasicInformationStep = ({ setValidateStep }) => {
   const { formData, updateFormData } = useMotorForm();
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
@@ -23,6 +24,57 @@ const BasicInformationStep = () => {
     setPreviewUrl(null);
     updateFormData({ companyLogo: null });
   };
+  const handleSubmit = () => {
+    if (validate()) {
+      handleNext(); // Proceed to the next step
+    }
+  };
+
+
+  useEffect(() => {
+    setValidateStep(() => validate);
+  }, [setValidateStep, formData]);
+
+
+const validate = async () => {
+  let newErrors = {};
+
+  // Check for missing fields
+  if (!formData.title) {
+    newErrors.title = "Policy title is required.";
+  }
+  if (!formData.description) {
+    newErrors.description = "Policy description is required.";
+  }
+  if (!formData.company_name) {
+    newErrors.company_name = "Company name is required.";
+  }
+
+  // Update state with errors
+  setErrors(newErrors);
+
+  // Stop execution if there are validation errors
+  if (Object.keys(newErrors).length > 0) {
+    return false;
+  }
+
+  // Prepare form data for submission
+  const formData2 = {
+    title: formData.title,
+    description: formData.description,
+    company_name: formData.company_name,
+  };
+
+  try {
+    await UploadMotorInsurance(formData2);
+    console.log("Data successfully sent to the backend!");
+    return true;
+  } catch (error) {
+    console.error("Error sending data:", error);
+    return false;
+  }
+};
+
 
   return (
     <motion.div
@@ -48,13 +100,18 @@ const BasicInformationStep = () => {
               </label>
               <input
                 type="text"
-                value={formData.companyName || ""}
+                value={formData.company_name || ""}
                 onChange={(e) =>
-                  updateFormData({ companyName: e.target.value })
+                  updateFormData({ company_name: e.target.value })
                 }
-                className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className={`w-full p-2 border ${
+                  errors.company_name ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                 placeholder="Enter insurance company name"
               />
+              {errors.company_name && (
+                <p className="text-red-500 text-sm">{errors.company_name}</p>
+              )}
             </div>
 
             {/* Logo Upload */}
@@ -119,13 +176,16 @@ const BasicInformationStep = () => {
               </label>
               <input
                 type="text"
-                value={formData.policyTitle || ""}
-                onChange={(e) =>
-                  updateFormData({ policyTitle: e.target.value })
-                }
-                className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                value={formData.title || ""}
+                onChange={(e) => updateFormData({ title: e.target.value })}
+                className={`w-full p-2 border ${
+                  errors.title ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                 placeholder="Enter policy title"
               />
+              {errors.title && (
+                <p className="text-red-500 text-sm">{errors.title}</p>
+              )}
             </div>
 
             <div className="space-y-1">
@@ -133,15 +193,20 @@ const BasicInformationStep = () => {
                 Policy Description
               </label>
               <textarea
-                value={formData.policyDescription || ""}
+                value={formData.description || ""}
                 onChange={(e) =>
-                  updateFormData({ policyDescription: e.target.value })
+                  updateFormData({ description: e.target.value })
                 }
                 rows={3}
-                className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className={`w-full p-2 border ${
+                  errors.description ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                 placeholder="Enter policy description"
               />
             </div>
+            {errors.description && (
+              <p className="text-red-500 text-sm">{errors.description}</p>
+            )}
           </div>
         </div>
 
@@ -154,7 +219,7 @@ const BasicInformationStep = () => {
             <div className="flex items-center justify-between py-1 border-b border-gray-100">
               <span className="text-gray-600">Company Name</span>
               <span className="font-medium text-gray-900">
-                {formData.companyName || "-"}
+                {formData.company_name || "-"}
               </span>
             </div>
             <div className="flex items-center justify-between py-1 border-b border-gray-100">
@@ -166,13 +231,13 @@ const BasicInformationStep = () => {
             <div className="flex items-center justify-between py-1 border-b border-gray-100">
               <span className="text-gray-600">Policy Title</span>
               <span className="font-medium text-gray-900">
-                {formData.policyTitle || "-"}
+                {formData.title || "-"}
               </span>
             </div>
             <div className="flex items-center justify-between py-1 border-b border-gray-100">
               <span className="text-gray-600">Description</span>
               <span className="font-medium text-gray-900">
-                {formData.policyDescription ? "Provided" : "Not provided"}
+                {formData.description || "Not provided"}
               </span>
             </div>
           </div>

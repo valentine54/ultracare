@@ -20,27 +20,24 @@ const MotorPolicyForm = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const { formData } = useMotorForm();
+  const [validateStep, setValidateStep] = useState(() => () => true); // Stores validation function
 
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return <BasicInformationStep />;
-      case 2:
-        return <PremiumSetupStep />;
-      case 3:
-        return <ExcessChargesStep />;
-      case 4:
-        return <AgeExperienceStep />;
-      default:
-        return null;
-    }
-  };
-
-  const handleNext = () => {
-    if (currentStep < steps.length) {
-      setCurrentStep((prev) => prev + 1);
-    } else {
-      console.log("Final form data:", formData);
+  // Trigger validation before moving to next step
+  const handleNext = async () => {
+    if (validateStep) {
+      try {
+        const isValid = await validateStep(); // Call step validation
+        if (isValid) {
+          console.log("Final form data:", formData);
+          if (currentStep < steps.length) {
+            setCurrentStep((prev) => prev + 1);
+          } else {
+            // Handle final submission
+          }
+        }
+      } catch (error) {
+        console.error("Validation failed:", error);
+      }
     }
   };
 
@@ -49,6 +46,22 @@ const MotorPolicyForm = () => {
       navigate("/policies/motor");
     } else {
       setCurrentStep((prev) => prev - 1);
+    }
+  };
+
+  // Render the correct step and pass `setValidateStep`
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <BasicInformationStep setValidateStep={setValidateStep} />;
+      case 2:
+        return <PremiumSetupStep setValidateStep={setValidateStep} />;
+      case 3:
+        return <ExcessChargesStep setValidateStep={setValidateStep} />;
+      case 4:
+        return <AgeExperienceStep setValidateStep={setValidateStep} />;
+      default:
+        return null;
     }
   };
 
