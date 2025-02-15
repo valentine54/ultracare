@@ -55,20 +55,28 @@ const useCategories = [
 const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
   const { formData } = useMotorForm();
   const [modalData, setModalData] = useState({
-    minValue: "",
-    maxValue: "",
+    cover_type: "",
+    min_value: "",
+    max_value: "",
+    max_age: "",
     rate: "",
-    minPremium: "",
+    min_premium: "",
     selectedRanges: [], // tonnage & capacity
     useCategories: [],
     risk_type: "", // risk class
-    riskClassSubType: "", // commercial, other
+    riskClassriskClassSubTypeSubType: "", // commercial, other
   });
 
   const isCommercial = formData.category === "Commercial";
   const isPSV = formData.category === "Public_Service";
   const ranges = isPSV ? capacityRanges : tonnageRanges;
   const availableRiskClasses = riskClasses[formData.category] || [];
+
+  const coverTypes = [
+    { id: "Comprehensive", label: "Comprehensive" },
+    { id: "Third Party Only", label: "Third Party Only" },
+    { id: "Third Party Fire and Theft", label: "Third Party Fire and Theft" },
+  ];
 
   const handleRangeToggle = (rangeId) => {
     setModalData((prev) => ({
@@ -89,10 +97,11 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   const handleSubmit = (e) => {
+    console.log(formData.rate_ranges);
     e.preventDefault();
     if (
-      modalData.minValue &&
-      modalData.maxValue &&
+      modalData.min_value &&
+      modalData.max_value &&
       modalData.rate &&
       modalData.risk_type
     ) {
@@ -102,23 +111,38 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
       const riskClassSubType = selectedRiskClass?.subTypes?.find(
         (st) => st.id === modalData.riskClassSubType
       );
- 
-  
+      const newData = {
+        cover_type: modalData.cover_type,
+        vehicle_type: modalData.category,
+        risk_type: modalData.risk_type,
+        rate_ranges: [
+          {
+            min_value: 2000000,
+            max_value: 4000000,
+            max_age: 5,
+            min_premium: 40000,
+            rate: 4.0,
+          },
+        ],
+      };
+
       onSubmit({
         ...modalData,
-        minValue: parseFloat(modalData.minValue),
-        maxValue: parseFloat(modalData.maxValue),
+        min_value: parseFloat(modalData.min_value),
+        max_value: parseFloat(modalData.max_value),
         rate: parseFloat(modalData.rate),
-        minPremium: modalData.minPremium ? parseFloat(modalData.minPremium) : 0,
+        min_premium: modalData.min_premium
+          ? parseFloat(modalData.min_premium)
+          : 0,
         riskClassName: selectedRiskClass?.label,
         riskClassSubTypeName: riskClassSubType?.label,
       });
 
       setModalData({
-        minValue: "",
-        maxValue: "",
+        min_value: "",
+        max_value: "",
         rate: "",
-        minPremium: "",
+        min_premium: "",
         selectedRanges: [],
         useCategories: [],
         risk_type: "",
@@ -168,7 +192,55 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                           <X size={20} />
                         </button>
                       </div>
+                      {/* Risk Class Selection */}
+                      <div className="space-y-4 mb-6">
+                        <h4 className="text-sm font-medium text-gray-700">
+                          Cover Type
+                        </h4>
+                        <div className="space-y-4">
+                          <select
+                            value={modalData.cover_type}
+                            onChange={(e) => {
+                              setModalData({
+                                ...modalData,
+                                cover_type: e.target.value,
+                              });
+                            }}
+                            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            required
+                          >
+                            <option value="">Select Cover Type</option>
+                            {coverTypes.map((cover_type) => (
+                              <option key={cover_type.id} value={cover_type.id}>
+                                {cover_type.label}
+                              </option>
+                            ))}
+                          </select>
 
+                          {modalData.risk_type === "other" && (
+                            <select
+                              value={modalData.riskClassSubType}
+                              onChange={(e) =>
+                                setModalData({
+                                  ...modalData,
+                                  riskClassSubType: e.target.value,
+                                })
+                              }
+                              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                              required
+                            >
+                              <option value="">Select Specific Type</option>
+                              {availableRiskClasses
+                                .find((rc) => rc.id === "other")
+                                ?.subTypes.map((subType) => (
+                                  <option key={subType.id} value={subType.id}>
+                                    {subType.label}
+                                  </option>
+                                ))}
+                            </select>
+                          )}
+                        </div>
+                      </div>
                       {/* Risk Class Selection */}
                       <div className="space-y-4 mb-6">
                         <h4 className="text-sm font-medium text-gray-700">
@@ -232,11 +304,11 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                             </label>
                             <input
                               type="number"
-                              value={modalData.minValue}
+                              value={modalData.min_value}
                               onChange={(e) =>
                                 setModalData({
                                   ...modalData,
-                                  minValue: e.target.value,
+                                  min_value: e.target.value,
                                 })
                               }
                               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -249,11 +321,11 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                             </label>
                             <input
                               type="number"
-                              value={modalData.maxValue}
+                              value={modalData.max_value}
                               onChange={(e) =>
                                 setModalData({
                                   ...modalData,
-                                  maxValue: e.target.value,
+                                  max_value: e.target.value,
                                 })
                               }
                               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -293,11 +365,11 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                             </label>
                             <input
                               type="number"
-                              value={modalData.minPremium}
+                              value={modalData.min_premium}
                               onChange={(e) =>
                                 setModalData({
                                   ...modalData,
-                                  minPremium: e.target.value,
+                                  min_premium: e.target.value,
                                 })
                               }
                               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -383,6 +455,23 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                         </h4>
                         <div className="grid grid-cols-2 gap-4">
                           <div>
+                            <span className="text-gray-600">Cover Type</span>
+                            <span className="ml-2 font-medium">
+                              {modalData.cover_type
+                                ? modalData.cover_type
+                                : "Not set"}
+
+                              {modalData.riskClassSubType &&
+                                ` - ${
+                                  riskClasses.Commercial.find(
+                                    (rc) => rc.id === "other"
+                                  )?.subTypes.find(
+                                    (st) => st.id === modalData.riskClassSubType
+                                  )?.label
+                                }`}
+                            </span>
+                          </div>
+                          <div>
                             <span className="text-gray-600">Risk Class:</span>
                             <span className="ml-2 font-medium">
                               {modalData.risk_type
@@ -392,23 +481,22 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                                 : "Not set"}
                               {modalData.riskClassSubType &&
                                 ` - ${
-                                  riskClasses.commercial
-                                    .find((rc) => rc.id === "other")
-                                    ?.subTypes.find(
-                                      (st) =>
-                                        st.id === modalData.riskClassSubType
-                                    )?.label
+                                  riskClasses.Commercial.find(
+                                    (rc) => rc.id === "other"
+                                  )?.subTypes.find(
+                                    (st) => st.id === modalData.riskClassSubType
+                                  )?.label
                                 }`}
                             </span>
-                          </div>
+                          </div>{" "}
                           <div>
                             <span className="text-gray-600">Value Range:</span>
                             <span className="ml-2 font-medium">
-                              {modalData.minValue && modalData.maxValue
+                              {modalData.min_value && modalData.max_value
                                 ? `${Number(
-                                    modalData.minValue
+                                    modalData.min_value
                                   ).toLocaleString()} - ${Number(
-                                    modalData.maxValue
+                                    modalData.max_value
                                   ).toLocaleString()} KSH`
                                 : "Not set"}
                             </span>
@@ -424,9 +512,9 @@ const PremiumSetupModal = ({ isOpen, onClose, onSubmit }) => {
                           <div>
                             <span className="text-gray-600">Min Premium:</span>
                             <span className="ml-2 font-medium">
-                              {modalData.minPremium
+                              {modalData.min_premium
                                 ? `${Number(
-                                    modalData.minPremium
+                                    modalData.min_premium
                                   ).toLocaleString()} KSH`
                                 : "Not set"}
                             </span>

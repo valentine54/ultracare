@@ -50,7 +50,7 @@ const MotorPolicyForm = () => {
   };
   useEffect(() => {
     //+
-    console.log(formData)
+    // console.log(formData)
     if (!formData.category) {
       navigate("/policies/motor"); //+
     } //+

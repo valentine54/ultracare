@@ -104,3 +104,19 @@ export const UploadMotorInsurance = async (data) => {
   }
   
 }
+
+export const MotorInsuranceDetails = async (data) => {
+  try {
+    const response = await axiosInstance.post(`motorinsurance/details/`, data);
+    if (response.status === 200) {
+      console.log("Motor Insurance details:", response.data);
+      return response.data
+    } else {
+      console.error("Failed to fetch motor insurance details:", response.data);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error fetching motor insurance details:", error.response.data);
+    return false;
+  }
+}

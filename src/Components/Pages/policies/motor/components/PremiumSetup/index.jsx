@@ -101,14 +101,14 @@ const PremiumSetup = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {Number(range.minValue).toLocaleString()} -{" "}
-                      {Number(range.maxValue).toLocaleString()}
+                      {Number(range.min_value).toLocaleString()} -{" "}
+                      {Number(range.max_value).toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {range.rate}%
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      KSH {Number(range.minPremium).toLocaleString()}
+                      KSH {Number(range.min_premium).toLocaleString()}
                     </td>
                     {formData.category === "commercial" && (
                       <>
