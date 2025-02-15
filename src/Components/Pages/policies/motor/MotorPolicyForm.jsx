@@ -5,15 +5,17 @@ import DashboardLayout from "../../../common/layout/DashboardLayout";
 import { useMotorForm } from "./context/MotorFormContext";
 
 import BasicInformationStep from "./components/BasicInformation";
+import CoverTypeStep from "./components/CoverType"; // New import
 import PremiumSetupStep from "./components/PremiumSetup";
 import ExcessChargesStep from "./components/ExcessCharges";
 import AgeExperienceStep from "./components/AgeExperience";
 
 const steps = [
   { id: 1, name: "Basic Information" },
-  { id: 2, name: "Premium Setup" },
-  { id: 3, name: "Excess Charges" },
-  { id: 4, name: "Age & Experience" },
+  { id: 2, name: "Cover Type" }, // New step
+  { id: 3, name: "Premium Setup" },
+  { id: 4, name: "Excess Charges" },
+  { id: 5, name: "Age & Experience" },
 ];
 
 const MotorPolicyForm = () => {
@@ -21,25 +23,6 @@ const MotorPolicyForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const { formData } = useMotorForm();
   const [validateStep, setValidateStep] = useState(() => () => true); // Stores validation function
-
-  // Trigger validation before moving to next step
-  const handleNext = async () => {
-    if (validateStep) {
-      try {
-        const isValid = await validateStep(); // Call step validation
-        if (isValid) {
-          console.log("Final form data:", formData);
-          if (currentStep < steps.length) {
-            setCurrentStep((prev) => prev + 1);
-          } else {
-            // Handle final submission
-          }
-        }
-      } catch (error) {
-        console.error("Validation failed:", error);
-      }
-    }
-  };
 
   const handleBack = () => {
     if (currentStep === 1) {
@@ -57,7 +40,7 @@ const MotorPolicyForm = () => {
   }, [formData]); //
 
   // Render the correct step and pass `setValidateStep`
-  const renderStep = () => {
+  const renderStep2 = () => {
     switch (currentStep) {
       case 1:
         return <BasicInformationStep setValidateStep={setValidateStep} />;
@@ -66,6 +49,23 @@ const MotorPolicyForm = () => {
       case 3:
         return <ExcessChargesStep setValidateStep={setValidateStep} />;
       case 4:
+        return <AgeExperienceStep setValidateStep={setValidateStep} />;
+      default:
+        return null;
+    }
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <BasicInformationStep setValidateStep={setValidateStep} />;
+      case 2:
+        return <CoverTypeStep setValidateStep={setValidateStep} />; // New case
+      case 3:
+        return <PremiumSetupStep setValidateStep={setValidateStep} />;
+      case 4:
+        return <ExcessChargesStep setValidateStep={setValidateStep} />;
+      case 5:
         return <AgeExperienceStep setValidateStep={setValidateStep} />;
       default:
         return null;
@@ -110,13 +110,13 @@ const MotorPolicyForm = () => {
                     </div>
                     <span
                       className={`
-                      mt-2 text-xs sm:text-sm font-medium text-center
-                      ${
-                        currentStep >= step.id
-                          ? "text-blue-500"
-                          : "text-gray-500"
-                      }
-                    `}
+                        mt-2 text-xs sm:text-sm font-medium text-center
+                        ${
+                          currentStep >= step.id
+                            ? "text-blue-500"
+                            : "text-gray-500"
+                        }
+                      `}
                     >
                       {step.name}
                     </span>
