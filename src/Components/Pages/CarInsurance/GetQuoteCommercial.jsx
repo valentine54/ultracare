@@ -127,7 +127,7 @@ const GetQuoteCommercial = () => {
       numberOfPassengers: "",
       hasBeenValued: "yes",
     },
-    validationSchema: Yup.object({
+    validationSchema: Yup.object().shape({
       fullName: Yup.string().required("Full name is required"),
       email: Yup.string()
         .email("Invalid email address")
@@ -147,19 +147,23 @@ const GetQuoteCommercial = () => {
       riskClass: Yup.string().required("Risk class is required"),
       otherRiskClass: Yup.string().when("riskClass", {
         is: "other",
-        then: Yup.string().required("Other risk class is required"),
+        then: () => Yup.string().required("Other risk class is required"),
+        otherwise: () => Yup.string(),
       }),
       tonnage: Yup.string().when("vehicleType", {
         is: (type) =>
           !["trailer", "bus", "matatu", "prime_mover", "tanker"].includes(type),
-        then: Yup.string().required("Tonnage is required"),
+        then: () => Yup.string().required("Tonnage is required"),
+        otherwise: () => Yup.string(),
       }),
       numberOfPassengers: Yup.number().when("vehicleType", {
         is: (type) => ["matatu", "bus", "saloon"].includes(type),
-        then: Yup.number()
-          .required("Number of passengers is required")
-          .positive("Must be a positive number")
-          .integer("Must be a whole number"),
+        then: () =>
+          Yup.number()
+            .required("Number of passengers is required")
+            .positive("Must be a positive number")
+            .integer("Must be a whole number"),
+        otherwise: () => Yup.number(),
       }),
     }),
     onSubmit: async (values) => {

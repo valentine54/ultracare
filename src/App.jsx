@@ -56,10 +56,20 @@ import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentC
 import { AlertModalProvider } from "./Components/AlertModal";
 import PoliciesPage from "./Components/Pages/policies/index";
 
+// Motor Policy imports
+import { MotorFormProvider } from "./Components/Pages/policies/motor/context/MotorFormContext";
+import VehicleCategory from "./Components/Pages/policies/motor/components/VehicleCategory";
+import MotorPolicyForm from "./Components/Pages/policies/motor/MotorPolicyForm";
+import CoverDetails from "./Components/Pages/policies/motor/components/CoverDetails";
+import PremiumSetup from "./Components/Pages/policies/motor/components/PremiumSetup";
+import Benefits from "./Components/Pages/policies/motor/components/Benefits";
+import AgeExperience from "./Components/Pages/policies/motor/components/AgeExperience";
+
 const RoutedContent = () => {
   const location = useLocation();
-  const dashboardRoutes = [
+  const protectedRoutes = [
     "/signin",
+    "/dashboard",
     "/dashboard",
     "/policies",
     "/customers",
@@ -67,11 +77,14 @@ const RoutedContent = () => {
     "/settings",
     "/notifications",
   ];
-  const isDashboardRoute = dashboardRoutes.includes(location.pathname);
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
 
   return (
     <div className="app-wrapper">
-      {!isDashboardRoute && <Header />}
+      {!isProtectedRoute && <Header />}
       <main>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -96,6 +109,20 @@ const RoutedContent = () => {
           <Route path="/claims" element={<Claims />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/notifications" element={<Notifications />} />
+
+          {/* Motor Policy Routes */}
+          <Route
+            path="/policies/motor/*"
+            element={
+              <MotorFormProvider>
+                <Routes>
+                  <Route index element={<VehicleCategory />} />
+                  <Route path="form" element={<MotorPolicyForm />} />
+                </Routes>
+              </MotorFormProvider>
+            }
+          />
+
           {/* Personal Accident Routes */}
           <Route path="/personal-accident" element={<BasicInformation />} />
           <Route
@@ -109,9 +136,11 @@ const RoutedContent = () => {
             element={<MpesaPayment />}
           />
           <Route path="/individual-pension" element={<IndividualPension />} />
+
           {/* Types Routes */}
           <Route path="/request-quote" element={<RequestQuotation />} />
           <Route path="/compare-quotes" element={<CompareQuotes />} />
+
           {/* Quotes Routes */}
           <Route path="/individual-pension" element={<IndividualPension />} />
           <Route
@@ -126,6 +155,7 @@ const RoutedContent = () => {
             element={<DisabilityInsurance />}
           />
           <Route path="/family-accident" element={<FamilyAccident />} />
+
           {/* Main Navigation Routes */}
           <Route path="/services" element={<HomePageServices />} />
           <Route path="/contact" element={<ContactUs />} />
@@ -147,7 +177,7 @@ const RoutedContent = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <Footer />
+      {!isProtectedRoute && <Footer />}
     </div>
   );
 };
