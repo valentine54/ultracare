@@ -9,12 +9,17 @@ import FirstAssurance from "../../../assets/FirstAssurance.png";
 import QuoteHeader from "./QuoteHeader";
 import axios from "axios";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setMotorQuote } from "../../store/actions/appAction";
+
 const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5";
 const API_URL = "http://127.0.0.1:8000/api/v1.0/";
 
 const QuoteList = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const motorQuote = useSelector((state) => state.app.motorQuote);
   const [insurances, setInsurance] = useState([]);
   const [sortBy, setSortBy] = useState("relevance");
 
@@ -33,7 +38,7 @@ const QuoteList = () => {
         );
 
         if (response_data.status === 200) {
-          console.log("response data:", response_data.data)
+          // console.log("response data:", response_data.data);
           setInsurance(response_data.data.data);
         } else {
           console.error("Failed to filter:", response_data.data);
@@ -41,42 +46,27 @@ const QuoteList = () => {
       } catch (e) {
         console.log("error", e.response.data);
       } finally {
-        console.log("finally");
+        // console.log("finally");
       }
     };
     insuranceFilter();
   }, []);
-
-  // // API integration
-  // const fetchQuotes = async (userData) => {
-  //   try {
-  //     // API
-  //     const response = await fetch("/api/quotes", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(userData),
-  //     });
-  //     const data = await response.json();
-  //     setQuotes(data);
-  //   } catch (error) {
-  //     console.error("Error fetching quotes:", error);
-  //     setQuotes(mockInsuranceCompanies); // Fallback
-  //   }
-  // };
 
   // const handleViewBenefits = (companyId) => {
   //   // Handle benefits
   //   console.log("Viewing benefits for:", companyId);
   // };
 
-  const handleBuyPlan = (price, companyName) => {
-    navigate("/payment", {
-      state: {
-        amount: price,
-        email: location.state?.quoteData?.email,
-        company: companyName,
-      },
-    });
+  const handleBuyPlan = (quote) => {
+    const setDta = {
+      selected_quote: quote,
+      quoteData: location.state.quoteData,
+    };
+    dispatch(setMotorQuote(setDta));
+
+    console.log("oduihwioed", location);
+
+    navigate("/payment");
   };
 
   const QuoteCard = ({ quote }) => (
@@ -100,7 +90,7 @@ const QuoteList = () => {
               navigate("/addbenefits", {
                 state: {
                   insurances: insurances,
-                  quote:quote
+                  quote: quote,
                 },
               });
             }}
@@ -110,7 +100,7 @@ const QuoteList = () => {
             Add Benefits
           </button>
           <button
-            onClick={() => handleBuyPlan(quote.price, quote.company)}
+            onClick={() => handleBuyPlan(quote)}
             className="w-1/2 bg-blue-500 text-white py-2.5 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm"
           >
             <FaShoppingCart />
@@ -179,10 +169,7 @@ const QuoteList = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <QuoteCard
-                quote={quote}
-
-              />
+              <QuoteCard quote={quote} />
             </motion.div>
           ))}
         </div>

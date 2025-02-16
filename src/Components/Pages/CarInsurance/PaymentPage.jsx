@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import Header from "../PersonalAccident/Header";
 import Stepper from "../PersonalAccident/Stepper";
 import { CreditCard, Building2, Lock, ArrowRight } from "lucide-react";
@@ -11,9 +11,10 @@ import MastercardLogo from "../../../assets/masterCard.png";
 
 const PaymentPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [paymentType, setPaymentType] = useState("yearly");
   const [selectedMethod, setSelectedMethod] = useState("");
-
+console.log(location)
   const rates = {
     yearly: 3379,
     monthly: 320,

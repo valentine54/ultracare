@@ -1,6 +1,7 @@
 const initialState = {
   darkMode: localStorage.getItem("darkMode") === "true",
   motorPolicy: {},
+  motorQuote: {},
 };
 
 const appReducer = (state = initialState, action) => {
@@ -15,6 +16,11 @@ const appReducer = (state = initialState, action) => {
       return {
         ...state,
         motorPolicy: action.payload,
+      };
+    case "SET_MOTOR_QUOTE":
+      return {
+       ...state,
+        motorQuote: action.payload,
       };
 
 

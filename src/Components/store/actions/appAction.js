@@ -12,3 +12,11 @@ export const setMotorPolicy = (motorPolicy) => {
     payload: motorPolicy,
   };
 }
+
+
+export const setMotorQuote = (motorQuote) => { 
+  return {
+    type: "SET_MOTOR_QUOTE",
+    payload: motorQuote,
+  };
+}
