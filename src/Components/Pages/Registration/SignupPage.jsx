@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import Toast from "../../Toast/Toast";
 import { Signup } from "../../helper/insurances";
+
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +27,7 @@ const SignupPage = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value.trim(), // Trim input to avoid unnecessary spaces
+      [name]: value.trim(), 
     }));
   };
 
@@ -35,7 +36,9 @@ const SignupPage = () => {
     setToast({ message, type, visible: true });
     setTimeout(() => setToast({ ...toast, visible: false }), 3000);
   };
-
+  const url = location.pathname.includes("/login/org")
+    ? "organisation"
+    : "applicant";
   // Handles form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +85,7 @@ const SignupPage = () => {
       phone_number,
     };
 
-    await Signup(userData, showToast, setLoading);
+    await Signup(userData, showToast, setLoading,url);
   };
 
   return (
@@ -232,13 +235,6 @@ const SignupPage = () => {
                   </button>
                 </div>
               </div>
-              {/* Signup Link */}
-              <p className="text-gray-500 mt-4">
-                Already have an account?{" "}
-                <Link to="/login" className="text-blue-500">
-                  Login here!
-                </Link>
-              </p>
 
               {/* Return to Login (for Signup Page) */}
 
@@ -258,6 +254,13 @@ const SignupPage = () => {
             >
               <FaGoogle className="mr-2" /> Continue with Google
             </button>
+              {/* Signup Link */}
+              <p className="text-gray-500 mt-4">
+                Already have an account?{" "}
+                <Link to="/login" className="text-blue-500">
+                  Login here!
+                </Link>
+              </p>
           </div>
         </div>
         <div className="w-full md:w-1/2 bg-blue-100 p-8 hidden md:flex items-center justify-center">

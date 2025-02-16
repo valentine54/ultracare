@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import LandingPage from "./Components/Pages/Landing/LandingPage";
 import Header from "./Components/Header";
@@ -63,9 +63,15 @@ import MotorPolicyForm from "./Components/Pages/policies/motor/MotorPolicyForm";
 import PremiumSetup from "./Components/Pages/policies/motor/components/PremiumSetup";
 import Benefits from "./Components/Pages/policies/motor/components/Benefits";
 import AgeExperience from "./Components/Pages/policies/motor/components/AgeExperience";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+
+import { getCurrentUser } from "./Components/helper/insurances";
 const RoutedContent = () => {
   const location = useLocation();
+  const [user, setUser] = useState()
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user)
+  console.log(userData) 
   const protectedRoutes = [
     "/signin",
     "/dashboard",
@@ -81,6 +87,12 @@ const RoutedContent = () => {
     location.pathname.startsWith(route)
   );
 
+  useEffect(() => {
+    if (!user) {
+      getCurrentUser(dispatch)
+    }
+  },[])
+
   return (
     <div className="app-wrapper">
       {!isProtectedRoute && <Header />}
@@ -89,7 +101,7 @@ const RoutedContent = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login/*" element={<LoginPage />} />
           {/* Types Routes */}
           <Route path="/request-quote" element={<RequestQuotation />} />
           <Route path="/compare-quotes" element={<CompareQuotes />} />

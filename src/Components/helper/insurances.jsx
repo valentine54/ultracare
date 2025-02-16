@@ -3,6 +3,8 @@ import axios from "axios";
 const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5";
 const API_URL = "http://127.0.0.1:8000/api/v1.0/";
 
+import {loginAction} from '../store/actions/userAction'
+
 const axiosInstance = axios.create({
   baseURL: API_URL,
   withCredentials: true, // If you're using cookies or authentication
@@ -36,10 +38,23 @@ export const sendExcesses = async (userData, navigate, setLoading) => {
   }
 };
 
-export const Signup = async (data, showToast,setLoading) => {
+export const getCurrentUser = async (dispatch) => {
+  try {
+    const response = await axiosInstance.get(`applicant/me/`);
+    if (response.status === 200) {
+      // console.log("User Data:", response.data);
+      dispatch(loginAction(response.data));
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error.response?.data);
+  }
+};
+
+export const Signup = async (data, showToast,setLoading,url) => {
   console.log(data);
   try {
-    const response = await axiosInstance.post(`applicant/signup/`, data);
+    const response = await axiosInstance.post(`${url}/signup/`, data);
 
     if (response.status === 201) {
       showToast(
@@ -62,17 +77,15 @@ export const Signup = async (data, showToast,setLoading) => {
   }
 };
 
-export const Login = async (data, showToast, setLoading) => {
+export const Login = async (data, showToast, setLoading, url = "applicant",dispatch) => {
   try {
     setLoading(true); // Start loading
-    const response = await axiosInstance.post(
-      "organisation/login/",
-      data
-    );
+    const response = await axiosInstance.post(`${url}/login/`, data);
 
     if (response.status === 200) {
       showToast("Login successful!", "success");
       console.log("User Data:", response.data);
+      dispatch(loginAction(response.data?.user)); 
       return response.data; // Return user data if needed
     } else {
       showToast("Login failed. Please try again.", "error");

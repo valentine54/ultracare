@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import Toast from "../../Toast/Toast"; // Import Toast component
-import {Login} from "../../helper/insurances"
+import { Login } from "../../helper/insurances"
+import { useDispatch } from "react-redux";
 
 export default function LoginPage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state
   const [toast, setToast] = useState({ message: "", type: "", visible: false });
+
+  const dispatch = useDispatch();
+  const location = useLocation();
+  // console.log(location);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -29,6 +34,9 @@ export default function LoginPage() {
     setToast({ message, type, visible: true });
     setTimeout(() => setToast({ ...toast, visible: false }), 3000);
   };
+  const url = location.pathname.includes("/login/org")
+    ? "organisation"
+    : "applicant";
 
   // Simulate API call for login
   const handleSubmit = async (e) => {
@@ -49,7 +57,7 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    await Login(formData,showToast,setLoading)
+    await Login(formData,showToast,setLoading,url,dispatch)
   };
 
   return (
