@@ -6,29 +6,35 @@ import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { vehicleMakes } from "../../Constants/VehicleData";
+import axios from "axios";
+
+const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
+// const API_URL = "http://192.168.1.61:8000/api/v1.0/"
+const API_URL = "http://127.0.0.1:8000/api/v1.0/";
+
 
 // Insurance cover types
 const coverTypes = [
   {
-    value: "comprehensive",
+    value: "Comprehensive",
     label: "Comprehensive Cover",
     description: "Full coverage for your vehicle, third party, fire, and theft",
   },
   {
-    value: "thirdParty",
+    value: "Third Party Only",
     label: "Third Party Only",
     description: "Basic coverage for damage to other vehicles and property",
   },
   {
-    value: "thirdPartyFireTheft",
+    value: "Third Party Fire and Theft",
     label: "Third Party, Fire & Theft",
     description: "Coverage for third party damage plus fire and theft protection",
   },
-  {
-    value: "personalAccident",
-    label: "Personal Accident Cover",
-    description: "Additional coverage for personal injuries and medical expenses",
-  },
+  // {
+  //   value: "Personal Accident",
+  //   label: "Personal Accident Cover",
+  //   description: "Additional coverage for personal injuries and medical expenses",
+  // },
 ];
 
 // Vehicle classifications
@@ -43,7 +49,17 @@ const vehicleTypes = [
   { value: "van", label: "Van" },
   { value: "minivan", label: "Minivan" },
   { value: "motorcycle", label: "Motorcycle" },
+  { value: "isuzu", label: "Isuzu" },
+  { value: "ford", label: "Ford" },
+  { value: "man", label: "MAN" },
+  { value: "scania", label: "Scania" },
+  { value: "iveco", label: "Iveco" },
+  { value: "hino", label: "Hino" },
+  { value: "ashok-leyland", label: "Ashok Leyland" },
 ];
+
+const riskClassTypes = [{ value: "Motor_Private", label: "Motor Private" }];
+
 
 // Enhanced select styles
 const customSelectStyles = {
@@ -84,6 +100,8 @@ const GetQuote = () => {
   const [selectedMake, setSelectedMake] = useState(null);
   const [models, setModels] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const location = useLocation();
+  // console.log(location.state)
 
   const formik = useFormik({
     initialValues: {
@@ -93,10 +111,11 @@ const GetQuote = () => {
       coverType: "",
       vehicleValue: "",
       vehicleRegistration: "",
-      coverStartDate: format(new Date(), "yyyy-MM-dd"),
-      vehicleType: "",
+      coverStartDate: new Date().toISOString().split("T")[0], // Format as "yyyy-MM-dd"
+      // vehicleType: location.state?.vehicle_type || "", // Use vehicle_type from location.state
       vehicleMake: "",
       vehicleModel: "",
+      riskClass: "Motor_Private",
       hasBeenValued: "yes",
     },
     validationSchema: Yup.object({
@@ -118,28 +137,104 @@ const GetQuote = () => {
       vehicleType: Yup.string().required("Vehicle type is required"),
       vehicleMake: Yup.string().required("Vehicle make is required"),
       vehicleModel: Yup.string().required("Vehicle model is required"),
+      riskClass: Yup.string().required("Risk class is required"),
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
-      try {
-        const formattedValues = {
-          ...values,
-          vehicleValue: Number(values.vehicleValue),
-          quoteRequestDate: new Date().toISOString(),
-          referenceNumber: `QT-${Date.now().toString().slice(-6)}`,
-        };
+try {
+  console.log("Form Values:", values);
+
+  // Ensure fullName is properly handled
+  const fullName = values.fullName?.trim() || "";
+  const [first_name, ...lastNameParts] = fullName.split(/\s+/); // Handle multiple spaces
+  const last_name = lastNameParts.join(" ");
+
+  // Prepare data for API
+  const formattedValues = {
+    ...location?.state,
+    first_name: first_name || "Unknown", // Default to 'Unknown' if empty
+    last_name: last_name || "Unknown",
+    email: values.email,
+    id_no: values.idNumber,
+    vehicle_type: values.vehicleType,
+    vehicle_make: values.vehicleMake,
+    vehicle_model: values.vehicleModel,
+    vehicle_registration_number: values.vehicleRegistration,
+    cover_type: values.coverType,
+    vehicle_value: Number(values.vehicleValue) || 0, // Ensure it's a number
+    risk_name: values.riskClass,
+    cover_start_date: values.coverStartDate,
+    evaluated: values.hasBeenValued?.toLowerCase() === "yes", // Normalize and convert to boolean
+  };
+
+  console.log("Formatted Data:", formattedValues);
+
+  // Attempt to create a session
+  const response = await axios.post(
+    `${API_URL}applicant/motor_session/`,
+    formattedValues,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": API_KEY,
+      },
+    }
+  );
+
+  if (response.status === 201) {
+    console.log("Session created successfully.");
+
+    try {
+      // Fetch filtered data
+      const response_data = await axios.get(
+        `${API_URL}motorinsurance/filter/`,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY,
+          },
+        }
+      );
+
+      if (response_data.status === 200) {
+        console.log("Filtered data retrieved:", response_data.data);
 
         navigate("/quote-list", {
-          state: { quoteData: formattedValues },
+          state: {
+            server_response: response_data?.data,
+            quoteData: formattedValues,
+          },
         });
-      } catch (error) {
-        console.error("Submission error:", error);
-      } finally {
-        setIsSubmitting(false);
+      } else {
+        console.error("Failed to filter data:", response_data);
+        // alert("Something went wrong while fetching quotes. Please try again.");
       }
+    } catch (filterError) {
+      console.error("Error fetching filtered data:", filterError.response?.data);
+      if (filterError.response?.data?.message) {
+        alert(filterError.response?.data.message);
+      }
+    }
+  } else {
+    console.error("Session creation failed:", response);
+    // alert(
+    //   "Failed to create a session. Please check your details and try again."
+    // );
+  }
+} catch (error) {
+  console.error("Submission error:", error);
+  alert(
+    error.response?.data?.message ||
+      "An unexpected error occurred. Please try again."
+  );
+} finally {
+  setIsSubmitting(false);
+}
+
     },
   });
-
   // Form state 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -259,6 +354,25 @@ const GetQuote = () => {
                   {formik.touched.coverType && formik.errors.coverType && (
                     <p className="mt-1 text-sm text-red-600">
                       {formik.errors.coverType}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Risk Class
+                  </label>
+                  <Select
+                    options={riskClassTypes}
+                    styles={customSelectStyles}
+                    placeholder="Select risk class"
+                    onChange={(option) =>
+                      formik.setFieldValue("riskClass", option.value)
+                    }
+                  />
+                  {formik.touched.riskClass && formik.errors.riskClass && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {formik.errors.riskClass}
                     </p>
                   )}
                 </div>
@@ -394,15 +508,36 @@ const GetQuote = () => {
               <div className="flex items-center justify-end space-x-4 pt-6">
                 <button
                   type="button"
+                  onClick={() => navigate("/car-insurance")}
+                  className="px-8 py-3 bg-white border-2 border-blue-500 text-blue-500 rounded-xl hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 flex items-center space-x-2 font-medium"
+                >
+                  <svg
+                    className="w-5 h-5 transition-transform group-hover:-translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
+                  </svg>
+                  <span>Back</span>
+                </button>{" "}
+                {/* <button
+                  type="button"
                   disabled={isSubmitting}
                   onClick={() => {
-                    // Handle save draft 
+                    // Handle save draft
                     console.log("Saving draft...");
                   }}
                   className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Save Draft
-                </button>
+                </button> */}
                 <button
                   type="submit"
                   disabled={isSubmitting || !formik.isValid}

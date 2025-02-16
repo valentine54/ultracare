@@ -12,7 +12,6 @@ import {
 const PolicyDetails = () => {
   const navigate = useNavigate();
 
-  // API Data
   const policy = {
     id: "POL-2024-001",
     name: "Premium Health Insurance",
