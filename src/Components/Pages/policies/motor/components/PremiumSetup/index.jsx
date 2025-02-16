@@ -21,7 +21,6 @@ const PremiumSetup = ({handleNext}) => {
     });
 
   };
-  console.log("login usser data",formData);
 
   const handleSubmit = () => {
     if (formData.rate_ranges?.length>0) {

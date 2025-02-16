@@ -82,13 +82,13 @@ const RoutedContent = () => {
     "/settings",
     "/notifications",
   ];
-
+ 
   const isProtectedRoute = protectedRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
 
   useEffect(() => {
-    if (!user) {
+    if (!userData.loggedIn) { 
       getCurrentUser(dispatch)
     }
   },[])
@@ -100,7 +100,7 @@ const RoutedContent = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/signup/*" element={<SignupPage />} />
           <Route path="/login/*" element={<LoginPage />} />
           {/* Types Routes */}
           <Route path="/request-quote" element={<RequestQuotation />} />

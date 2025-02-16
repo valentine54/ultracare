@@ -4,9 +4,15 @@ import { Users, AlertCircle } from "lucide-react";
 import { useMotorForm } from "../../context/MotorFormContext";
 
 import { Additionalcharge } from "../../../../../helper/insurances";
+import { setMotorPolicy } from "../../../../../store/actions/appAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const AgeExperienceStep = ({handleNext}) => {
+const AgeExperienceStep = ({ handleNext }) => {
   const { formData, updateFormData } = useMotorForm();
+  const userData = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const updateDriverRequirements = (field, value) => {
     updateFormData({
@@ -33,15 +39,18 @@ const AgeExperienceStep = ({handleNext}) => {
     const data = {
       is_under_21: formData.driverRequirements.is_under_21,
       is_unexperienced: formData.driverRequirements?.is_unexperienced,
-
     };
-    const res = await Additionalcharge(data)
-    if (res.status === 201){
-      
-      handleNext();
+    const res = await Additionalcharge(data);
+    console.log(res);
+    if (res.status === 201) {
+      if (userData.loggedIn) {
+        dispatch(setMotorPolicy(formData));
+        setTimeout(() => {
+          navigate("/policies/motor");
+        }, [3000]);
+      }
     }
-
-  }
+  };
 
   return (
     <div className="space-y-6">

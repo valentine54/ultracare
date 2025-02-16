@@ -11,10 +11,10 @@ const appReducer = (state = initialState, action) => {
         ...state,
         darkMode: !state.darkMode,
       };
-    case "SET_POLICY_DETAILS":
+    case "SET_MOTOR_POLICY":
       return {
-       ...state,
-        policyDetails: action.payload,
+        ...state,
+        motorPolicy: action.payload,
       };
 
 

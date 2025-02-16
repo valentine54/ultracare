@@ -3,7 +3,7 @@ import axios from "axios";
 const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5";
 const API_URL = "http://127.0.0.1:8000/api/v1.0/";
 
-import {loginAction} from '../store/actions/userAction'
+import {loginAction,logoutAction} from '../store/actions/userAction'
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -42,7 +42,7 @@ export const getCurrentUser = async (dispatch) => {
   try {
     const response = await axiosInstance.get(`applicant/me/`);
     if (response.status === 200) {
-      // console.log("User Data:", response.data);
+      console.log("User Data:", response.data);
       dispatch(loginAction(response.data));
       return response.data;
     }
@@ -101,6 +101,18 @@ export const Login = async (data, showToast, setLoading, url = "applicant",dispa
   }
 };
 
+export const ServerLogout = async (dispatch) => { 
+  try {
+    const response = await axiosInstance.post("logout/");
+    console.log("Logged out successfully",response);
+    if (response.status === 200) {
+      dispatch(logoutAction());
+    }
+  } catch (error) {
+    console.error("Error logging out:", error.response);
+  }
+}
+
 export const UploadMotorInsurance = async (data) => {
   try {
     const response = await axiosInstance.post("motorinsurance/", data);
@@ -132,7 +144,7 @@ export const MotorInsuranceDetails = async (data) => {
 export const Additionalcharge = async (data) => {
   try {
     const response = await  axiosInstance.post(`motorinsurance/optionalcharges/`,data);
-    console.log("Additional charges:", response);
+    console.log("Additional charges:", response.data);
     return response
   } catch (error) {
     console.error("Error fetching additional charges:", error.response);

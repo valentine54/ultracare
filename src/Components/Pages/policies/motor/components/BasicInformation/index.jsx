@@ -64,7 +64,6 @@ const BasicInformationStep = ({ handleNext }) => {
     try {
       const res = await UploadMotorInsurance(formData2);
       if (res.status === 201) {
-        console.log("Data successfully sent to the backend!");
         handleNext()
       }
       return true;
