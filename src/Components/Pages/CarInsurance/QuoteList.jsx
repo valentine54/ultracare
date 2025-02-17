@@ -66,12 +66,11 @@ const QuoteList = () => {
     dispatch(setMotorQuote(setDta));
 
     {
-      !userData.loggedIn
-        ? navigate("/login")
-        : navigate("/payment");
+      !userData.loggedIn ? navigate("/login") : navigate("/user-dashboard");
     }
+    // if kyc=true take to payment directly else
 
-    console.log("oduihwioed", userData);
+    // console.log("oduihwioed", userData);
   };
 
   const QuoteCard = ({ quote }) => (
