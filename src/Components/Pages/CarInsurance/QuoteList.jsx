@@ -66,7 +66,7 @@ const QuoteList = () => {
     dispatch(setMotorQuote(setDta));
 
     {
-      userData.loggedIn
+      !userData.loggedIn
         ? navigate("/login")
         : navigate("/payment");
     }

@@ -59,6 +59,12 @@ import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentC
 import { AlertModalProvider } from "./Components/AlertModal";
 import PoliciesPage from "./Components/Pages/policies/index";
 
+import UserDashboard from "./Components/Pages/Dashboard/UserDashboard";
+import ForgotPassword from "./Components/Pages/Registration/ForgotPassword";
+import UploadDocuments from "./Components/Pages/Dashboard/UploadDocuments";
+import { ProgressProvider } from "./Components/Pages/Dashboard/ProgressContext";
+import Navigation from "./Components//Pages/Dashboard/Navigation";
+
 // Motor Policy imports
 import { MotorFormProvider } from "./Components/Pages/policies/motor/context/MotorFormContext";
 import VehicleCategory from "./Components/Pages/policies/motor/components/VehicleCategory";
@@ -185,8 +191,12 @@ const RoutedContent = () => {
           <Route path="/payment" element={<CarPayment />} />
           <Route path="/car-insurance/payment" element={<CarPaymentPage />} />
           <Route path="/car-insurance/mpesa" element={<CarMpesaPayment />} />
-
           <Route path="/pension-calculator" element={<PensionCalculator />} />
+          <Route path="/user-dashboard" element={<UserDashboard />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/upload-documents" element={<UploadDocuments />} />
+          <Route path="/navigation" element={<Navigation />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
@@ -199,9 +209,12 @@ const App = () => {
   return (
     <AlertModalProvider>
       <PersonalAccidentProvider>
+        <ProgressProvider>
+
         <BrowserRouter>
           <RoutedContent />
         </BrowserRouter>
+        </ProgressProvider>
       </PersonalAccidentProvider>
     </AlertModalProvider>
   );
