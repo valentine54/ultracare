@@ -58,11 +58,25 @@ const PhoneInputField = ({ value, onChange, error }) => {
 
   const handlePhoneChange = (e) => {
     const newNumber = e.target.value.replace(/\D/g, "");
+    // max 10 digits
+    if (newNumber.length > 10){
+      newNumber = newNumber.slice(0, 10);
+    }
+     // Ensure the leading zero stays
+    // if (!newNumber.startsWith("0")) {
+    //     newNumber = "0" + newNumber;
+    // }
+
+    
     setPhoneNumber(newNumber);
     updatePhoneValue(newNumber, selectedCountry);
   };
 
   const updatePhoneValue = (number, country) => {
+    if (number.startsWith("0")){
+      number = number.slice(1);
+    }
+
     if (onChange) {
       onChange(`+${country.code}${number}`);
     }

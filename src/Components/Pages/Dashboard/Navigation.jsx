@@ -3,13 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 import { BiSearch } from "react-icons/bi";
 import { FiMenu, FiX } from "react-icons/fi";
-import {
-  MdPolicy,
-  MdPayment,
-  MdSettings,
-  MdNotifications,
-  MdDashboard,
-} from "react-icons/md";
+import { MdPolicy, MdPayment, MdSettings, MdNotifications, MdDashboard } from "react-icons/md";
 import logo from "../../../assets/logo.png";
 
 const Navigation = () => {
@@ -39,11 +33,7 @@ const Navigation = () => {
             { to: "/policy", icon: <MdPolicy />, label: "Policy" },
             { to: "/payments", icon: <MdPayment />, label: "Payments" },
             { to: "/settings", icon: <MdSettings />, label: "Settings" },
-            {
-              to: "/notifications",
-              icon: <MdNotifications />,
-              label: "Notifications",
-            },
+            { to: "/notifications", icon: <MdNotifications />, label: "Notifications" }
           ].map((item) => (
             <Link
               key={item.to}
@@ -68,13 +58,10 @@ const Navigation = () => {
           {/* Left Side: Logo & Search */}
           <div className="flex items-center space-x-4">
             {/* Sidebar Toggle for Mobile */}
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden text-2xl"
-            >
+            <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-2xl">
               <FiMenu />
             </button>
-
+            
             {/* Logo */}
             <img src={logo} alt="Logo" className="h-10" />
 
@@ -109,9 +96,7 @@ const Navigation = () => {
         {/* Page Content (Push Down) */}
         <div className="pt-20 p-4">
           {/* Your page content will be placed here */}
-          <h1 className="text-xl font-semibold">
-            Car Insurance Quote In Progress
-          </h1>
+          <h1 className="text-xl font-semibold">Car Insurance Quote In Progress</h1>
         </div>
       </div>
     </div>

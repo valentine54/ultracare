@@ -139,5 +139,3 @@ const CarInsurance = () => {
 };
 
 export default CarInsurance;
-
-

@@ -8,16 +8,7 @@ export const ProgressProvider = ({ children }) => {
   const [uploadedFiles, setUploadedFiles] = useState({}); // Store uploaded files
 
   return (
-    <ProgressContext.Provider
-      value={{
-        progress,
-        setProgress,
-        uploadedDocuments,
-        setUploadedDocuments,
-        uploadedFiles,
-        setUploadedFiles,
-      }}
-    >
+    <ProgressContext.Provider value={{ progress, setProgress, uploadedDocuments, setUploadedDocuments, uploadedFiles, setUploadedFiles  }}>
       {children}
     </ProgressContext.Provider>
   );

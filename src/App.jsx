@@ -105,7 +105,11 @@ const RoutedContent = () => {
 
   return (
     <div className="app-wrapper">
-      {!isProtectedRoute && <Header />}
+      {/* {!isProtectedRoute && <Header />} */}
+      {  location.pathname !== "/navigation" &&
+                location.pathname !== "/upload-documents" &&
+                location.pathname !== "/user-dashboard" && <Header />
+      }
       <main>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -200,7 +204,11 @@ const RoutedContent = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isProtectedRoute && <Footer />}
+      {  location.pathname !== "/navigation" &&
+                location.pathname !== "/upload-documents" &&
+                location.pathname !== "/user-dashboard" && <Footer />
+      }
+      {/* {!isProtectedRoute && <Footer />} */}
     </div>
   );
 };
