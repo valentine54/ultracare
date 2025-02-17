@@ -1,29 +1,30 @@
+// src/Components/Pages/Dashboard/DashboardPayment/MpesaPayment.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, useLocation,Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Phone, Shield, ArrowRight, Loader } from "lucide-react";
-import QuoteHeader from "./QuoteHeader";
-import QuoteSummary from "./QuoteSummary";
-import MpesaLogo from "../../../assets/Mpesa.png";
+import MpesaLogo from "../../../../assets/Mpesa.png";
 
-const MpesaPayment = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+const MpesaPayment = ({ onBack }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [apiError, setApiError] = useState(null);
 
-  // Store
+  // Get quote data from Redux store
   const motorQuote = useSelector((state) => state.app.motorQuote);
-  const { selected_quote, quoteData } = motorQuote || {};
-
-  if (!selected_quote || !quoteData) {
-    navigate("/car-insurance");
-    return null;
-  }
+  const { selected_quote, quoteData } = motorQuote || {
+    selected_quote: {
+      base_premium: 25000,
+      company_name: "Test Insurance Co",
+    },
+    quoteData: {
+      first_name: "John",
+      last_name: "Doe",
+      vehicle_registration_number: "KBA 123A",
+    },
+  };
 
   const validatePhone = (number) => {
     const phoneRegex =
@@ -96,10 +97,16 @@ const MpesaPayment = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <QuoteHeader />
-        <QuoteSummary />
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="mb-6 text-blue-600 hover:text-blue-700 flex items-center gap-2"
+          >
+            ← Back to Payment Options
+          </button>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -143,7 +150,6 @@ const MpesaPayment = () => {
                       <input
                         type="tel"
                         value={phoneNumber}
-                        
                         onChange={handlePhoneChange}
                         placeholder="e.g. 0712345678"
                         className={`w-full px-4 py-3 rounded-lg border ${
@@ -200,12 +206,14 @@ const MpesaPayment = () => {
                     Please check your phone for the M-Pesa prompt to complete
                     the payment
                   </p>
-                  <button
-                    onClick={() => navigate("/payment")}
-                    className="text-blue-500 hover:text-blue-600 font-medium"
-                  >
-                    Return to payment options
-                  </button>
+                  {onBack && (
+                    <button
+                      onClick={onBack}
+                      className="text-blue-500 hover:text-blue-600 font-medium"
+                    >
+                      Return to payment options
+                    </button>
+                  )}
                 </motion.div>
               )}
 
@@ -218,16 +226,6 @@ const MpesaPayment = () => {
             </div>
           </div>
         </motion.div>
-
-        <motion.button
-          onClick={() => navigate(-1)}
-          className="mt-8 bg-white text-blue-500 font-semibold py-3 px-8 rounded-lg
-          border-2 border-blue-500 hover:bg-gray-50 transition-colors duration-200"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          Back to Payment Options
-        </motion.button>
       </div>
     </div>
   );

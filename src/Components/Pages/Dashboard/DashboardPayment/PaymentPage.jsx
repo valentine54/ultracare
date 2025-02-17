@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CreditCard, Building2, Lock, ArrowRight } from "lucide-react";
-import QuoteHeader from "./QuoteHeader";
-import QuoteSummary from "./QuoteSummary";
-import MpesaLogo from "../../../assets/Mpesa.png";
-import PaypalLogo from "../../../assets/Paypal.png";
-import MastercardLogo from "../../../assets/masterCard.png";
+import QuoteHeader from "../../CarInsurance/QuoteHeader";
+import QuoteSummary from "../../CarInsurance/QuoteSummary";
+import MpesaLogo from "../../../../assets/Mpesa.png";
+import PaypalLogo from "../../../../assets/Paypal.png";
+import MastercardLogo from "../../../../assets/masterCard.png";
 
-const PaymentPage = () => {
+const PaymentPage = ({ onMpesaSelect, onBack }) => {
   const navigate = useNavigate();
   const [paymentType, setPaymentType] = useState("full");
   const [selectedMethod, setSelectedMethod] = useState("");
@@ -96,9 +96,8 @@ const PaymentPage = () => {
           ...motorQuote,
         },
       });
-    }
-    else {
-      alert("comming soon")
+    } else {
+      alert("comming soon");
     }
   };
 
