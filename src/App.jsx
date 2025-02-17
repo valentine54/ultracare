@@ -30,8 +30,8 @@ import AddBenefits from "./Components/Pages/CarInsurance/AddBenefits";
 import GetQuoteCommercial from "./Components/Pages/CarInsurance/GetQuoteCommercial";
 import GetQuotePSV from "./Components/Pages/CarInsurance/GetQuotePSV";
 
-import CarPaymentPage from "./Components/Pages/CarInsurance/PaymentPage";
-import CarMpesaPayment from "./Components/Pages/CarInsurance/MpesaPayment";
+import CarPaymentPage from "./Components/Pages/Dashboard/DashboardPayment/PaymentPage";
+import CarMpesaPayment from "./Components/Pages/Dashboard/DashboardPayment/MpesaPayment";
 
 // import BasicInformationForm from "./Components/Pages/PersonalAccident/BasicInformationForm";
 // import { InsuranceFormProvider } from "./Components/Context/InsuranceFormContext";
@@ -53,17 +53,21 @@ import BasicInformation from "./Components/Pages/PersonalAccident/BasicInformati
 import HealthLifestyle from "./Components/Pages/PersonalAccident/HealthAndLifestyle";
 import Quote from "./Components/Pages/PersonalAccident/QuotePage";
 import Payment from "./Components/Pages/PersonalAccident/PaymentPage";
-import CarPayment from "./Components/Pages/CarInsurance/PaymentPage";
+import CarPayment from "./Components/Pages/Dashboard/DashboardPayment/PaymentPage";
 import MpesaPayment from "./Components/Pages/PersonalAccident/MpesaPayment";
 import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentContext";
 import { AlertModalProvider } from "./Components/AlertModal";
 import PoliciesPage from "./Components/Pages/policies/index";
 
-import UserDashboard from "./Components/Pages/Dashboard/UserDashboard";
+import UserDashboard from "./Components/Pages/Dashboard/UserDashboard/";
 import ForgotPassword from "./Components/Pages/Registration/ForgotPassword";
 import UploadDocuments from "./Components/Pages/Dashboard/UploadDocuments";
 import { ProgressProvider } from "./Components/Pages/Dashboard/ProgressContext";
 import Navigation from "./Components//Pages/Dashboard/Navigation";
+
+import PaymentsSection from "./Components/Pages/Dashboard/PaymentsSection";
+import DashboardPaymentPage from "./Components/Pages/Dashboard/DashboardPayment/PaymentPage";
+import DashboardMpesaPayment from "./Components/Pages/Dashboard/DashboardPayment/MpesaPayment";
 
 // Motor Policy imports
 import { MotorFormProvider } from "./Components/Pages/policies/motor/context/MotorFormContext";
@@ -72,16 +76,15 @@ import MotorPolicyForm from "./Components/Pages/policies/motor/MotorPolicyForm";
 import PremiumSetup from "./Components/Pages/policies/motor/components/PremiumSetup";
 import Benefits from "./Components/Pages/policies/motor/components/Benefits";
 import AgeExperience from "./Components/Pages/policies/motor/components/AgeExperience";
-import { useSelector,useDispatch } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
 
 import { getCurrentUser } from "./Components/helper/insurances";
 const RoutedContent = () => {
   const location = useLocation();
-  const [user, setUser] = useState()
+  const [user, setUser] = useState();
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user)
-  // console.log(userData.data) 
+  const userData = useSelector((state) => state.user);
+  // console.log(userData.data)
   const protectedRoutes = [
     "/signin",
     "/dashboard",
@@ -92,16 +95,16 @@ const RoutedContent = () => {
     "/settings",
     "/notifications",
   ];
- 
+
   const isProtectedRoute = protectedRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
 
   useEffect(() => {
-    if (!userData.loggedIn) { 
-      getCurrentUser(dispatch)
+    if (!userData.loggedIn) {
+      getCurrentUser(dispatch);
     }
-  },[])
+  }, []);
 
   return (
     <div className="app-wrapper">
@@ -126,14 +129,46 @@ const RoutedContent = () => {
             <Route path="quote" element={<PersonalAccidentQuote />} />
             <Route path="payment" element={<PersonalAccidentPayment />} />
           </Route> */}
-          <Route path="/dashboard" element={<Dashboard />} />{" "}
-          {/* Dashboard route */}
+          {/* Company Dashboard Routes */}
+          <Route path="/company-dashboard" element={<Dashboard />} />
           <Route path="/policies" element={<Policies />} />
           <Route path="/policies/:category" element={<PoliciesPage />} />
           <Route path="/customers" element={<CustomerPage />} />
           <Route path="/claims" element={<Claims />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/notifications" element={<Notifications />} />
+
+          {/* User Dashboard Routes */}
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProgressProvider>
+                <Navigation>
+                  <Routes>
+                    <Route index element={<UserDashboard />} />
+                    <Route path="upload" element={<UploadDocuments />} />
+                    <Route
+                      path="payments/*"
+                      element={
+                        <Routes>
+                          <Route index element={<PaymentsSection />} />
+                          <Route
+                            path="payment"
+                            element={<DashboardPaymentPage />}
+                          />
+                          <Route
+                            path="mpesa"
+                            element={<DashboardMpesaPayment />}
+                          />
+                        </Routes>
+                      }
+                    />
+                  </Routes>
+                </Navigation>
+              </ProgressProvider>
+            }
+          />
+
           {/* Motor Policy Routes */}
           <Route
             path="/policies/motor/*"
@@ -196,11 +231,9 @@ const RoutedContent = () => {
           <Route path="/car-insurance/payment" element={<CarPaymentPage />} />
           <Route path="/car-insurance/mpesa" element={<CarMpesaPayment />} />
           <Route path="/pension-calculator" element={<PensionCalculator />} />
-          <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/upload-documents" element={<UploadDocuments />} />
-          <Route path="/navigation" element={<Navigation />} />
 
+          <Route path="/navigation" element={<Navigation />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
@@ -218,10 +251,9 @@ const App = () => {
     <AlertModalProvider>
       <PersonalAccidentProvider>
         <ProgressProvider>
-
-        <BrowserRouter>
-          <RoutedContent />
-        </BrowserRouter>
+          <BrowserRouter>
+            <RoutedContent />
+          </BrowserRouter>
         </ProgressProvider>
       </PersonalAccidentProvider>
     </AlertModalProvider>
