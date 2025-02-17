@@ -30,6 +30,9 @@ import AddBenefits from "./Components/Pages/CarInsurance/AddBenefits";
 import GetQuoteCommercial from "./Components/Pages/CarInsurance/GetQuoteCommercial";
 import GetQuotePSV from "./Components/Pages/CarInsurance/GetQuotePSV";
 
+import CarPaymentPage from "./Components/Pages/CarInsurance/PaymentPage";
+import CarMpesaPayment from "./Components/Pages/CarInsurance/MpesaPayment";
+
 // import BasicInformationForm from "./Components/Pages/PersonalAccident/BasicInformationForm";
 // import { InsuranceFormProvider } from "./Components/Context/InsuranceFormContext";
 // import PersonalAccidentHealth from "./Components/Pages/PersonalAccident/PersonalAccidentHealth";
@@ -64,6 +67,7 @@ import PremiumSetup from "./Components/Pages/policies/motor/components/PremiumSe
 import Benefits from "./Components/Pages/policies/motor/components/Benefits";
 import AgeExperience from "./Components/Pages/policies/motor/components/AgeExperience";
 import { useSelector,useDispatch } from "react-redux";
+
 
 import { getCurrentUser } from "./Components/helper/insurances";
 const RoutedContent = () => {
@@ -179,6 +183,9 @@ const RoutedContent = () => {
           <Route path="/pension" element={<Pension />} />
           <Route path="/addbenefits" element={<AddBenefits />} />
           <Route path="/payment" element={<CarPayment />} />
+          <Route path="/car-insurance/payment" element={<CarPaymentPage />} />
+          <Route path="/car-insurance/mpesa" element={<CarMpesaPayment />} />
+
           <Route path="/pension-calculator" element={<PensionCalculator />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
