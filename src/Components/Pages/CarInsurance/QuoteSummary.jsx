@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 const QuoteSummary = () => {
   const location = useLocation();
   const quoteData = location.state?.quoteData 
-
+// console.log(location.state)
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
       

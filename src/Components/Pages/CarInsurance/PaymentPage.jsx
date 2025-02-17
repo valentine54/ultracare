@@ -97,7 +97,9 @@ const PaymentPage = () => {
         },
       });
     }
-    // Handle other payment methods here
+    else {
+      alert("comming soon")
+    }
   };
 
   return (

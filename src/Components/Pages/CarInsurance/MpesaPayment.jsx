@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Phone, Shield, ArrowRight, Loader } from "lucide-react";
 import QuoteHeader from "./QuoteHeader";
@@ -143,6 +143,7 @@ const MpesaPayment = () => {
                       <input
                         type="tel"
                         value={phoneNumber}
+                        
                         onChange={handlePhoneChange}
                         placeholder="e.g. 0712345678"
                         className={`w-full px-4 py-3 rounded-lg border ${
@@ -200,7 +201,7 @@ const MpesaPayment = () => {
                     the payment
                   </p>
                   <button
-                    onClick={() => navigate("/car-insurance/payment")}
+                    onClick={() => navigate("/payment")}
                     className="text-blue-500 hover:text-blue-600 font-medium"
                   >
                     Return to payment options
@@ -219,7 +220,7 @@ const MpesaPayment = () => {
         </motion.div>
 
         <motion.button
-          onClick={() => navigate("/car-insurance/payment")}
+          onClick={() => navigate(-1)}
           className="mt-8 bg-white text-blue-500 font-semibold py-3 px-8 rounded-lg
           border-2 border-blue-500 hover:bg-gray-50 transition-colors duration-200"
           whileHover={{ scale: 1.02 }}

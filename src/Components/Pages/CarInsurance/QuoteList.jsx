@@ -64,9 +64,9 @@ const QuoteList = () => {
     };
     dispatch(setMotorQuote(setDta));
 
-    console.log("oduihwioed", location);
+    console.log("oduihwioed", setDta);
 
-    navigate("/payment");
+    navigate("/payment",{state: setDta});
   };
 
   const QuoteCard = ({ quote }) => (
