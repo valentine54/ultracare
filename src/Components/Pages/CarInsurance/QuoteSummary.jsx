@@ -1,10 +1,13 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const QuoteSummary = () => {
   const location = useLocation();
-  const quoteData = location.state?.quoteData 
-// console.log(location.state)
+  
+  const motorQuote = useSelector((state) => state.app.motorQuote);
+  const quoteData = motorQuote.quoteData; 
+// console.log(motorQuote);
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
       

@@ -75,7 +75,7 @@ const RoutedContent = () => {
   const [user, setUser] = useState()
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user)
-  console.log(userData) 
+  // console.log(userData.data) 
   const protectedRoutes = [
     "/signin",
     "/dashboard",

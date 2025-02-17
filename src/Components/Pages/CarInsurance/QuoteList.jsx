@@ -20,6 +20,7 @@ const QuoteList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const motorQuote = useSelector((state) => state.app.motorQuote);
+  const userData = useSelector((state) => state.user);
   const [insurances, setInsurance] = useState([]);
   const [sortBy, setSortBy] = useState("relevance");
 
@@ -64,9 +65,13 @@ const QuoteList = () => {
     };
     dispatch(setMotorQuote(setDta));
 
-    console.log("oduihwioed", setDta);
+    {
+      userData.loggedIn
+        ? navigate("/login")
+        : navigate("/payment");
+    }
 
-    navigate("/payment",{state: setDta});
+    console.log("oduihwioed", userData);
   };
 
   const QuoteCard = ({ quote }) => (
