@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { useDispatch } from "react-redux";
+
+import { ServerLogout } from "../../../helper/insurances";
 
 const ProfileMenu = ({ userName, userEmail }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const menuItems = [
     { icon: User, label: "My Profile", action: () => {} },
@@ -11,7 +15,7 @@ const ProfileMenu = ({ userName, userEmail }) => {
     {
       icon: LogOut,
       label: "Sign Out",
-      action: () => {},
+      action: () => { ServerLogout(dispatch);},
       className: "text-red-600",
     },
   ];

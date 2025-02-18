@@ -56,15 +56,43 @@ const PhoneInputField = ({ value, onChange, error }) => {
     updatePhoneValue(phoneNumber, country);
   };
 
+  // const handlePhoneChange2 = (e) => {
+  //   const newNumber = e.target.value.replace(/\D/g, "");
+  //   // max 10 digits
+  //   if (newNumber.length > 10){
+  //     newNumber = newNumber.slice(0, 10);
+  //   }
+  //    // Ensure the leading zero stays
+  //   // if (!newNumber.startsWith("0")) {
+  //   //     newNumber = "0" + newNumber;
+  //   // }
+
+    
+  //   setPhoneNumber(newNumber);
+  //   updatePhoneValue(newNumber, selectedCountry);
+  // };
+  
   const handlePhoneChange = (e) => {
-    const newNumber = e.target.value.replace(/\D/g, "");
+    let newNumber = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+
+    // Ensure max 10 digits
+    if (newNumber.length > 10) {
+      newNumber = newNumber.slice(0, 10);
+    }
+
     setPhoneNumber(newNumber);
     updatePhoneValue(newNumber, selectedCountry);
   };
 
   const updatePhoneValue = (number, country) => {
+    if (!number) return; // Prevent empty values
+
+    if (number.startsWith("0")) {
+      number = number.slice(1);
+    }
+    const formattedNumber = `+${country.code}${number}`;
     if (onChange) {
-      onChange(`+${country.code}${number}`);
+      onChange(formattedNumber);
     }
   };
 
@@ -132,6 +160,7 @@ const PhoneInputField = ({ value, onChange, error }) => {
           type="tel"
           value={phoneNumber}
           onChange={handlePhoneChange}
+          max={10}
           placeholder="Enter phone number"
           className={`flex-1 h-[44px] rounded-xl border ${
             error

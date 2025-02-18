@@ -10,6 +10,9 @@ import PremiumSetupStep from "./components/PremiumSetup";
 import ExcessChargesStep from "./components/ExcessCharges";
 import AgeExperienceStep from "./components/AgeExperience";
 
+import { setMotorPolicy } from "../../../store/actions/appAction";
+import { useDispatch,useSelector } from "react-redux";
+
 const steps = [
   { id: 1, name: "Basic Information" },
   { id: 2, name: "Cover Type" }, // New step
@@ -20,7 +23,9 @@ const steps = [
 
 const MotorPolicyForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [currentStep, setCurrentStep] = useState(1);
+  const motorPolicy = useSelector((state) => state.app.motorPolicy);
   const { formData } = useMotorForm();
   const [validateStep, setValidateStep] = useState(() => () => true); // Stores validation function
 
@@ -30,10 +35,11 @@ const MotorPolicyForm = () => {
       try {
         const isValid = await validateStep(); // Call step validation
         if (isValid) {
-          console.log("Final form data:", formData);
           if (currentStep < steps.length) {
             setCurrentStep((prev) => prev + 1);
           } else {
+            dispatch(setMotorPolicy(formData))
+            console.log("Final form data:", motorPolicy||formData);
             // Handle final submission
           }
         }

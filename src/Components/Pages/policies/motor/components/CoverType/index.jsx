@@ -35,6 +35,7 @@ const CoverTypeStep = ({ handleNext }) => {
   };
 
   const handleSubmit = () => {
+    console.log(formData)
     if (formData.cover_type) {
       handleNext();
     }

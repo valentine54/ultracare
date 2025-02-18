@@ -3,10 +3,12 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { sendExcesses } from "../../helper/insurances";
+import { useSelector } from "react-redux";
 
 export default function AddBenefits() {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useSelector((state)=>state.user)
   // console.log(location.state)
 
   // Extract insurances & selected quote from navigation state
@@ -32,15 +34,15 @@ export default function AddBenefits() {
         : [...prevSelected, id]
     );
   };
-
+// console.log(selectedInsurance);
   const sendData = () => {
     const dataToSend = {
       insurance_id: selectedInsurance?.insurance_id,
-      selected_excess_charges: selectedItems, 
-      total_premium: selectedInsurance?.total_premium,
+      selected_excess_charges: selectedItems,
+      total_premium: selectedInsurance?.base_premium,
     };
 
-    sendExcesses(dataToSend,navigate);
+    sendExcesses(dataToSend, navigate, user);
   };
 
   return (
@@ -88,7 +90,7 @@ export default function AddBenefits() {
               </p>
               <p className="text-gray-600">
                 <span className="font-medium">Total Premium:</span> Ksh.{" "}
-                {selectedInsurance.total_premium}
+                {selectedInsurance.base_premium}
               </p>
             </div>
           </div>
