@@ -100,6 +100,15 @@ const RoutedContent = () => {
     "/notifications",
   ];
 
+  const isCompanySection = [
+    "/policies",
+    "/claims",
+    "/settings",
+    "/customers",
+    "/notifications",
+  ].some(path => location.pathname.startsWith(path));
+
+
   const isCompanyDashboardRoute =
     location.pathname.includes("/company-dashboard");
 
@@ -125,6 +134,7 @@ const RoutedContent = () => {
     <div className="app-wrapper">
       {!isDashboardRoute &&
         !isCompanyDashboardRoute &&
+        !isCompanySection &&
         location.pathname !== "/navigation" &&
         location.pathname !== "/upload-documents" && <Header />}
 
@@ -136,7 +146,7 @@ const RoutedContent = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* Company Dashboard Routes */}
-          <Route path="/company-dashboard/*" element={<Dashboard />} />
+          <Route path="/company-dashboard/" element={<Dashboard />} />
           <Route path="/policies" element={<Policies />} />
           <Route path="/policies/:category" element={<PoliciesPage />} />
           <Route path="/customers" element={<CustomerPage />} />
