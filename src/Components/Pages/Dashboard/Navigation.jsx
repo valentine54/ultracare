@@ -5,13 +5,23 @@ import { BiSearch } from "react-icons/bi";
 import { FiMenu, FiX } from "react-icons/fi";
 import { MdPolicy, MdPayment, MdSettings, MdNotifications, MdDashboard } from "react-icons/md";
 import logo from "../../../assets/logo.png";
+import { Routes, Route } from "react-router-dom";
+
+
+import UserDashboard from "./UserDashboard";
+import UploadDocuments from "./UploadDocuments";
+import PaymentsSection from "./PaymentsSection";
+// import DashboardPaymentPage from '../Dashboard/DashboardPayment/'
+
+import DashboardPaymentPage from "../Dashboard/DashboardPayment/PaymentPage";
+import DashboardMpesaPayment from "../Dashboard/DashboardPayment/MpesaPayment";
 
 const Navigation = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation(); // Get current route
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex bg-gray-100">
       {/* Sidebar Overlay for Mobile */}
       {sidebarOpen && (
         <div
@@ -29,7 +39,11 @@ const Navigation = () => {
         {/* Sidebar Navigation */}
         <nav className="space-y-2 mt-4">
           {[
-            { to: "/dashboard", icon: <MdDashboard />, label: "Dashboard" },
+            {
+              to: "/user-dashboard",
+              icon: <MdDashboard />,
+              label: "Dashboard",
+            },
             {
               to: "/user-dashboard/policy",
               icon: <MdPolicy />,
@@ -71,10 +85,10 @@ const Navigation = () => {
           <div className="flex items-center space-x-4">
             {/* Sidebar Toggle for Mobile */}
             <button
-              onClick={() => setSidebarOpen(true)}
+              onClick={() => setSidebarOpen(!sidebarOpen)}
               className="lg:hidden text-2xl"
             >
-              <FiMenu />
+              {sidebarOpen ? <FiX /> : <FiMenu />}
             </button>
 
             {/* Logo */}
@@ -108,12 +122,24 @@ const Navigation = () => {
           </div>
         </div>
 
-        {/* Page Content (Push Down) */}
         <div className="pt-20 p-4">
           {/* Your page content will be placed here */}
-          <h1 className="text-xl font-semibold">
-            Car Insurance Quote In Progress
-          </h1>
+
+          {/* Page Content (Push Down) */}
+          <Routes>
+            <Route index element={<UserDashboard />} />
+            <Route path="upload" element={<UploadDocuments />} />
+            <Route
+              path="payments/*"
+              element={
+                <Routes>
+                  <Route index element={<PaymentsSection />} />
+                  <Route path="payment" element={<DashboardPaymentPage />} />
+                  <Route path="mpesa" element={<DashboardMpesaPayment />} />
+                </Routes>
+              }
+            />
+          </Routes>
         </div>
       </div>
     </div>

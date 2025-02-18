@@ -56,21 +56,21 @@ const PhoneInputField = ({ value, onChange, error }) => {
     updatePhoneValue(phoneNumber, country);
   };
 
-  const handlePhoneChange2 = (e) => {
-    const newNumber = e.target.value.replace(/\D/g, "");
-    // max 10 digits
-    if (newNumber.length > 10){
-      newNumber = newNumber.slice(0, 10);
-    }
-     // Ensure the leading zero stays
-    // if (!newNumber.startsWith("0")) {
-    //     newNumber = "0" + newNumber;
-    // }
+  // const handlePhoneChange2 = (e) => {
+  //   const newNumber = e.target.value.replace(/\D/g, "");
+  //   // max 10 digits
+  //   if (newNumber.length > 10){
+  //     newNumber = newNumber.slice(0, 10);
+  //   }
+  //    // Ensure the leading zero stays
+  //   // if (!newNumber.startsWith("0")) {
+  //   //     newNumber = "0" + newNumber;
+  //   // }
 
     
-    setPhoneNumber(newNumber);
-    updatePhoneValue(newNumber, selectedCountry);
-  };
+  //   setPhoneNumber(newNumber);
+  //   updatePhoneValue(newNumber, selectedCountry);
+  // };
   
   const handlePhoneChange = (e) => {
     let newNumber = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters

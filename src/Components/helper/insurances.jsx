@@ -13,15 +13,23 @@ const axiosInstance = axios.create({
     "x-api-key": API_KEY,
   },
 });
+const axiosInstance2 = axios.create({
+  baseURL: API_URL,
+  withCredentials: true, // If you're using cookies or authentication
+  headers: {
+    "Content-Type": "multipart/form-data",
+    "x-api-key": API_KEY,
+  },
+});
 
 // Optional: Add an interceptor to handle errors globally
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.error("API Error:", error.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     console.error("API Error:", error.response?.data || error.message);
+//     return Promise.reject(error);
+//   }
+// );
 
 export const sendExcesses = async (userData, navigate, setLoading) => {
   try {
@@ -148,6 +156,32 @@ export const Additionalcharge = async (data) => {
     return response
   } catch (error) {
     console.error("Error fetching additional charges:", error.response);
+    return false;
+  }
+}
+
+export const CheckQyc = async (navigate,setError) => {
+  try {
+    const response = await axiosInstance.get(`applicant/kyc/`);
+    console.log("Check Qyc:", response.data);
+    setError(response.data?.message)
+    // return response
+  } catch (error) {
+    if (error.response.data.error ) {
+      setError(error.response.data.error||"Please upload all KYC documents before proceeding.");
+    }
+      console.error("Error fetching check Qyc:", error.response?.data);
+  }
+}
+
+export const sendQycDocs = async (docs) => {
+  try {
+    const response = await axiosInstance2.post(`applicant/kyc/`, docs,);
+    console.log("KYC Documents sent successfully:", response.data);
+
+    return response
+  } catch (error) {
+    console.error("Error sending KYC documents:", error.response.data);
     return false;
   }
 }

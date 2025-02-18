@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate,Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { Upload } from "lucide-react";
 import firstAssurance from "../../../assets/FirstAssurance.png";
 import {
@@ -23,6 +23,9 @@ import {
   MdSettings,
   MdNotifications,
 } from "react-icons/md";
+import { useSelector } from "react-redux";
+
+import { CheckQyc } from "../../helper/insurances";
 
 const insuranceData = {
   coverage: "Personal Accident",
@@ -40,85 +43,24 @@ const coverStatisticsData = [
 ];
 
 const UserDashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [error, setError] = useState('');
+
+
+  const motorQuote = useSelector((state) => state.app.motorQuote);
   const { uploadedDocuments, setUploadedDocuments, progress, setProgress } =
     useProgress();
   const navigate = useNavigate();
 
+  console.log(motorQuote);
+
+  useEffect(() => {
+    CheckQyc(navigate,setError);
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside
-        className={`w-64 bg-white p-5 shadow-lg fixed h-full transform transition-transform duration-200 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0`}
-      >
-        <img src={logo} alt="Logo" className="h-10" />
-        <nav className="mt-5">
-          {/* <a
-            href="#"
-            className="flex items-center p-2 text-blue-600 bg-blue-100 rounded"
-          >
-            <MdDashboard className="mr-2" />
-            <span>Dashboard</span>
-          </a> */}
-          <Link
-            to="/user-dashboard/policy"
-            className="flex items-center p-2 hover:bg-gray-200 rounded"
-          >
-            <MdPolicy className="mr-2" />
-            <span>Policy</span>
-          </Link>
-          <a
-            href="#"
-            className="flex items-center p-2 hover:bg-gray-200 rounded"
-          >
-            <MdPayment className="mr-2" />
-            <span>Payments</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center p-2 hover:bg-gray-200 rounded"
-          >
-            <MdSettings className="mr-2" />
-            <span>Settings</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center p-2 hover:bg-gray-200 rounded"
-          >
-            <MdNotifications className="mr-2" />
-            <span>Notifications</span>
-          </a>
-        </nav>
-      </aside>
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:ml-64">
-        {/* Top Navigation Bar */}
-        <div className="bg-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden text-xl"
-            >
-              <FiMenu />
-            </button>
-            <div className="flex items-center border p-2 rounded-md bg-gray-100 w-48 lg:w-96">
-              <BiSearch className="text-gray-600" />
-              <input
-                type="text"
-                placeholder="Search here..."
-                className="ml-2 outline-none bg-transparent w-full"
-              />
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <FaBell className="text-gray-600 text-xl" />
-            <FaUserCircle className="text-gray-600 text-xl" />
-          </div>
-        </div>
-
         {/* Dashboard Content */}
         <div className="p-6 space-y-6">
           {/* Insurance Progress Section */}
@@ -155,52 +97,76 @@ const UserDashboard = () => {
               </div>
             </div>
 
-            <button
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 flex flex-col items-center w-13 h-20 mt-4 lg:mt-0"
-              onClick={() => navigate("/upload-documents")}
+
+
+            <Link
+              className="mt-6 items-center flex flex-col bg-blue-100 text-red-500 px-4 py-2 rounded-lg mx-auto w-fit hover:bg-blue-200 transition-colors"
+              to="upload"
             >
-              <Upload className="w-6 h-6" />
-              <span className="text-sm">Upload Documents</span>
-            </button>
+            <Upload className="w-6 h-6" />
+              {error || error.message }
+            </Link>
+
+
           </div>
 
           {/* Insurance Summary & Cover Statistics */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Insurance Summary */}
-            <div className="bg-white p-5 rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold mb-4">Insurance Summary</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Coverage:</span>
-                  <span className="font-medium">{insuranceData.coverage}</span>
+            {!motorQuote && (
+              <div className="bg-white p-5 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold mb-4">
+                  Insurance Summary
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center border-b pb-2">
+                    <span className="text-gray-600">Coverage:</span>
+                    <span className="font-medium">
+                      {insuranceData.coverage}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center border-b pb-2">
+                    <span className="text-gray-600">Premium Schedule:</span>
+                    <span className="font-medium">
+                      {insuranceData.premiumSchedule}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center border-b pb-2">
+                    <span className="text-gray-600">Premium Amount:</span>
+                    <span className="font-medium">
+                      {insuranceData.premiumAmount}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center border-b pb-2">
+                    <span className="text-gray-600">Status:</span>
+                    <span className="text-green-600 font-medium">
+                      {insuranceData.status}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Due Date:</span>
+                    <span className="font-medium">{insuranceData.dueDate}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Premium Schedule:</span>
-                  <span className="font-medium">
-                    {insuranceData.premiumSchedule}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Premium Amount:</span>
-                  <span className="font-medium">
-                    {insuranceData.premiumAmount}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Status:</span>
-                  <span className="text-green-600 font-medium">
-                    {insuranceData.status}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Due Date:</span>
-                  <span className="font-medium">{insuranceData.dueDate}</span>
-                </div>
+                {console.log(error)}
+
+                {error ? (
+                  <Link
+                    className="mt-6 bg-blue-100 text-red-500 px-4 py-2 rounded-lg mx-auto block w-fit hover:bg-blue-200 transition-colors"
+                    to="upload"
+                  >
+                    {error}
+                  </Link>
+                ) : (
+                  <Link
+                    className="mt-6 bg-blue-600 text-white px-4 py-2 rounded-lg mx-auto block w-48 hover:bg-blue-700 transition-colors"
+                    to="/user-dashboard/payments"
+                  >
+                    Proceed to Payment
+                  </Link>
+                )}
               </div>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mt-6 mx-auto block w-48 hover:bg-blue-700 transition-colors">
-                View More Details
-              </button>
-            </div>
+            )}
 
             {/* Cover Statistics */}
             <div className="bg-white p-5 rounded-lg shadow-md">

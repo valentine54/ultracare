@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { useProgress } from "./ProgressContext";
 import PaymentPage from "./DashboardPayment/PaymentPage";
 import MpesaPayment from "./DashboardPayment/MpesaPayment";
@@ -7,7 +7,7 @@ const PaymentsSection = () => {
   const { progress } = useProgress();
   const [paymentStep, setPaymentStep] = useState("list"); 
 
-  if (progress < 100) {
+  if (progress > 100) {
     return (
       <div className="p-6">
         <div className="bg-yellow-50 border border-yellow-100 rounded-lg p-4">

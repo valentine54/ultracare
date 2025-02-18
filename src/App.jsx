@@ -59,7 +59,7 @@ import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentC
 import { AlertModalProvider } from "./Components/AlertModal";
 import PoliciesPage from "./Components/Pages/policies/index";
 
-import UserDashboard from "./Components/Pages/Dashboard/UserDashboard";
+// import UserDashboard from "./Components/Pages/Dashboard/UserDashboard";
 import ForgotPassword from "./Components/Pages/Registration/ForgotPassword";
 import UploadDocuments from "./Components/Pages/Dashboard/UploadDocuments";
 import { ProgressProvider } from "./Components/Pages/Dashboard/ProgressContext";
@@ -143,26 +143,7 @@ const RoutedContent = () => {
             element={
               <ProgressProvider>
                 <Navigation>
-                  <Routes>
-                    <Route index element={<UserDashboard />} />
-                    <Route path="upload" element={<UploadDocuments />} />
-                    <Route
-                      path="payments/*"
-                      element={
-                        <Routes>
-                          <Route index element={<PaymentsSection />} />
-                          <Route
-                            path="payment"
-                            element={<DashboardPaymentPage />}
-                          />
-                          <Route
-                            path="mpesa"
-                            element={<DashboardMpesaPayment />}
-                          />
-                        </Routes>
-                      }
-                    />
-                  </Routes>
+                  
                 </Navigation>
               </ProgressProvider>
             }

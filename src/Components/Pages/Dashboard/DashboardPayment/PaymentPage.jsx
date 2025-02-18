@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -19,11 +19,13 @@ const PaymentPage = ({ onMpesaSelect, onBack }) => {
   const motorQuote = useSelector((state) => state.app.motorQuote);
   const { selected_quote, quoteData } = motorQuote || {};
 
-  if (!selected_quote || !quoteData) {
-    navigate("/car-insurance");
-    return null;
-  }
+  useEffect(() => { 
+    // if (!selected_quote || !quoteData) {
+    //   navigate("/car-insurance");
+     
+    // }
 
+  },[])
   const calculateTotal = () => {
     const premium = selected_quote?.base_premium || 0;
     const tax = premium * 0.16; // 16% tax
