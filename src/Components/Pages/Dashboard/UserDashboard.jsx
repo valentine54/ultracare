@@ -19,16 +19,28 @@ import firstAssurance from "../../../assets/FirstAssurance.png";
 
 const UserDashboard = () => {
   const [error, setError] = useState("");
+  const [kycStatus, setKycStatus] = useState({});
 
   const motorQuote = useSelector((state) => state.app.motorQuote);
-  const { uploadedDocuments, setUploadedDocuments, progress, setProgress } =
-    useProgress();
+  const { progress, setProgress } = useProgress();
   const navigate = useNavigate();
 
-  console.log(motorQuote);
+  // console.log(motorQuote);
 
   useEffect(() => {
-    CheckQyc(navigate, setError);
+    const checkKyc = async () => {
+      try {
+        const res = await CheckQyc(setProgress, setKycStatus);
+        console.log(res.response?.data.error);
+        setError(
+          res.response?.data?.error ||
+            "Failed to check KYC status. Please try again."
+        );
+      } catch (error) {
+        console.error("Error checking KYC status:", error);
+      }
+    };
+    checkKyc();
   }, []);
 
   // Sample data for the chart
@@ -88,13 +100,19 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        <button
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 flex flex-col items-center w-32 h-24 mt-4 lg:mt-0 transition-colors"
-          onClick={() => navigate("/user-dashboard/upload")}
-        >
-          <Upload className="w-6 h-6 mt-2" />
-          <span className="text-sm mt-2">Upload Documents</span>
-        </button>
+        {kycStatus?.status === "success" ? (
+          <button className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 flex flex-col items-center  mt-4 lg:mt-0 transition-colors">
+            <span className="text- -600 ">{kycStatus?.message}</span>
+          </button>
+        ) : (
+          <button
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 flex flex-col items-center w-32 h-24 mt-4 lg:mt-0 transition-colors"
+            onClick={() => navigate("/user-dashboard/upload")}
+          >
+            <Upload className="w-6 h-6 mt-2" />
+            <span className="text-sm mt-2">Upload Documents</span>
+          </button>
+        )}
       </div>
 
       {/* Insurance Summary & Cover Statistics */}
@@ -133,21 +151,21 @@ const UserDashboard = () => {
                   <span className="font-medium">{insuranceData.dueDate}</span>
                 </div>
               </div>
-              {console.log(error)}
+              {console.log(kycStatus)}
 
-              {error ? (
+              {kycStatus?.status === "success" ? (
                 <Link
-                  className="mt-6 bg-blue-100 text-red-500 px-4 py-2 rounded-lg mx-auto block w-fit hover:bg-blue-200 transition-colors"
-                  to="upload"
+                  className="mt-6 bg-blue-100 text-green-500 px-4 py-2 rounded-lg mx-auto block w-fit hover:bg-blue-200 transition-colors"
+                  to="/user-dashboard/payments"
                 >
-                  {error}
+                  proceed to payment{/* {kycStatus?.message} */}
                 </Link>
               ) : (
                 <Link
                   className="mt-6 bg-blue-600 text-white px-4 py-2 rounded-lg mx-auto block w-48 hover:bg-blue-700 transition-colors"
-                  to="/user-dashboard/payments"
+                  // to="/user-dashboard/payments"
                 >
-                  Proceed to Payment
+                  {kycStatus?.message}
                 </Link>
               )}
             </div>

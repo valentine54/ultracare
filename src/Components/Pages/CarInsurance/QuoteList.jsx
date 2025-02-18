@@ -63,6 +63,7 @@ const QuoteList = () => {
       selected_quote: quote,
       quoteData: location.state.quoteData,
     };
+    localStorage.setItem("insurance", setDta);
     dispatch(setMotorQuote(setDta));
 
     {

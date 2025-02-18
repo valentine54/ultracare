@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { FaUpload } from "react-icons/fa";
 import { useProgress } from "./ProgressContext";
 import { CheckCircle } from "lucide-react";
-
 import { sendQycDocs } from "../../helper/insurances";
 
-  const UploadDocuments = () => {
-    const navigate = useNavigate();
-
+const UploadDocuments = () => {
+  const navigate = useNavigate();
   const [isComplete, setIsComplete] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [kycDocs, setKycDocs] = useState([]);
+  const [errors, setErrors] = useState({}); // Track missing files
   const {
     uploadedDocuments,
     setUploadedDocuments,
@@ -19,14 +19,18 @@ import { sendQycDocs } from "../../helper/insurances";
     progress,
     setUploadedFiles,
   } = useProgress();
+  // console.log(kycDocs);
 
   // Required documents
   const requiredDocuments = [
-    "National ID/Passport",
-    "KRA PIN Certificate",
-    "Driving License",
-    "Logbook",
-    "Valuation Report (for comprehensive cover)",
+    { key: "national_id", label: "National ID/Passport" },
+    { key: "kra_pin_certificate", label: "KRA PIN Certificate" },
+    { key: "driving_license", label: "Driving License" },
+    { key: "log_book", label: "Logbook" },
+    {
+      key: "valuation_report",
+      label: "Valuation Report (for comprehensive cover)",
+    },
   ];
 
   useEffect(() => {
@@ -35,9 +39,6 @@ import { sendQycDocs } from "../../helper/insurances";
       setIsComplete(true);
     }
   }, [progress]);
-
-  const [kycDocs, setKycDocs] = useState({});
-  const [errors, setErrors] = useState({}); // Track missing files
 
   const handleFileUpload = (event, docType) => {
     const file = event.target.files[0];
@@ -75,12 +76,11 @@ import { sendQycDocs } from "../../helper/insurances";
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent default form submission
-
     let validationErrors = {};
     let isValid = true;
 
     // Check if all required documents are uploaded
-    Docsneeded.forEach((doc) => {
+    requiredDocuments.forEach((doc) => {
       if (!uploadedFiles[doc.key]) {
         validationErrors[doc.key] = true;
         isValid = false;
@@ -90,34 +90,15 @@ import { sendQycDocs } from "../../helper/insurances";
     setErrors(validationErrors);
 
     if (isValid) {
-      sendQycDocs(kycDocs, navigate, setLoading); // Send documents to the server
-      console.log("Submitting documents:", kycDocs);
-    }
-  };
-      const handleProceedToPayment = () => {
-    if (isComplete) {
-      setShowSuccess(true);
-      // Redirect after showing success message
+      sendQycDocs(kycDocs, navigate,setShowSuccess); // Send documents to the server
+      setShowSuccess(true); // Show success message
       setTimeout(() => {
-        navigate("/user-dashboard/payments?filter=pending");
-      }, 1200);
+      }, 10000); // Redirect after 2 seconds
     }
   };
-  
-  const Docsneeded = [
-    { key: "national_id", label: "National ID/Passport" },
-    { key: "kra_pin", label: "KRA PIN Certificate" },
-    { key: "driving_license", label: "Driving License" },
-    { key: "logbook", label: "Logbook" },
-    {
-      key: "valuation_report",
-      label: "Valuation Report (for comprehensive cover)",
-    },
-  ];
 
   return (
-
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto p-4">
       {showSuccess ? (
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
           <div className="bg-green-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
@@ -173,34 +154,36 @@ import { sendQycDocs } from "../../helper/insurances";
                 key={index}
                 className="bg-white rounded-lg shadow-sm p-4 border border-gray-200"
               >
-                <label className="block font-medium mb-2">{doc}</label>
+                <label className="block font-medium mb-2">{doc.label}</label>
                 <div
                   className={`flex justify-between items-center border p-3 rounded-md cursor-pointer
                     ${
-                      uploadedFiles[doc]
+                      uploadedFiles[doc.key]
                         ? "bg-blue-50 border-blue-200"
                         : "bg-gray-50"
                     }`}
                 >
                   <span
                     className={`${
-                      uploadedFiles[doc] ? "text-blue-700" : "text-gray-500"
+                      uploadedFiles[doc.key] ? "text-blue-700" : "text-gray-500"
                     }`}
                   >
-                    {uploadedFiles[doc]
-                      ? uploadedFiles[doc]
+                    {uploadedFiles[doc.key]
+                      ? uploadedFiles[doc.key]
                       : "Upload document"}
                   </span>
                   <label className="cursor-pointer">
                     <FaUpload
                       className={`${
-                        uploadedFiles[doc] ? "text-blue-600" : "text-gray-400"
+                        uploadedFiles[doc.key]
+                          ? "text-blue-600"
+                          : "text-gray-400"
                       }`}
                     />
                     <input
                       type="file"
                       className="hidden"
-                      onChange={(e) => handleFileUpload(e, doc)}
+                      onChange={(e) => handleFileUpload(e, doc.key)}
                       accept=".pdf,.jpg,.jpeg,.png"
                     />
                   </label>
@@ -216,12 +199,12 @@ import { sendQycDocs } from "../../helper/insurances";
 
           <div className="mt-8 flex justify-end">
             <button
+              type="submit"
               className={`px-6 py-3 rounded-lg flex items-center transition-all duration-200 ${
                 isComplete
                   ? "bg-blue-600 text-white hover:bg-blue-700 shadow-md"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
-              onClick={handleProceedToPayment}
               disabled={!isComplete}
             >
               {isComplete
@@ -232,7 +215,7 @@ import { sendQycDocs } from "../../helper/insurances";
         </form>
       )}
 
-      <style >{`
+      <style>{`
         @keyframes progress {
           0% {
             width: 0%;

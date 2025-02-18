@@ -59,7 +59,7 @@ export const getCurrentUser = async (dispatch) => {
   }
 };
 
-export const Signup = async (data, showToast,setLoading,url) => {
+export const Signup = async (data, showToast,setLoading,url,navigate) => {
   console.log(data);
   try {
     const response = await axiosInstance.post(`${url}/signup/`, data);
@@ -71,9 +71,9 @@ export const Signup = async (data, showToast,setLoading,url) => {
       );
       console.log(response.data);
 
-      // setTimeout(() => {
-      //   window.location.href = "/login";
-      // }, 3000);
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
     }
   } catch (error) {
     console.error("Error signing up:", error);
@@ -160,27 +160,41 @@ export const Additionalcharge = async (data) => {
   }
 }
 
-export const CheckQyc = async (navigate,setError) => {
+export const CheckQyc = async (setProgress, setKycStatus) => {
   try {
     const response = await axiosInstance.get(`applicant/kyc/`);
-    console.log("Check Qyc:", response.data);
-    setError(response.data?.message)
-    // return response
-  } catch (error) {
-    if (error.response.data.error ) {
-      setError(error.response.data.error||"Please upload all KYC documents before proceeding.");
+    if (response.status === 200) {
+      console.log("Check Qyc:", response.data);
+      setKycStatus({
+        status: "success",
+        message: response.data?.message,
+      });
+      setProgress(100);
     }
-      console.error("Error fetching check Qyc:", error.response?.data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching check Qyc:", error);
+    if (error.response?.data?.error) {
+      setKycStatus({
+        status: "failure",
+        message: error.response.data?.error,
+      })
+    }
+    return error;
   }
-}
+};
 
-export const sendQycDocs = async (docs) => {
+export const sendQycDocs = async (docs,navigate,setShowError) => {
   try {
     const response = await axiosInstance2.post(`applicant/kyc/`, docs,);
-    console.log("KYC Documents sent successfully:", response.data);
+    if (response.status === 201) {
+      console.log("KYC Documents sent successfully:", response.data);
+      navigate(`/user-dashboard/payments`, { replace: true });
+    }
 
     return response
   } catch (error) {
+    setShowError(false);
     console.error("Error sending KYC documents:", error.response.data);
     return false;
   }

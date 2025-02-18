@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { vehicleMakes } from "../../Constants/VehicleData";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5"
 // const API_URL = "http://192.168.1.61:8000/api/v1.0/"
@@ -100,13 +101,15 @@ const GetQuote = () => {
   const [selectedMake, setSelectedMake] = useState(null);
   const [models, setModels] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const userData = useSelector((state) => state.user.userData)
+
   const location = useLocation();
   // console.log(location.state)
 
   const formik = useFormik({
     initialValues: {
       fullName: "",
-      email: "",
+      email: userData.email ||"" ,
       idNumber: "",
       coverType: "",
       vehicleValue: "",
@@ -299,6 +302,7 @@ const GetQuote = () => {
                   <input
                     type="email"
                     name="email"
+                  // value={ud}
                     {...formik.getFieldProps("email")}
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your email"

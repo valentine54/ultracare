@@ -5,6 +5,8 @@ import { Link,useLocation } from "react-router-dom";
 import Toast from "../../Toast/Toast";
 import { Signup } from "../../helper/insurances";
 
+import { useSelector } from "react-redux";
+
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,12 +14,14 @@ const SignupPage = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const [toast, setToast] = useState({ message: "", type: "", visible: false });
 
+  const motorQuote = useSelector((state) => state.app.motorQuote);
+  console.log(motorQuote);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    id_no: "",
-    phone_number: "",
-    email: "",
+    firstName: motorQuote?.quoteData?.first_name || "",
+    lastName: motorQuote?.quoteData?.last_name || "",
+    id_no: motorQuote?.quoteData?.id_no || "",
+    phone_number: motorQuote?.quoteData?.phoneNumber || "",
+    email: motorQuote?.quoteData?.email || "",
     password: "",
     confirmPassword: "",
   });
@@ -118,7 +122,9 @@ const SignupPage = () => {
                   <input
                     type="text"
                     name="firstName"
-                    value={formData.firstName}
+                    value={
+                       formData.firstName
+                    }
                     onChange={handleChange}
                     placeholder="John"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
@@ -131,7 +137,9 @@ const SignupPage = () => {
                   <input
                     type="text"
                     name="lastName"
-                    value={formData.lastName}
+                    value={
+                       formData.lastName
+                    }
                     onChange={handleChange}
                     placeholder="Doe"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
@@ -254,13 +262,13 @@ const SignupPage = () => {
             >
               <FaGoogle className="mr-2" /> Continue with Google
             </button>
-              {/* Signup Link */}
-              <p className="text-gray-500 mt-4">
-                Already have an account?{" "}
-                <Link to="/login" className="text-blue-500">
-                  Login here!
-                </Link>
-              </p>
+            {/* Signup Link */}
+            <p className="text-gray-500 mt-4">
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-500">
+                Login here!
+              </Link>
+            </p>
           </div>
         </div>
         <div className="w-full md:w-1/2 bg-blue-100 p-8 hidden md:flex items-center justify-center">

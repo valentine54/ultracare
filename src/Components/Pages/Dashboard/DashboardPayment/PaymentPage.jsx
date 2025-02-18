@@ -27,14 +27,13 @@ const PaymentPage = () => {
   };
 
   useEffect(() => { 
-    // if (!selected_quote || !quoteData) {
-    //   navigate("/car-insurance");
-     
-    // }
-  const { selected_quote } = motorQuote;
-
+    if (!motorQuote) {
+      navigate("/car-insurance");
+    }
+    
   },[])
   const calculateTotal = () => {
+    const { selected_quote } = motorQuote;
     const premium = selected_quote?.base_premium || 25000;
     const tax = premium * 0.16; 
     const total = premium + tax;
