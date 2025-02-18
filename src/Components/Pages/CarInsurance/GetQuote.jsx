@@ -111,6 +111,7 @@ const GetQuote = () => {
       coverType: "",
       vehicleValue: "",
       vehicleRegistration: "",
+      phoneNumber: location.state.phoneNumber,
       coverStartDate: new Date().toISOString().split("T")[0], // Format as "yyyy-MM-dd"
       // vehicleType: location.state?.vehicle_type || "", // Use vehicle_type from location.state
       vehicleMake: "",
@@ -141,98 +142,103 @@ const GetQuote = () => {
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
-try {
-  console.log("Form Values:", values);
+      try {
+        console.log("Form Values:", values);
 
-  // Ensure fullName is properly handled
-  const fullName = values.fullName?.trim() || "";
-  const [first_name, ...lastNameParts] = fullName.split(/\s+/); // Handle multiple spaces
-  const last_name = lastNameParts.join(" ");
+        // Ensure fullName is properly handled
+        const fullName = values.fullName?.trim() || "";
+        const [first_name, ...lastNameParts] = fullName.split(/\s+/); // Handle multiple spaces
+        const last_name = lastNameParts.join(" ");
 
-  // Prepare data for API
-  const formattedValues = {
-    ...location?.state,
-    first_name: first_name || "Unknown", // Default to 'Unknown' if empty
-    last_name: last_name || "Unknown",
-    email: values.email,
-    id_no: values.idNumber,
-    vehicle_type: values.vehicleType,
-    vehicle_make: values.vehicleMake,
-    vehicle_model: values.vehicleModel,
-    vehicle_registration_number: values.vehicleRegistration,
-    cover_type: values.coverType,
-    vehicle_value: Number(values.vehicleValue) || 0, // Ensure it's a number
-    risk_name: values.riskClass,
-    cover_start_date: values.coverStartDate,
-    evaluated: values.hasBeenValued?.toLowerCase() === "yes", // Normalize and convert to boolean
-  };
+        // Prepare data for API
+        const formattedValues = {
+          ...location?.state,
+          first_name: first_name || "Unknown", // Default to 'Unknown' if empty
+          last_name: last_name || "Unknown",
+          email: values.email,
+          id_no: values.idNumber,
+          vehicle_type: values.vehicleType,
+          vehicle_make: values.vehicleMake,
+          vehicle_model: values.vehicleModel,
+          vehicle_registration_number: values.vehicleRegistration,
+          cover_type: values.coverType,
+          vehicle_value: Number(values.vehicleValue) || 0, // Ensure it's a number
+          risk_name: values.riskClass,
+          cover_start_date: values.coverStartDate,
+          evaluated: values.hasBeenValued?.toLowerCase() === "yes", // Normalize and convert to boolean
+        };
 
-  console.log("Formatted Data:", formattedValues);
+        // console.log("Formatted Data:", formattedValues);
 
-  // Attempt to create a session
-  const response = await axios.post(
-    `${API_URL}applicant/motor_session/`,
-    formattedValues,
-    {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": API_KEY,
-      },
-    }
-  );
+        // Attempt to create a session
+        const response = await axios.post(
+          `${API_URL}applicant/motor_session/`,
+          formattedValues,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": API_KEY,
+            },
+          }
+        );
 
-  if (response.status === 201) {
-    console.log("Session created successfully.");
+        if (response.status === 201) {
+          console.log("Session created successfully.");
 
-    try {
-      // Fetch filtered data
-      const response_data = await axios.get(
-        `${API_URL}motorinsurance/filter/`,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": API_KEY,
-          },
+          try {
+            // Fetch filtered data
+            const response_data = await axios.get(
+              `${API_URL}motorinsurance/filter/`,
+              {
+                withCredentials: true,
+                headers: {
+                  "Content-Type": "application/json",
+                  "x-api-key": API_KEY,
+                },
+              }
+            );
+
+            if (response_data.status === 200) {
+              console.log(
+                "Filtered data retrieved:",
+                response_data.data
+              );
+
+              navigate("/quote-list", {
+                state: {
+                  server_response: response_data?.data,
+                  quoteData: formattedValues,
+                },
+              });
+            } else {
+              console.error("Failed to filter data:", response_data);
+              // alert("Something went wrong while fetching quotes. Please try again.");
+            }
+          } catch (filterError) {
+            console.error(
+              "Error fetching filtered data:",
+              filterError.response?.data
+            );
+            if (filterError.response?.data?.message) {
+              alert(filterError.response?.data.message);
+            }
+          }
+        } else {
+          console.error("Session creation failed:", response);
+          // alert(
+          //   "Failed to create a session. Please check your details and try again."
+          // );
         }
-      );
-
-      if (response_data.status === 200) {
-        console.log("Filtered data retrieved:", response_data.data);
-
-        navigate("/quote-list", {
-          state: {
-            server_response: response_data?.data,
-            quoteData: formattedValues,
-          },
-        });
-      } else {
-        console.error("Failed to filter data:", response_data);
-        // alert("Something went wrong while fetching quotes. Please try again.");
+      } catch (error) {
+        console.error("Submission error:", error);
+        alert(
+          error.response?.data?.message ||
+            "An unexpected error occurred. Please try again."
+        );
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (filterError) {
-      console.error("Error fetching filtered data:", filterError.response?.data);
-      if (filterError.response?.data?.message) {
-        alert(filterError.response?.data.message);
-      }
-    }
-  } else {
-    console.error("Session creation failed:", response);
-    // alert(
-    //   "Failed to create a session. Please check your details and try again."
-    // );
-  }
-} catch (error) {
-  console.error("Submission error:", error);
-  alert(
-    error.response?.data?.message ||
-      "An unexpected error occurred. Please try again."
-  );
-} finally {
-  setIsSubmitting(false);
-}
-
     },
   });
   // Form state 
@@ -540,7 +546,7 @@ try {
                 </button> */}
                 <button
                   type="submit"
-                  disabled={isSubmitting || !formik.isValid}
+                  // disabled={isSubmitting || !formik.isValid}
                   className="px-8 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
