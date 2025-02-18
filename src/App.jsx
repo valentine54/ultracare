@@ -59,7 +59,7 @@ import { PersonalAccidentProvider } from "./Components/Context/PersonalAccidentC
 import { AlertModalProvider } from "./Components/AlertModal";
 import PoliciesPage from "./Components/Pages/policies/index";
 
-import UserDashboard from "./Components/Pages/Dashboard/UserDashboard/";
+import UserDashboard from "./Components/Pages/Dashboard/UserDashboard";
 import ForgotPassword from "./Components/Pages/Registration/ForgotPassword";
 import UploadDocuments from "./Components/Pages/Dashboard/UploadDocuments";
 import { ProgressProvider } from "./Components/Pages/Dashboard/ProgressContext";
@@ -108,11 +108,10 @@ const RoutedContent = () => {
 
   return (
     <div className="app-wrapper">
-      {/* {!isProtectedRoute && <Header />} */}
-      {  location.pathname !== "/navigation" &&
-                location.pathname !== "/upload-documents" &&
-                location.pathname !== "/user-dashboard" && <Header />
-      }
+      {/* {!isProtectedRoute && <Navigation />} */}
+      {location.pathname !== "/navigation" &&
+        location.pathname !== "/upload-documents" &&
+        !location.pathname.startsWith("/user-dashboard") && <Header />}
       <main>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -140,7 +139,7 @@ const RoutedContent = () => {
 
           {/* User Dashboard Routes */}
           <Route
-            path="/dashboard/*"
+            path="/user-dashboard/*"
             element={
               <ProgressProvider>
                 <Navigation>
@@ -237,10 +236,9 @@ const RoutedContent = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {  location.pathname !== "/navigation" &&
-                location.pathname !== "/upload-documents" &&
-                location.pathname !== "/user-dashboard" && <Footer />
-      }
+      {location.pathname !== "/navigation" &&
+        location.pathname !== "/upload-documents" &&
+        location.pathname !== "/user-dashboard" && <Footer />}
       {/* {!isProtectedRoute && <Footer />} */}
     </div>
   );
