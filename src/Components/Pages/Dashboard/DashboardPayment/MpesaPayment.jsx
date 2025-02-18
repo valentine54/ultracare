@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { Phone, Shield, ArrowRight, Loader } from "lucide-react";
 import MpesaLogo from "../../../../assets/Mpesa.png";
-
+import { sendSTK } from "../../../helper/insurances";
+import { MdDescription } from "react-icons/md";
 const MpesaPayment = ({ onBack }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -13,37 +14,29 @@ const MpesaPayment = ({ onBack }) => {
   const [apiError, setApiError] = useState(null);
 
   // Get quote data from Redux store
-  const motorQuote = useSelector((state) => state.app.motorQuote);
-  const { selected_quote, quoteData } = motorQuote || {
-    selected_quote: {
-      base_premium: 25000,
-      company_name: "Test Insurance Co",
-    },
-    quoteData: {
-      first_name: "John",
-      last_name: "Doe",
-      vehicle_registration_number: "KBA 123A",
-    },
-  };
+  const motorQuote = JSON.parse(localStorage.getItem("insurance"));
+  const { selected_quote, quoteData } = motorQuote;
 
   const validatePhone = (number) => {
-    const phoneRegex =
-      /^(?:254|\+254|0)?(7(?:(?:[129][0-9])|(?:0[0-8])|(4[0-1]))[0-9]{6})$/;
+    const phoneRegex = /^(?:254|\+254|0)?(7\d{8})$/;
     return phoneRegex.test(number);
   };
 
   const formatPhoneNumber = (number) => {
     if (!number) return number;
-    const cleaned = number.replace(/\D/g, "");
-    if (cleaned.length === 0) return cleaned;
-    if (cleaned.startsWith("254")) return cleaned;
-    if (cleaned.startsWith("0")) return "254" + cleaned.slice(1);
-    return "254" + cleaned;
+
+    const cleaned = number.replace(/\D/g, ""); // Remove non-numeric characters
+
+    if (cleaned.startsWith("254")) return cleaned; // Already in correct format
+    if (cleaned.startsWith("0")) return "254" + cleaned.slice(1); // Convert 07XXXXXXXX to 2547XXXXXXXX
+
+    return "254" + cleaned; // If missing country code, add 254
   };
 
   const handlePhoneChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric input
     setPhoneNumber(value);
+
     if (error) setError("");
     if (apiError) setApiError(null);
   };
@@ -61,39 +54,14 @@ const MpesaPayment = ({ onBack }) => {
     setError("");
     setApiError(null);
 
-    try {
-      const response = await fetch("/api/car-insurance/payment/mpesa", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phoneNumber: formattedPhone,
-          amount: selected_quote.base_premium,
-          quoteData: quoteData,
-          selected_quote: selected_quote,
-        }),
-      });
+    const data = {
+      phoneNumber: formattedPhone,
+      amount: selected_quote.base_premium,
+      description: selected_quote.description,
+    };
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        if (errorData.code === "INSUFFICIENT_FUNDS") {
-          setApiError("Insufficient funds in M-Pesa account");
-          return;
-        }
-        if (errorData.code === "INVALID_PHONE") {
-          setApiError("Please check your phone number");
-          return;
-        }
-        setApiError(errorData.message || "Payment initiation failed");
-        return;
-      }
-
-      setSuccess(true);
-    } catch (err) {
-      setApiError("Connection issue. Please try again");
-      console.error("Payment error:", err);
-    } finally {
-      setIsLoading(false);
-    }
+    await sendSTK(data);
+    setIsLoading(false);
   };
 
   return (
@@ -151,6 +119,7 @@ const MpesaPayment = ({ onBack }) => {
                         type="tel"
                         value={phoneNumber}
                         onChange={handlePhoneChange}
+                        maxLength={10}
                         placeholder="e.g. 0712345678"
                         className={`w-full px-4 py-3 rounded-lg border ${
                           error || apiError

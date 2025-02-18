@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { Link,useLocation } from "react-router-dom";
+import { Link,useLocation,useNavigate } from "react-router-dom";
 import Toast from "../../Toast/Toast"; // Import Toast component
 import { Login } from "../../helper/insurances"
 import { useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ export default function LoginPage() {
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   // console.log(location);
 
   const [formData, setFormData] = useState({
@@ -57,7 +58,7 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    await Login(formData,showToast,setLoading,url,dispatch)
+    await Login(formData,showToast,setLoading,url,dispatch,navigate)
   };
 
   return (

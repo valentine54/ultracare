@@ -14,33 +14,24 @@ const PaymentPage = () => {
   const [error, setError] = useState("");
 
   // Get quote data from Redux store or use default values
-  const motorQuote = useSelector((state) => state.app?.motorQuote) || {
-    selected_quote: {
-      base_premium: 25000,
-      company_name: "First Assurance",
-    },
-    quoteData: {
-      first_name: "Sara",
-      last_name: "Cynthia",
-      vehicle_registration_number: "KBA 123A",
-    },
-  };
-
-  useEffect(() => { 
+  const motorQuote =    JSON.parse(localStorage.getItem("insurance"));
+  
+  console.log(motorQuote);
+  useEffect(() => {
     if (!motorQuote) {
       navigate("/car-insurance");
     }
-    
-  },[])
+  }, []);
+
   const calculateTotal = () => {
     const { selected_quote } = motorQuote;
     const premium = selected_quote?.base_premium || 25000;
-    const tax = premium * 0.16; 
-    const total = premium + tax;
+    // const tax = premium * 0.16;
+    const total = premium ;
 
     return {
       premium: parseFloat(premium.toFixed(2)),
-      tax: parseFloat(tax.toFixed(2)),
+      // tax: parseFloat(tax.toFixed(2)),
       total: parseFloat(total.toFixed(2)),
     };
   };
@@ -210,12 +201,12 @@ const PaymentPage = () => {
                     KES {totals.premium.toLocaleString()}
                   </span>
                 </div>
-                <div className="flex justify-between">
+                {/* <div className="flex justify-between">
                   <span className="text-gray-600">Tax (16%)</span>
                   <span className="font-medium">
                     KES {totals.tax.toLocaleString()}
                   </span>
-                </div>
+                </div> */}
               </div>
 
               <div className="border-t pt-6">

@@ -51,6 +51,30 @@ const UserDashboard = () => {
     { quarter: "Q4", value: 8000 },
   ];
 
+  const calculateTotalInsuranceCost = (insuranceData) => {
+    if (!insuranceData || !insuranceData.selected_quote) return 0;
+
+    const basePremium =
+      parseFloat(insuranceData.selected_quote.base_premium) || 0;
+    const selectedExcessList =
+      insuranceData.selected_quote.selected_excess || [];
+    let totalExcess = 0;
+
+    selectedExcessList.forEach((excess) => {
+      const excessRate = parseFloat(excess.excess_rate) || 0;
+      const minPrice = parseFloat(excess.min_price) || 0;
+      const excessAmount = Math.max((excessRate / 100) * basePremium, minPrice);
+      totalExcess += excessAmount;
+    });
+
+    return basePremium + totalExcess;
+  };
+
+  const insuranceData2 = JSON.parse(localStorage.getItem("insurance")) || {};
+
+  const totalCost = calculateTotalInsuranceCost(insuranceData2);
+  // console.log("Total Insurance Cost:", insuranceData2);
+
   // Sample insurance data
   const insuranceData = {
     coverage: "Personal Accident",
@@ -120,43 +144,46 @@ const UserDashboard = () => {
         {/* Insurance Summary & Cover Statistics */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Insurance Summary */}
-          {motorQuote && (
+          {insuranceData2 && (
             <div className="bg-white p-5 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold mb-4">Insurance Summary</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Coverage:</span>
-                  <span className="font-medium">{insuranceData.coverage}</span>
+                  <span className="text-gray-600">Cover Type:</span>
+                  <span className="font-medium">
+                    {insuranceData2.selected_quote?.cover_type}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Premium Schedule:</span>
+                  <span className="text-gray-600">Vehicle Type:</span>
                   <span className="font-medium">
-                    {insuranceData.premiumSchedule}
+                    {insuranceData2.selected_quote?.vehicle_type}
                   </span>
                 </div>
                 <div className="flex justify-between items-center border-b pb-2">
                   <span className="text-gray-600">Premium Amount:</span>
                   <span className="font-medium">
-                    {insuranceData.premiumAmount}
+                    {totalCost || insuranceData2.selected_quote?.base_premium}
                   </span>
                 </div>
                 <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Status:</span>
+                  <span className="text-gray-600">Risk Type:</span>
                   <span className="text-green-600 font-medium">
-                    {insuranceData.status}
+                    {insuranceData2.selected_quote?.risk_type}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Due Date:</span>
-                  <span className="font-medium">{insuranceData.dueDate}</span>
+                  <span className="text-gray-600">Start Date:</span>
+                  <span className="font-medium">
+                    {insuranceData2.quoteData?.cover_start_date}
+                  </span>
                 </div>
               </div>
-              {console.log(kycStatus)}
 
               {kycStatus?.status === "success" ? (
                 <Link
                   className="mt-6 bg-blue-100 text-green-500 px-4 py-2 rounded-lg mx-auto block w-fit hover:bg-blue-200 transition-colors"
-                  to="/user-dashboard/payments"
+                  to="/user-dashboard/payments/payment"
                 >
                   proceed to payment{/* {kycStatus?.message} */}
                 </Link>

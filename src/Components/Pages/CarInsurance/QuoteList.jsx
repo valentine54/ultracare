@@ -23,7 +23,7 @@ const QuoteList = () => {
   const userData = useSelector((state) => state.user);
   const [insurances, setInsurance] = useState([]);
   const [sortBy, setSortBy] = useState("relevance");
-
+// console.log(insurances)
   useEffect(() => {
     const insuranceFilter = async () => {
       try {
@@ -61,17 +61,23 @@ const QuoteList = () => {
   const handleBuyPlan = (quote) => {
     const setDta = {
       selected_quote: quote,
-      quoteData: location.state.quoteData,
+      quoteData: location.state?.quoteData, // Ensure location.state exists
+      expiry: Date.now() + 3600000, // 1 hour in milliseconds
     };
-    localStorage.setItem("insurance", setDta);
+
+    // Store data as JSON string in localStorage
+    localStorage.setItem("insurance", JSON.stringify(setDta));
+
+    // Dispatch to Redux
     dispatch(setMotorQuote(setDta));
 
-    {
-      !userData.loggedIn ? navigate("/login") : navigate("/user-dashboard");
-    }
-    // if kyc=true take to payment directly else
 
-    // console.log("oduihwioed", userData);
+    // Navigate based on user login status
+    if (userData.loggedIn) {
+      navigate("/login");
+    } else {
+      navigate("/user-dashboard");
+    }
   };
 
   const QuoteCard = ({ quote }) => (

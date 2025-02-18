@@ -31,15 +31,19 @@ const axiosInstance2 = axios.create({
 //   }
 // );
 
-export const sendExcesses = async (userData, navigate, setLoading) => {
+export const sendExcesses = async (dataToSend, navigate, user) => {
   try {
     const response = await axiosInstance.patch(
       `motorinsurance/filter/`,
-      userData
+      dataToSend
     );
     if (response.status === 200) {
       console.log(response.data);
-      navigate(`/login`, { replace: true });
+      if (user.loggedIn) { 
+        navigate(`/user-dashboard`);
+      } else {
+        navigate(`/login`, { replace: true });
+      }
     }
   } catch (error) {
     console.error("Error sending excess charges:", error.response.data);
@@ -85,7 +89,14 @@ export const Signup = async (data, showToast,setLoading,url,navigate) => {
   }
 };
 
-export const Login = async (data, showToast, setLoading, url = "applicant",dispatch) => {
+export const Login = async (
+  data,
+  showToast,
+  setLoading,
+  url = "applicant",
+  dispatch,
+  navigate
+) => {
   try {
     setLoading(true); // Start loading
     const response = await axiosInstance.post(`${url}/login/`, data);
@@ -93,7 +104,8 @@ export const Login = async (data, showToast, setLoading, url = "applicant",dispa
     if (response.status === 200) {
       showToast("Login successful!", "success");
       console.log("User Data:", response.data);
-      dispatch(loginAction(response.data?.user)); 
+      dispatch(loginAction(response.data?.user));
+      navigate(`/user-dashboard`); // Redirect to user dashboard after login
       return response.data; // Return user data if needed
     } else {
       showToast("Login failed. Please try again.", "error");
@@ -164,7 +176,7 @@ export const CheckQyc = async (setProgress, setKycStatus) => {
   try {
     const response = await axiosInstance.get(`applicant/kyc/`);
     if (response.status === 200) {
-      console.log("Check Qyc:", response.data);
+      // console.log("Check Qyc:", response.data);
       setKycStatus({
         status: "success",
         message: response.data?.message,
@@ -173,7 +185,7 @@ export const CheckQyc = async (setProgress, setKycStatus) => {
     }
     return response;
   } catch (error) {
-    console.error("Error fetching check Qyc:", error);
+    // console.error("Error fetching check Qyc:", error);
     if (error.response?.data?.error) {
       setKycStatus({
         status: "failure",
@@ -196,6 +208,22 @@ export const sendQycDocs = async (docs,navigate,setShowError) => {
   } catch (error) {
     setShowError(false);
     console.error("Error sending KYC documents:", error.response.data);
+    return false;
+  }
+}
+
+export const sendSTK = async (data) => {
+  try {
+    const response = await axiosInstance.post(`mpesa-payment/`, data);
+    if (response.status === 201) {
+      console.log("STK sent successfully:", response.data);
+      return response
+    } else {
+      console.error("Failed to send STK:", response.data);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error sending STK:", error.response.data);
     return false;
   }
 }
