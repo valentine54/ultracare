@@ -1,58 +1,92 @@
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaBell } from "react-icons/fa";
-import { BiSearch } from "react-icons/bi";
-import { FiMenu, FiX } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
 import {
+  useLocation,
+  useNavigate,
+  Outlet,
+  Link,
+  useSearchParams,
+} from "react-router-dom";
+import {
+  MdDashboard,
   MdPolicy,
   MdPayment,
   MdSettings,
   MdNotifications,
-  MdDashboard,
 } from "react-icons/md";
+import { FaBell } from "react-icons/fa";
+import { BiSearch } from "react-icons/bi";
+import { FiMenu, FiX } from "react-icons/fi";
 import logo from "../../../assets/logo.png";
-import { Routes, Route } from "react-router-dom";
 
-
-import UserDashboard from "./UserDashboard";
-import UploadDocuments from "./UploadDocuments";
-import PaymentsSection from "./PaymentsSection";
-// import DashboardPaymentPage from '../Dashboard/DashboardPayment/'
-
-import DashboardPaymentPage from "../Dashboard/DashboardPayment/PaymentPage";
-import DashboardMpesaPayment from "../Dashboard/DashboardPayment/MpesaPayment";
-
-const Navigation = ({ children }) => {
+const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Mobile sidebar 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  // Close Mobile
+  useEffect(() => {
+    if (sidebarOpen) {
+      setSidebarOpen(false);
+    }
+
+    // Check filter params -> Nav
+    if (
+      location.pathname === "/user-dashboard/payments" &&
+      searchParams.get("filter")
+    ) {
+    }
+  }, [location.pathname, searchParams]);
 
   const navItems = [
     {
       to: "/user-dashboard",
       icon: <MdDashboard className="text-lg" />,
       label: "Dashboard",
+      exact: true,
+    },
+    {
+      to: "/user-dashboard/policy",
+      icon: <MdPolicy className="text-lg" />,
+      label: "Policy",
     },
     {
       to: "/user-dashboard/payments",
       icon: <MdPayment className="text-lg" />,
       label: "Payments",
+      highlight: location.pathname.includes("/user-dashboard/payments"),
     },
     {
-      to: "/settings",
+      to: "/user-dashboard/settings",
       icon: <MdSettings className="text-lg" />,
       label: "Settings",
     },
     {
-      to: "/notifications",
+      to: "/user-dashboard/notifications",
       icon: <MdNotifications className="text-lg" />,
       label: "Notifications",
     },
   ];
 
+  // Nav Items Active
+  const isActive = (item) => {
+    if (item.highlight) {
+      return item.highlight;
+    }
+    if (item.exact) {
+      return location.pathname === item.to;
+    }
+    return location.pathname.startsWith(item.to);
+  };
+
   return (
-    <div className="flex min-h-screen bg-gray-100 overflow-hidden">
-      {/* Sidebar Overlay for Mobile */}
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+      {/* Mobile sidebar */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
@@ -68,7 +102,9 @@ const Navigation = ({ children }) => {
       >
         {/* Logo */}
         <div className="flex items-center justify-between p-4 border-b">
-          <img src={logo} alt="Logo" className="h-10" />
+          <Link to="/">
+            <img src={logo} alt="Insure" className="h-10" />
+          </Link>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden text-gray-500 hover:text-gray-700"
@@ -79,29 +115,20 @@ const Navigation = ({ children }) => {
 
         {/* Navigation */}
         <nav className="p-4 space-y-1">
-          {navItems.map((item) => {
-            const isActive =
-              location.pathname === item.to ||
-              (location.pathname.startsWith(item.to) &&
-                item.to !== "/user-dashboard") ||
-              (item.to === "/user-dashboard" &&
-                location.pathname === "/user-dashboard");
-
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`flex items-center p-3 rounded-lg transition-colors ${
-                  isActive
-                    ? "bg-blue-100 text-blue-600 font-medium"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <span className="mr-3">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
+          {navItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={`flex items-center p-3 rounded-lg transition-colors ${
+                isActive(item)
+                  ? "bg-blue-100 text-blue-600 font-medium"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              <span className="mr-3">{item.icon}</span>
+              <span>{item.label}</span>
+            </Link>
+          ))}
         </nav>
       </aside>
 
@@ -111,10 +138,10 @@ const Navigation = ({ children }) => {
         <header className="bg-white p-4 shadow-sm flex items-center justify-between">
           <div className="flex items-center">
             <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden text-2xl"
+              onClick={toggleSidebar}
+              className="lg:hidden mr-4 text-gray-500"
             >
-              {sidebarOpen ? <FiX /> : <FiMenu />}
+              <FiMenu size={24} />
             </button>
             <div className="hidden md:flex items-center border rounded-md bg-gray-100 px-3 py-2">
               <BiSearch className="text-gray-500" />
@@ -146,10 +173,12 @@ const Navigation = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-6">
+          <Outlet />
+        </main>
       </div>
     </div>
   );
 };
 
-export default Navigation;
+export default DashboardLayout;
