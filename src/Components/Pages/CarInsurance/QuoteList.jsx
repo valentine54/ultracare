@@ -73,7 +73,7 @@ const QuoteList = () => {
 
 
     // Navigate based on user login status
-    if (userData.loggedIn) {
+    if (!userData.loggedIn) {
       navigate("/login");
     } else {
       navigate("/user-dashboard");

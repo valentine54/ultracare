@@ -55,8 +55,8 @@ const MpesaPayment = ({ onBack }) => {
     setApiError(null);
 
     const data = {
-      phoneNumber: formattedPhone,
-      amount: selected_quote.base_premium,
+      phone_number: formattedPhone,
+      // amount: selected_quote.base_premium,
       description: selected_quote.description,
     };
 

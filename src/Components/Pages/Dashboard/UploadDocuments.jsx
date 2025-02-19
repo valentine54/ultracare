@@ -74,7 +74,7 @@ const UploadDocuments = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault(); // Prevent default form submission
     let validationErrors = {};
     let isValid = true;
@@ -90,8 +90,9 @@ const UploadDocuments = () => {
     setErrors(validationErrors);
 
     if (isValid) {
-      sendQycDocs(kycDocs, navigate,setShowSuccess); // Send documents to the server
-      setShowSuccess(true); // Show success message
+      await sendQycDocs(kycDocs, navigate,setShowSuccess); 
+      console.log(" wuiofowef")
+      // setShowSuccess(true); // Show success message
       setTimeout(() => {
       }, 10000); // Redirect after 2 seconds
     }

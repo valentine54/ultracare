@@ -138,66 +138,77 @@ const UserDashboard = () => {
           </button>
         )}
       </div>
-
+      {console.log(insuranceData2)}
       {/* Insurance Summary & Cover Statistics */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Insurance Summary & Cover Statistics */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Insurance Summary */}
-          {insuranceData2 && (
-            <div className="bg-white p-5 rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold mb-4">Insurance Summary</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Cover Type:</span>
-                  <span className="font-medium">
-                    {insuranceData2.selected_quote?.cover_type}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Vehicle Type:</span>
-                  <span className="font-medium">
-                    {insuranceData2.selected_quote?.vehicle_type}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Premium Amount:</span>
-                  <span className="font-medium">
-                    {totalCost || insuranceData2.selected_quote?.base_premium}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <span className="text-gray-600">Risk Type:</span>
-                  <span className="text-green-600 font-medium">
-                    {insuranceData2.selected_quote?.risk_type}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Start Date:</span>
-                  <span className="font-medium">
-                    {insuranceData2.quoteData?.cover_start_date}
-                  </span>
-                </div>
+        {/* Insurance Summary */}
+        {!insuranceData2 || Object.keys(insuranceData2).length === 0 ? (
+          <div className="bg-white p-5 rounded-lg shadow-md text-center">
+            <h3 className="text-lg font-semibold mb-4">No Insurance Found</h3>
+            <p className="text-gray-600 mb-4">
+              You currently have no active insurance.
+            </p>
+            <Link
+              className="mt-6 bg-blue-600 text-white px-4 py-2 rounded-lg mx-auto block w-fit hover:bg-blue-700 transition-colors"
+              to="/car-insurance"
+            >
+              Buy New Insurance
+            </Link>
+          </div>
+        ) : (
+          <div className="bg-white p-5 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold mb-4">Insurance Summary</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center border-b pb-2">
+                <span className="text-gray-600">Cover Type:</span>
+                <span className="font-medium">
+                  {insuranceData2.selected_quote?.cover_type}
+                </span>
               </div>
-
-              {kycStatus?.status === "success" ? (
-                <Link
-                  className="mt-6 bg-blue-100 text-green-500 px-4 py-2 rounded-lg mx-auto block w-fit hover:bg-blue-200 transition-colors"
-                  to="/user-dashboard/payments/payment"
-                >
-                  proceed to payment{/* {kycStatus?.message} */}
-                </Link>
-              ) : (
-                <Link
-                  className="mt-6 bg-blue-600 text-white px-4 py-2 rounded-lg mx-auto block w-48 hover:bg-blue-700 transition-colors"
-                  // to="/user-dashboard/payments"
-                >
-                  {kycStatus?.message}
-                </Link>
-              )}
+              <div className="flex justify-between items-center border-b pb-2">
+                <span className="text-gray-600">Vehicle Type:</span>
+                <span className="font-medium">
+                  {insuranceData2.selected_quote?.vehicle_type}
+                </span>
+              </div>
+              <div className="flex justify-between items-center border-b pb-2">
+                <span className="text-gray-600">Premium Amount:</span>
+                <span className="font-medium">
+                  {totalCost || insuranceData2.selected_quote?.base_premium}
+                </span>
+              </div>
+              <div className="flex justify-between items-center border-b pb-2">
+                <span className="text-gray-600">Risk Type:</span>
+                <span className="text-green-600 font-medium">
+                  {insuranceData2.selected_quote?.risk_type}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Start Date:</span>
+                <span className="font-medium">
+                  {insuranceData2.quoteData?.cover_start_date}
+                </span>
+              </div>
             </div>
-          )}
-        </div>
+
+            {kycStatus?.status === "success" ? (
+              <Link
+                className="mt-6 bg-blue-100 text-green-500 px-4 py-2 rounded-lg mx-auto block w-fit hover:bg-blue-200 transition-colors"
+                to="/user-dashboard/payments/payment"
+              >
+                Proceed to Payment
+              </Link>
+            ) : (
+              <Link
+                className="mt-6 bg-blue-600 text-white px-4 py-2 rounded-lg mx-auto block w-48 hover:bg-blue-700 transition-colors"
+                to="/user-dashboard/upload"
+              >
+                {kycStatus?.message}
+              </Link>
+            )}
+          </div>
+        )}
 
         {/* Cover Statistics */}
         <div className="bg-white p-5 rounded-lg shadow-md">

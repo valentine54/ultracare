@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_KEY = "e4204b2c-3cf9-45e8-8837-db3a37121de5";
 const API_URL = "http://127.0.0.1:8000/api/v1.0/";
+// const API_URL = "https://insure-backend.onrender.com/api/v1.0/";
 
 import {loginAction,logoutAction} from '../store/actions/userAction'
 
@@ -17,6 +18,8 @@ const axiosInstance2 = axios.create({
   baseURL: API_URL,
   withCredentials: true, // If you're using cookies or authentication
   headers: {
+    // "Content-Type": "application/json",
+
     "Content-Type": "multipart/form-data",
     "x-api-key": API_KEY,
   },
@@ -196,25 +199,26 @@ export const CheckQyc = async (setProgress, setKycStatus) => {
   }
 };
 
-export const sendQycDocs = async (docs,navigate,setShowError) => {
+export const sendQycDocs = async (kycDocs, navigate, setShowError) => {
   try {
-    const response = await axiosInstance2.post(`applicant/kyc/`, docs,);
+    const response = await axiosInstance2.post(`applicant/kyc/`, kycDocs);
+    console.log("hata sijui");
+    console.log("KYC Documents sent successfully:", response.data);
     if (response.status === 201) {
-      console.log("KYC Documents sent successfully:", response.data);
       navigate(`/user-dashboard/payments`, { replace: true });
     }
 
-    return response
+    return response;
   } catch (error) {
     setShowError(false);
     console.error("Error sending KYC documents:", error.response.data);
     return false;
   }
-}
+};
 
 export const sendSTK = async (data) => {
   try {
-    const response = await axiosInstance.post(`mpesa-payment/`, data);
+    const response = await axiosInstance.post(`mpesa-payment/1/`, data);
     if (response.status === 201) {
       console.log("STK sent successfully:", response.data);
       return response
