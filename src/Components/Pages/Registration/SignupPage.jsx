@@ -40,7 +40,7 @@ const SignupPage = () => {
     setToast({ message, type, visible: true });
     setTimeout(() => setToast({ ...toast, visible: false }), 3000);
   };
-  const url = location.pathname.includes("/login/org")
+  const url = location.pathname.includes("/signup/org")
     ? "organisation"
     : "applicant";
   // Handles form submission
