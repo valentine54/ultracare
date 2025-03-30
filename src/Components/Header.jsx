@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa6";
 import { FaEnvelope, FaPhone, FaClock, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import logo from "../assets/BosongoLogo.jpeg";
+import logo from "../assets/logo.jpg";
 
 const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -45,14 +45,16 @@ const Header = () => {
         <div className="flex flex-wrap justify-center text-[12px] gap-x-4 gap-y-1 mb-1 md:mb-0"> {/* Better mobile wrapping */}
           <span className="flex items-center">
             <FaEnvelope className="text-blue-600 mr-2" />
-            <a href="mailto:bosongomedical@yahoo.com" className="hover:text-blue-600 transition-colors">
-              bosongomedical@yahoo.com
+            <a href="mailto:
+donbettermusa@bosongohospital.com" className="hover:text-blue-600 transition-colors">
+              
+donbettermusa@bosongohospital.com
             </a>
           </span>
           <span className="flex items-center">
             <FaPhone className="text-blue-600 mr-2" />
-            <a href="tel:0111964576" className="hover:text-blue-600 transition-colors">
-              011-196-4576
+            <a href="tel:+254743444900" className="hover:text-blue-600 transition-colors">
+            0743-444-900
             </a>
           </span>
           <span className="flex items-center">
@@ -84,16 +86,18 @@ const Header = () => {
       </div>
 
       {/* Main Navbar */}
-      <nav className="bg-white shadow-md px-4 md:px-10 flex justify-between items-center h-20">
-         {/* Logo */}
-         <div className="flex items-center">
-         <a href="/">
-          <img src={logo} alt="BMC Logo" className="h-20 w-28 object-contain bg-transparent border-none mr-4 items-center" /> 
-          </a>
-          <span className="text-2xl font-extrabold text-blue-700 tracking-wide uppercase">
-      BOSONGO HOSPITAL
-    </span>
-        </div>
+      <nav className="bg-white shadow-md px-4 md:px-10 flex justify-between items-center h-24"> {/* Increased height */}
+  {/* Logo */}
+  <div className="flex items-center flex-shrink-0 pl-9"> {/* Prevents logo from shrinking */}
+    <a href="/">
+      <img 
+        src={logo} 
+        alt="BMC Logo" 
+        className="h-[100px] w-auto max-w-[220px] object-contain" 
+      />
+    </a>
+  </div>
+  
 
         {/* Navigation Links */}
         <div className="hidden md:flex space-x-6">
@@ -110,7 +114,7 @@ const Header = () => {
         <button 
         onClick={() => navigate("/contact")}
          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors">
-          Book Appointment
+          Request an Appointment
         </button>
       </nav>
     </header>

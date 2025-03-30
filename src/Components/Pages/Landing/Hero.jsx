@@ -6,8 +6,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ChevronRight, Phone, ChevronLeft } from "lucide-react";
 import hero1 from "../../../assets/41.jpg";
-import hero2 from "../../../assets/22.jpg";
-import hero3 from "../../../assets/23.jpg";
+import hero2 from "../../../assets/43.jpg";
+import hero3 from "../../../assets/46.jpg";
 
 const slides = [
   {
@@ -47,7 +47,7 @@ const HeroSlider = () => {
               <img
                 src={slide.image}
                 alt="Slide background"
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full  object-cover object-[50%_40%]"
               />
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="absolute top-1/2 left-16 pt-20  transform -translate-y-1/2 text-white max-w-2xl">
@@ -57,10 +57,10 @@ const HeroSlider = () => {
                   <button 
                   onClick={() => navigate("/contact")}
                   className="px-6 py-3 bg-white text-blue-500 rounded-lg font-medium hover:bg-blue-600 hover:text-white transition-colors">
-                    Book an Appointment
+                    Request an Appointment
                   </button>
                   <button 
-                  onClick={() => (window.location.href = "tel:+254111964576")}
+                  onClick={() => (window.location.href = "tel:+254743444900")}
                   className="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium border border-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center justify-center space-x-2">
   <Phone size={20} className="flex-shrink-0" /> 
   <span>Call Now</span>

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"; // Import Link for navigation
 import hero from "../../../assets/12.jpg"; // Ensure high-resolution image
 import hero1 from "../../../assets/15.jpg"; // Ensure high-resolution image
-import hero2 from "../../../assets/16.jpg"; // Ensure high-resolution image
+import hero2 from "../../../assets/47.jpg"; // Ensure high-resolution image
 
 const WhyChooseUs = () => {
   const features = [

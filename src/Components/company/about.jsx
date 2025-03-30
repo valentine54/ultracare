@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaImages } from "react-icons/fa"; // Import gallery icon
 import hospitalImage from "../../assets/26.jpg"; // Replace with actual image
-import img1 from "../../assets/1.jpg";
+import img1 from "../../assets/40.jpg";
 import img2 from "../../assets/2.jpg";
 import img3 from "../../assets/3.jpg";
 import img4 from "../../assets/4.jpg";
@@ -16,14 +16,23 @@ import img12 from "../../assets/12.jpg";
 import img13 from "../../assets/13.jpg";
 import img14 from "../../assets/14.jpg";
 import img15 from "../../assets/15.jpg";
-import img16 from "../../assets/26.jpg";
+import img16 from "../../assets/41.jpg";
 import img17 from "../../assets/17.jpg";
 import img18 from "../../assets/18.jpg";
+// import img19 from "../../assets/42.jpg";
+import img20 from "../../assets/43.jpg";
+import img21 from "../../assets/44.jpg";
+import img22 from "../../assets/45.jpg";
+import img23 from "../../assets/46.jpg";
+import img24 from "../../assets/47.jpg";
+import img25 from "../../assets/48.jpg";
+import img26 from "../../assets/49.jpg";
+import img27 from "../../assets/50.jpg";
 // import Scrollbar from "./Scrollbar"; // Adjust path if necessary
 
 const AboutPage = () => {
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-const galleryImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18];
+const galleryImages = [img1, img2,img20, img21, img22, img23, img24, img25, img26, img27, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, ];
  
   return (
     <section className="bg-gray-100 py-12 pt-40 px-6">
@@ -127,9 +136,9 @@ const galleryImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img
   </p>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     {[
-      { title: "Phone", info: "+254 700 123 456" },
-      { title: "Email", info: "info@bosongohospital.com" },
-      { title: "Address", info: "123 Health Ave, Kisii, Kenya" },
+      { title: "Phone", info: "+254 743 444900" },
+      { title: "Email", info: "bosongomedical@yahoo.com" },
+      { title: "Address", info: "Daraja Mbili Junction along the Kisii - Suneka road, Kenya" },
       { title: "Working Hours", info: "24/7 Emergency Services" },
     ].map((contact, index) => (
       <div

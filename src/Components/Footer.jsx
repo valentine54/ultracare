@@ -1,7 +1,7 @@
 import React from "react";
 import { Phone, Clock, Mail, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
-import logo from "../assets/BosongoLogo.jpeg";
+import logo from "../assets/logo.jpg";
 import {  FaFacebookF, 
   FaLinkedinIn, 
 
@@ -25,10 +25,10 @@ const Footer = () => {
           {/* Brand Info (Left) */}
           <div className="flex flex-col items-start space-y-4">
           <a href="/">
-          <img src={logo} alt="BMC Logo" className="h-20 w-40 mb-2" /> {/* Adjust size as needed */}
+          <img src={logo} alt="BMC Logo" className="h-[100px] w-auto max-w-[220px]" /> {/* Adjust size as needed */}
           </a>
             <h3 className="text-xl font-bold text-white">BOSONGO HOSPITAL</h3>
-            <p className="text-gray-200"><i>Committed to quality healthcare with compassion.</i></p>
+            {/* <p className="text-gray-200"><i>Committed to quality healthcare with compassion.</i></p> */}
             <motion.a
               variants={linkVariants}
               whileHover="hover"
@@ -36,7 +36,7 @@ const Footer = () => {
               href="/contact"
               className="bg-white text-blue-900 px-6 py-3 rounded-lg font-medium"
             >
-              Book an Appointment
+              Request an Appointment
             </motion.a>
             <div className="flex gap-3 mt-4">
   {[
@@ -99,17 +99,20 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-3">
                 <Phone size={18} className="flex-shrink-0" />
-                <span>011-196-4576</span>
+                <span>
+                0743-444-900</span>
               </div>
               <div className="flex  items-center gap-3">
                 <Mail size={18} className="flex-shrink-0" />
                 <motion.a
                   variants={linkVariants}
                   whileHover="hover"
-                  href="mailto:bosongomedical@yahoo.com"
+                  href="mailto:
+donbettermusa@bosongohospital.com"
                   className="hover:text-white"
                 >
-                  bosongomedical@yahoo.com
+                  
+donbettermusa@bosongohospital.com
                 </motion.a>
               </div>
               
