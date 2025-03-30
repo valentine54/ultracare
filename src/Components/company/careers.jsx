@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTuiwzzykQYnk9kzjLB3i6YGTqlg9bFa0rIgOz2eEhxc1zxKkafNz8TPyNcHrjejJ0Q_ngTCiTkihWs/pub?gid=2104017395&single=true&output=csv";
+const GOOGLE_SHEET_CSV_URL =import.meta.env.VITE_GOOGLE_SHEET_CSV_URL;
 
 const formatDate = (dateString) => {
   if (!dateString) return "N/A";
