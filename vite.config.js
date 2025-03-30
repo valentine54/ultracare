@@ -10,4 +10,8 @@ export default defineConfig({
     allowedHosts: [".ngrok-free.app"],
     cors: true, 
   },
+  build: {
+    outDir: "dist", // Ensures the output folder is 'dist'
+    emptyOutDir: true, // Clears old files before building
+  },
 });
