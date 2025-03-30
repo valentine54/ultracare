@@ -1,52 +1,88 @@
 import React from "react";
-import hero from "../../../assets/hero.jpeg";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { ChevronRight, Phone, ChevronLeft } from "lucide-react";
+import hero1 from "../../../assets/41.jpg";
+import hero2 from "../../../assets/22.jpg";
+import hero3 from "../../../assets/23.jpg";
 
-const Hero = () => {
+const slides = [
+  {
+    image: hero1,
+    title: "Exceptional Patient-Centered Care",
+    description: "At Bosongo Hospital, we are committed to delivering high-quality healthcare based on international best practices. Our well-trained medical professionals provide compassionate and efficient care for all.",
+  },
+  {
+    image: hero2,
+    title: "Advanced Diagnosis & Emergency Care",
+    description: "Equipped with modern technology, our hospital ensures timely diagnosis, effective treatment, and urgent medical care following WHO standards—because your health can't wait.",
+  },
+  {
+    image: hero3,
+    title: "Your Health, Our Priority",
+    description: "We go beyond treatment by offering wellness programs, community health education, and outreach initiatives to enhance the quality of life for our clients.",
+  },
+];
+
+const HeroSlider = () => {
   return (
-    <div className="relative h-[89vh]">
-      {" "}
-      {/* Background */}
-      <div className="absolute inset-0">
-        <img
-          src={hero}
-          alt="Family silhouette against mountains"
-          className="w-full h-full object-cover mx-auto" 
-        />
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/10"></div>
-      </div>
-      {/* Content Container */}
-      <div className="ml-16 relative z-10 max-w-7xl sm:px-6 lg:px-8">
-        <div className="flex flex-col justify-center h-full max-w-2xl">
-          {/* Heading */}
-          <h1 className="text-7xl mt-28 font-bold text-gray-800 mb-6">
-            <span>Secure </span>
-            <span className="text-blue-500">Your Future </span>
-            <span>with </span>
-            <span>Confidence</span>
-          </h1>
+    <div className="relative h-[89vh]  w-full">
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        navigation={{
+          nextEl: ".next-slide",
+          prevEl: ".prev-slide",
+        }}
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 5000 }}
+        loop={true}
+        className="h-full"
+      >
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative h-full pt-5">
+              <img
+                src={slide.image}
+                alt="Slide background"
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-black/20"></div>
+              <div className="absolute top-1/2 left-16 pt-20  transform -translate-y-1/2 text-white max-w-2xl">
+                <h1 className="text-6xl font-bold">{slide.title}</h1>
+                <p className="text-xl mt-4">{slide.description}</p>
+                <div className="flex gap-4 mt-6">
+                  <button 
+                  onClick={() => navigate("/contact")}
+                  className="px-6 py-3 bg-white text-blue-500 rounded-lg font-medium hover:bg-blue-600 hover:text-white transition-colors">
+                    Book an Appointment
+                  </button>
+                  <button 
+                  onClick={() => (window.location.href = "tel:+254111964576")}
+                  className="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium border border-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center justify-center space-x-2">
+  <Phone size={20} className="flex-shrink-0" /> 
+  <span>Call Now</span>
+</button>
 
-          {/* Description */}
-          <p className="text-2xl mb-4">
-            Discover tailored insurance solutions for pensions <br />
-            and personal accidents that protect you and your <br />
-            loved ones, ensuring peace of mind for a brighter <br />
-            tomorrow.
-          </p>
+                </div>
+              </div>
 
-          {/* Buttons */}
-          <div className="flex flex-wrap gap-4">
-            <button className="px-8 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors">
-              Get a quote
-            </button>
-            <button className="px-8 py-3 bg-white text-blue-500 rounded-lg font-medium border border-blue-500 hover:bg-blue-50 transition-colors">
-              Learn more
-            </button>
-          </div>
-        </div>
-      </div>
+              {/* Navigation Buttons - Positioned Absolutely */}
+              <button className="prev-slide absolute top-[90%] left-4 -translate-y-1/2 border-2 border-white text-white rounded-full p-3 hover:bg-white hover:text-blue-600 transition-colors">
+                <ChevronLeft size={18} />
+              </button>
+              <button className="next-slide absolute top-[90%] right-4 -translate-y-1/2 border-2 border-white text-white rounded-full p-3 hover:bg-white hover:text-blue-600 transition-colors">
+                <ChevronRight size={18} />
+              </button>
+
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };
 
-export default Hero;
+export default HeroSlider;

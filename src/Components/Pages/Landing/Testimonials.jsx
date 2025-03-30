@@ -1,34 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import John from "../../../assets/John.png";
-import Jane from "../../../assets/John.png";
-import Janne from "../../../assets/Janne.png";
+// import John from "../../../assets/John.png";
+// import Jane from "../../../assets/John.png";
+// import Janne from "../../../assets/Janne.png";
+import { FaHospital, FaHeartbeat, FaTooth, FaBaby, FaBone, FaXRay, FaFlask, FaCapsules, FaAmbulance, FaUserMd, FaStethoscope, FaWheelchair } from "react-icons/fa"; // Import icons
 
 const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      image: John,
-      text: "Designed with the user in mind, our intuitive interface simplifies navigation and makes it easy for you to access essential features without any hassle.",
-      name: "John Doe",
+      icon: <FaStethoscope size={50} className="text-blue-500" />, 
+      text: "Comprehensive medical care for a wide range of health conditions, ensuring expert diagnosis and treatment.",
+      name: "General Medicine",
     },
     {
       id: 2,
-      image: Jane,
-      text: "Designed with the user in mind, our intuitive interface simplifies navigation and makes it easy for you to access essential features without any hassle.",
-      name: "Jane Doe",
+      icon: <FaUserMd size={50} className="text-red-500" />,
+      text: "Advanced surgical procedures performed by skilled surgeons, covering both minor and major operations.",
+      name: "Surgery",
     },
     {
       id: 3,
-      image: Janne,
-      text: "Designed with the user in mind, our intuitive interface simplifies navigation and makes it easy for you to access essential features without any hassle.",
-      name: "Jane Doe",
+      icon: <FaBaby size={50} className="text-pink-500" />,
+      text: "Quality maternal care, including prenatal, delivery, and postnatal services for a safe childbirth experience.",
+      name: "Maternity & Obstetrics",
     },
     {
       id: 4,
-      image: John,
+      icon: <FaHospital size={50} className="text-green-500" />,
+      text: "Specialized healthcare for infants, children, and adolescents, focusing on growth, immunization, and wellness.",
+      name: "Pediatrics",
+    },
+    {
+      id: 5,
+      icon: <FaBone size={50} className="text-orange-500" />,
+      text: "Diagnosis and treatment of bone and joint conditions, including fractures, arthritis, and sports injuries.",
+      name: "Orthopedics",
+    },
+    {
+      id: 6,
+      icon: <FaHeartbeat size={50} className="text-red-500" />,
+      text: "Heart health services, including screenings, diagnosis, and management of cardiovascular diseases.",
+      name: "Cardiology",
+    },
+    {
+      id: 7,
+      icon: <FaTooth size={50} className="text-yellow-500" />,
+      text: "Comprehensive oral health services, from routine check-ups to advanced dental procedures.",
+      name: "Dental Care",
+    },
+    {
+      id: 8,
+      icon: <FaFlask size={50} className="text-purple-500" />,
+      text: "State-of-the-art diagnostic testing for accurate disease detection and health monitoring.",
+      name: "Laboratory Services",
+    },
+    {
+      id: 9,
+      icon: <FaXRay size={50} className="text-gray-500" />,
+      text: "Advanced imaging techniques like X-rays, ultrasound, and CT scans for precise medical diagnostics.",
+      name: "Radiology & Imaging",
+    },
+    {
+      id: 10,
+      icon: <FaWheelchair size={50} className="text-teal-500" />,
+      text: "Rehabilitation and pain management services to restore mobility and improve quality of life.",
+      name: "Physiotherapy",
+    },
+    {
+      id: 11,
+      icon: <FaCapsules size={50} className="text-blue-500" />,
       text: "Designed with the user in mind, our intuitive interface simplifies navigation and makes it easy for you to access essential features without any hassle.",
-      name: "John Smith",
+      name: "Pharmacy Services",
+    },
+    {
+      id: 12,
+      icon: <FaAmbulance size={50} className="text-red-700" />,
+      text: "24/7 emergency response and critical care for urgent medical conditions and injuries.",
+      name: "Emergency Medicine",
     },
   ];
 
@@ -68,9 +117,9 @@ const Testimonials = () => {
     <div className="py-24 bg-gray-50">
       <div className="max-w-[1600px] mx-auto overflow-hidden">
         <h2 className="text-5xl font-bold text-center text-gray-800 mb-20">
-          What our clients say
+        Our Range of Healthcare Services 
           <br />
-          about us
+          We Provide
         </h2>
 
         {/* Desktop */}
@@ -91,18 +140,13 @@ const Testimonials = () => {
                 className="flex-shrink-0 w-1/4 bg-white p-12 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="flex flex-col items-center">
-                  <div className="w-20 h-20 mb-8 rounded-full overflow-hidden shadow-md transform hover:scale-105 transition-transform duration-300">
-                    <img
-                      src={testimonial.image}
-                      alt={`${testimonial.name}'s avatar`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  {/* Icon instead of Image */}
+                  <div className="mb-8">{testimonial.icon}</div>
                   <p className="text-gray-600 text-center mb-8 leading-relaxed">
                     {testimonial.text}
                   </p>
                   <p className="font-bold text-gray-800 text-lg">
-                    — {testimonial.name}
+                    {testimonial.name}
                   </p>
                 </div>
               </div>
