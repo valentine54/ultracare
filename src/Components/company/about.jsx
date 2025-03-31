@@ -138,7 +138,7 @@ const galleryImages = [img1, img2,img20, img21, img22, img23, img24, img25, img2
     {[
       { title: "Phone", info: "+254 743 444900" },
       { title: "Email", info: "bosongomedical@yahoo.com" },
-      { title: "Address", info: "Daraja Mbili Junction along the Kisii - Suneka road, Kenya" },
+      { title: "Address", info: "Near the Kisii-Kisumu and Kisii-Migori Roundabout, Kenya" },
       { title: "Working Hours", info: "24/7 Emergency Services" },
     ].map((contact, index) => (
       <div
