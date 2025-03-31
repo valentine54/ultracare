@@ -136,7 +136,7 @@ const galleryImages = [img1, img2,img20, img21, img22, img23, img24, img25, img2
   </p>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     {[
-      { title: "Phone", info: "+254 743 444900" },
+      { title: "Phone", info: "011-196-4576" },
       { title: "Email", info: "bosongomedical@yahoo.com" },
       { title: "Address", info: "Near the Kisii-Kisumu and Kisii-Migori Roundabout, Kenya" },
       { title: "Working Hours", info: "24/7 Emergency Services" },
