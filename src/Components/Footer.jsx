@@ -108,11 +108,11 @@ const Footer = () => {
                   variants={linkVariants}
                   whileHover="hover"
                   href="mailto:
-donbettermusa@bosongohospital.com"
+bosongomedical@yahoo.com"
                   className="hover:text-white"
                 >
                   
-donbettermusa@bosongohospital.com
+                  bosongomedical@yahoo.com
                 </motion.a>
               </div>
               

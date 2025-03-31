@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ChevronRight, Phone, ChevronLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom"; //
 import hero1 from "../../../assets/41.jpg";
 import hero2 from "../../../assets/43.jpg";
 import hero3 from "../../../assets/46.jpg";
@@ -28,6 +29,7 @@ const slides = [
 ];
 
 const HeroSlider = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative h-[89vh]  w-full">
       <Swiper
@@ -60,7 +62,7 @@ const HeroSlider = () => {
                     Request an Appointment
                   </button>
                   <button 
-                  onClick={() => (window.location.href = "tel:+254743444900")}
+                  onClick={() => (window.location.href = "tel:+254111964576")}
                   className="px-6 py-3 bg-blue-500 text-white rounded-lg font-medium border border-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-colors flex items-center justify-center space-x-2">
   <Phone size={20} className="flex-shrink-0" /> 
   <span>Call Now</span>

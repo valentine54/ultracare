@@ -7,7 +7,7 @@ const Scrollbar = () => {
     <div className="fixed bottom-10 right-5 flex flex-col items-center space-y-4 z-50">
       {/* WhatsApp Button */}
       <a
-        href="https://wa.me/+254743444900"
+        href="https://wa.me/+254111964576"
         target="_blank"
         rel="noopener noreferrer"
         className="bg-[#25D366] text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition duration-300 hover:bg-[#1ebe57]"
