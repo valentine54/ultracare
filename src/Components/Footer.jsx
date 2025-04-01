@@ -18,7 +18,8 @@ const Footer = () => {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
-      className="bg-gradient-to-r from-blue-900 to-slate-800 text-blue-100"
+      className="bg-gradient-to-r bg-[#0047AB]
+       text-blue-100"
     >
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -100,7 +101,7 @@ const Footer = () => {
               <div className="flex items-center gap-3">
                 <Phone size={18} className="flex-shrink-0" />
                 <span>
-                0743-444-900</span>
+                011-196-4576</span>
               </div>
               <div className="flex  items-center gap-3">
                 <Mail size={18} className="flex-shrink-0" />

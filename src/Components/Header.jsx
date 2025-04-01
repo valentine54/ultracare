@@ -86,7 +86,7 @@ bosongomedical@yahoo.com" className="hover:text-blue-600 transition-colors">
       </div>
 
       {/* Main Navbar */}
-      <nav className="bg-white shadow-md px-4 md:px-10 flex justify-between items-center h-24"> {/* Increased height */}
+      <nav className="bg-[#0047AB] shadow-md px-4 md:px-10 flex justify-between items-center h-24"> {/* Increased height */}
   {/* Logo */}
   <div className="flex items-center flex-shrink-0 pl-9"> {/* Prevents logo from shrinking */}
     <a href="/">
@@ -99,21 +99,21 @@ bosongomedical@yahoo.com" className="hover:text-blue-600 transition-colors">
   </div>
   
 
-        {/* Navigation Links */}
+        {/* Navigation Links  text-gray-700*/}
         <div className="hidden md:flex space-x-6">
-          <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors">Home</Link>
-          <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors">About</Link>
-          <Link to="/services" className="text-gray-700 hover:text-blue-600 transition-colors">Services</Link>
+          <Link to="/" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">Home</Link>
+          <Link to="/about" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">About</Link>
+          <Link to="/services" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">Services</Link>
           {/* <Link to="/doctors" className="text-gray-700 hover:text-blue-600 transition-colors">Doctors</Link> */}
           
-          <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
-          <Link to="/careers" className="text-gray-700 hover:text-blue-600 transition-colors">Careers</Link>
+          <Link to="/contact" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">Contact</Link>
+          <Link to="/careers" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">Careers</Link>
         </div>
 
         {/* Appointment Button */}
         <button 
         onClick={() => navigate("/contact")}
-         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors">
+         className="bg-[#FFFFFF] hover:bg-[#F0F0F0] text-[#0047AB] px-6 py-2 rounded-md font-medium transition-colors">
           Request an Appointment
         </button>
       </nav>
