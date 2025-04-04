@@ -12,6 +12,9 @@ import {
 import { FaEnvelope, FaPhone, FaClock } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import logo from "../assets/logo.jpg";
+import { FaHome, FaInfoCircle, FaConciergeBell, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+
+
 
 const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -94,11 +97,11 @@ const Header = () => {
         </div>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden md:flex space-x-4 lg:space-x-6">
+        <div className="hidden md:flexspace-x-4 lg:space-x-6">
           <Link to="/" className="text-white hover:text-blue-200 transition-colors font-medium">Home</Link>
           <Link to="/about" className="text-white hover:text-blue-200 transition-colors font-medium">About</Link>
           <Link to="/services" className="text-white hover:text-blue-200 transition-colors font-medium">Services</Link>
-          <Link to="/contact" className="text-white hover:text-blue-200 transition-colors font-medium">Contact</Link>
+          <Link to="/contact" className="text-white hover:text-blue-200 transition-colors font-medium">Contact Us</Link>
           <Link to="/careers" className="text-white hover:text-blue-200 transition-colors font-medium">Careers</Link>
         </div>
 
@@ -120,31 +123,43 @@ const Header = () => {
       </nav>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-[#0047AB] w-full overflow-hidden"
-          >
-            <div className="flex flex-col space-y-4 p-4">
-              <Link to="/" className="text-white hover:text-blue-200 transition-colors">Home</Link>
-              <Link to="/about" className="text-white hover:text-blue-200 transition-colors">About</Link>
-              <Link to="/services" className="text-white hover:text-blue-200 transition-colors">Services</Link>
-              <Link to="/contact" className="text-white hover:text-blue-200 transition-colors">Contact</Link>
-              <Link to="/careers" className="text-white hover:text-blue-200 transition-colors">Careers</Link>
-              <button 
-                onClick={() => navigate("/contact")}
-                className="bg-white hover:bg-[#F0F0F0] text-[#0047AB] px-6 py-2 rounded-md font-medium transition-colors mt-2"
-              >
-                Request an Appointment
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Menu */}
+<AnimatePresence>
+  {isMobileMenuOpen && (
+    <motion.div 
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.3 }}
+      className="md:hidden bg-[#0047AB] w-full overflow-hidden"
+    >
+      <div className="flex items-center flex-col space-y-4 p-4">
+        <Link to="/" className="flex items-center text-white hover:text-blue-200 transition-colors">
+          <FaHome className="mr-2 gap-2" /> Home
+        </Link>
+        <Link to="/about" className="flex items-center text-white hover:text-blue-200 transition-colors">
+          <FaInfoCircle className="mr-2" /> About
+        </Link>
+        <Link to="/services" className="flex items-center text-white hover:text-blue-200 transition-colors">
+          <FaConciergeBell className="mr-2" /> Services
+        </Link>
+        <Link to="/contact" className="flex items-center text-white hover:text-blue-200 transition-colors">
+          <FaEnvelope className="mr-2" /> Contact Us
+        </Link>
+        <Link to="/careers" className="flex items-center text-white hover:text-blue-200 transition-colors">
+          <FaBriefcase className="mr-2" /> Careers
+        </Link>
+        <button 
+          onClick={() => navigate("/contact")}
+          className="bg-white hover:bg-[#F0F0F0] text-[#0047AB] px-6 py-2 rounded-md font-medium transition-colors mt-2 flex items-center justify-center"
+        >
+          <FaCalendarAlt className="mr-2" /> Request an Appointment
+        </button>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
     </header>
   );
 };

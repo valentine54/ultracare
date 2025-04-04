@@ -9,6 +9,7 @@ import PensionService from "./PensionService";
 import Testimonials from "./Testimonials";
 import PartnerLogos from "./PartnerLogos";
 import ClientFeedback from "./ClientFeedback";
+// import LogoShowcase from "./LogoShowcase";
 
 const LandingPage = () => {
   return (
@@ -19,6 +20,7 @@ const LandingPage = () => {
       <Testimonials />
       <PensionService />
       <PartnerLogos />
+      {/* <LogoShowcase /> */}
       <ClientFeedback/>
       <WhyChooseUs />
       

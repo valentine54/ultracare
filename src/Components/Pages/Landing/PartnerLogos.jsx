@@ -35,55 +35,38 @@ const PartnerLogos = () => {
   }, []);
 
   return (
-    <div className="pt-12 pb-1 bg bg-gray-50 overflow-hidden">
+    <div className="pt-12 pb-1 bg-gray-50 overflow-hidden">
       <h2 className="text-4xl font-bold text-center text-gray-800 mb-12">
         Our Trusted Partners
       </h2>
 
-      {/* Desktop - Continuous Flow */}
-      <div className="hidden lg:block relative h-[160px]">
+      {/* Continuous Flow for All Screens */}
+      <div className="relative h-[100px] md:h-[140px] lg:h-[160px] w-full overflow-hidden">
         <motion.div
           className="flex absolute left-0"
           animate={{
-            x: `-${currentIndex * (100 / partnerLogos.length)}%`,
+            x: ["0%", "-100%"], // Moves from full width to negative width
           }}
           transition={{
-            duration: 30, // Longer duration for smoother continuous movement
-            ease: "linear", // Linear for constant speed
-            repeat: Infinity, // Infinite loop
+            duration: 30, // Smooth transition over 30s
+            ease: "linear",
+            repeat: Infinity,
           }}
         >
           {extendedLogos.map((partner, index) => (
             <div
               key={`${partner.id}-${index}`}
-              className="flex-shrink-0 w-[200px] mx-8 flex justify-center items-center"
+              className="flex-shrink-0 mx-4 md:mx-6 lg:mx-8 flex justify-center items-center"
+              style={{ width: "160px" }}
             >
-              <img 
-                src={partner.logo} 
-                alt={partner.name} 
-                className="max-h-20 max-w-[160px] object-contain" 
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                className="max-h-14 md:max-h-16 lg:max-h-20 object-contain"
               />
             </div>
           ))}
         </motion.div>
-      </div>
-
-      {/* Mobile/Tablet - Static Grid */}
-      <div className="lg:hidden px-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
-          {partnerLogos.map((partner) => (
-            <div 
-              key={partner.id} 
-              className="flex justify-center items-center h-[120px]"
-            >
-              <img 
-                src={partner.logo} 
-                alt={partner.name} 
-                className="max-h-16 max-w-full object-contain" 
-              />
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
