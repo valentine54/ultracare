@@ -112,6 +112,14 @@ const Header = () => {
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
+        {/* Desktop Navigation Links */}
+        <div className="hidden md:flex space-x-4 lg:space-x-6">
+          <Link to="/" className="text-white hover:text-blue-200 transition-colors font-medium">Home</Link>
+          <Link to="/about" className="text-white hover:text-blue-200 transition-colors font-medium">About</Link>
+          <Link to="/services" className="text-white hover:text-blue-200 transition-colors font-medium">Services</Link>
+          <Link to="/contact" className="text-white hover:text-blue-200 transition-colors font-medium">Contact Us</Link>
+          <Link to="/careers" className="text-white hover:text-blue-200 transition-colors font-medium">Careers</Link>
+        </div>
 
         {/* Desktop Appointment Button */}
         <button 
