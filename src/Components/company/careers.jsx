@@ -130,6 +130,7 @@ const CareersPage = () => {
         We aim to provide the best client experience by having the right
         employees on the right jobs.
       </p>
+      
       <div className="bg-gray-40 p-4 rounded-md shadow-md mb-6">
         <h2 className="text-lg font-semibold mb-2">Stay Alert: Avoid Job Scams</h2>
         <ul className="list-disc pl-6 text-gray-700">

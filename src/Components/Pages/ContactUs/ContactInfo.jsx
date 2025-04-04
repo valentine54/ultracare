@@ -305,22 +305,22 @@ const [message, setMessage] = useState("");
             </form>
           </div>
         </div>
-        {/* <div className=""> */}
-        <div className="relative w-full pt-[3%] mb-10"> 
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.550187277588!2d34.75203497496488!3d-0.6642608993292571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182b3bbe718061cf%3A0x644f6a26efe0ae5b!2sBosongo%20Hospital%2C%20Kisii!5e0!3m2!1sen!2ske!4v1743065353405!5m2!1sen!2ske"
-         width="1200"
-         height="300"
-         style={{ border: 0 }}
-         allowFullScreen=""
-         loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Bosongo Hospital">
 
-            </iframe>
-            </div>
-            {/* </div> */}
-      </div >
-      
+        {/* Responsive Map Container */}
+        <div className="mt-8 md:mt-12 mb-2 w-full overflow-hidden rounded-lg shadow-lg">
+          <div className="aspect-w-16 aspect-h-9 w-full">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.550187277588!2d34.75203497496488!3d-0.6642608993292571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182b3bbe718061cf%3A0x644f6a26efe0ae5b!2sBosongo%20Hospital%2C%20Kisii!5e0!3m2!1sen!2ske!4v1743065353405!5m2!1sen!2ske"
+              className="w-full h-64 md:h-80 lg:h-96"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Bosongo Hospital"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

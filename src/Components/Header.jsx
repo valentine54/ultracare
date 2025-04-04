@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Phone, Clock, ChevronDown } from "lucide-react";
+import { Mail, Phone, Clock, ChevronDown, Menu, X } from "lucide-react";
 import { 
   FaFacebookF, 
   FaLinkedinIn, 
-
-  FaInstagram, FaYoutube, FaTiktok
+  FaInstagram, 
+  FaYoutube, 
+  FaTiktok 
 } from "react-icons/fa6";
-import { FaEnvelope, FaPhone, FaClock, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaEnvelope, FaPhone, FaClock } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import logo from "../assets/logo.jpg";
 
@@ -22,10 +23,10 @@ const Header = () => {
   const socialLinks = [
     { icon: <FaFacebookF size={16} />, href: "https://www.facebook.com/bosongohospital", label: "Facebook" },
     { icon: <FaLinkedinIn size={16} />, href: "#", label: "LinkedIn" },
-    { icon: <FaXTwitter size={16} />, href: "https://l.facebook.com/l.php?u=https%3A%2F%2Fx.com%2FBosongohospital%3Ffbclid%3DIwZXh0bgNhZW0CMTAAAR0wTYRWN4aTzj9jShNKmjceJOIxF6_z116m_sy_0GNvSCqiPGazrc1nUsg_aem_fVRagsGkKFyZ45cPiX1noQ&h=AT3udQqdQQvhZQi6LDNdCo4mZBmm94SNMmmGa9b8Vbr1R67zNRhIzicQdI96Gyoe63xpzW8wrw6VGi5T0jPrEuSjHV1vEmdrb6x7dHBqOnPTnCOEtrmUauOakDi9EMmKqJbi", label: "Twitter" },
+    { icon: <FaXTwitter size={16} />, href: "https://x.com/Bosongohospital", label: "Twitter" },
     { icon: <FaInstagram size={16} />, href: "https://www.instagram.com/bosongohospital", label: "Instagram" },
-  { icon: <FaYoutube size={16} />, href: "https://www.youtube.com/@bosongohospital", label: "YouTube" },
-  { icon: <FaTiktok size={16} />, href: "https://www.tiktok.com/@bosongohospital", label: "TikTok" },
+    { icon: <FaYoutube size={16} />, href: "https://www.youtube.com/@bosongohospital", label: "YouTube" },
+    { icon: <FaTiktok size={16} />, href: "https://www.tiktok.com/@bosongohospital", label: "TikTok" },
   ];
 
   useEffect(() => {
@@ -38,85 +39,112 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
+
   return (
-    <header className="w-full bg-white fixed top-0 left-0 z-50">
+    <header className="w-full bg-white fixed top-0 left-0 z-50 shadow-sm">
       {/* Top Bar */}
-      <div className="from-white-900 to-gray-50  text-gray-600 py-2 px-4 md:px-10 flex flex-col md:flex-row justify-between items-center text-xs md:text-sm border-b border-gray-200 h-10"> {/* Changed to h-10 */}
-        <div className="flex flex-wrap justify-center text-[12px] gap-x-4 gap-y-1 mb-1 md:mb-0"> {/* Better mobile wrapping */}
-          <span className="flex items-center">
-            <FaEnvelope className="text-blue-600 mr-2" />
-            <a href="mailto:
-bosongomedical@yahoo.com" className="hover:text-blue-600 transition-colors">
-              
+      <div className="bg-white text-gray-600 py-2 px-4 md:px-6 lg:px-10 flex flex-col md:flex-row justify-between items-center text-xs border-b border-gray-200">
+        <div className="flex flex-wrap justify-center md:justify-start gap-x-3 md:gap-x-4 gap-y-1 mb-1 md:mb-0">
+          <span className="flex items-center whitespace-nowrap">
+            <FaEnvelope className="text-blue-600 mr-1 md:mr-2" size={12} />
+            <a href="mailto:bosongomedical@yahoo.com" className="hover:text-blue-600 transition-colors">
               bosongomedical@yahoo.com
             </a>
           </span>
-          <span className="flex items-center">
-            <FaPhone className="text-blue-600 mr-2" />
+          <span className="flex items-center whitespace-nowrap">
+            <FaPhone className="text-blue-600 mr-1 md:mr-2" size={12} />
             <a href="tel:+254111964576" className="hover:text-blue-600 transition-colors">
-            011-196-4576
+              011-196-4576
             </a>
           </span>
-          <span className="flex items-center">
-            <FaClock className="text-blue-600 mr-2" />
+          <span className="flex items-center whitespace-nowrap">
+            <FaClock className="text-blue-600 mr-1 md:mr-2" size={12} />
             Mon-Mon 24 hours
           </span>
         </div>
-        <div className="flex space-x-3">
-          <a href="https://www.facebook.com/bosongohospital" aria-label="Facebook" className="text-gray-500 hover:text-blue-600 transition-colors">
-            <FaFacebook />
-          </a>
-          {/* <a href="#" aria-label="LinkedIn" className="text-gray-500 hover:text-blue-600 transition-colors">
-            <FaLinkedin />
-          </a> */}
-          
-          <a href="https://x.com/Bosongohospital" aria-label="X (Twitter)" className="text-gray-500 hover:text-blue-600 transition-colors">
-  <FaXTwitter />
-</a>
-<a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.instagram.com%2Fbosongohospital%3Ffbclid%3DIwZXh0bgNhZW0CMTAAAR1I2RWxgJXkogSWcJcKS7eisKcF0LLoQoYhwhNVypnDlSviu4frf0T0LmI_aem_jzDjhdAvlFnnPYi6-FyOYQ&h=AT0Lauqi0Z0ZGVSYKZCfUWudLFi0e2S9J33V_yMhgC5_2wjAhuEQ3eonSxRFzA51v8W5qdxhOUzvIfA6TVdvSLJN9p8pk6CFDE74FgqV5Fa_tNJHN8-UMUpjD81qYqLjmWt3" aria-label="Instagram" className="text-gray-500 hover:text-pink-600 transition-colors">
-  <FaInstagram />
-</a>
-<a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fyoutube.com%2F%40Bosongohospital%3Ffbclid%3DIwZXh0bgNhZW0CMTAAAR1I2RWxgJXkogSWcJcKS7eisKcF0LLoQoYhwhNVypnDlSviu4frf0T0LmI_aem_jzDjhdAvlFnnPYi6-FyOYQ&h=AT0exYMm_tXDDQ4o-_TBucsM22SOrvccV8rpxaVJR_H4y6ySTme9EfmS7Ufmq96RWoJtbGc3fIc-aR-3hpIBBsV1RaRNsjmXJPnQGFRji1bj6bQb8C3FmTI8VqCvLtHb1hw8" aria-label="YouTube" className="text-gray-500 hover:text-red-600 transition-colors">
-  <FaYoutube />
-</a>
-<a href="https://l.facebook.com/l.php?u=https%3A%2F%2Ftiktok.com%2F%40bosongohospital%3Ffbclid%3DIwZXh0bgNhZW0CMTAAAR0iu97jr3mk4ybGbVyhaSurLUGJly7QQiwiULsC24qqC9rIjXlmxsHoLeE_aem_FOSxhaJkMKTYXmkPyEHxLw&h=AT2yyzH_CX21CPD2CMFC4bI29HuT-D-alqwlXTD1EmiQ8Tw9vuEqVrMRZoUqQHtKbWrswezxCIuTR_g4junUBaeURtMx0CnTaRe7wXL86E7RLak5DOtycwSvCl5sX9M-tWan" aria-label="TikTok" className="text-gray-500 hover:text-black transition-colors">
-  <FaTiktok />
-</a>
+        <div className="flex space-x-2 md:space-x-3">
+          {socialLinks.map((link, index) => (
+            <a 
+              key={index}
+              href={link.href} 
+              aria-label={link.label} 
+              className={`text-gray-500 hover:text-blue-600 transition-colors ${link.label === 'Instagram' ? 'hover:text-pink-600' : ''} ${link.label === 'YouTube' ? 'hover:text-red-600' : ''} ${link.label === 'TikTok' ? 'hover:text-black' : ''}`}
+            >
+              {link.icon}
+            </a>
+          ))}
         </div>
       </div>
 
       {/* Main Navbar */}
-      <nav className="bg-[#0047AB] shadow-md px-4 md:px-10 flex justify-between items-center h-24"> {/* Increased height */}
-  {/* Logo */}
-  <div className="flex items-center flex-shrink-0 pl-9"> {/* Prevents logo from shrinking */}
-    <a href="/">
-      <img 
-        src={logo} 
-        alt="BMC Logo" 
-        className="h-[100px] w-auto max-w-[220px] object-contain" 
-      />
-    </a>
-  </div>
-  
-
-        {/* Navigation Links  text-gray-700*/}
-        <div className="hidden md:flex space-x-6">
-          <Link to="/" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">Home</Link>
-          <Link to="/about" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">About</Link>
-          <Link to="/services" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">Services</Link>
-          {/* <Link to="/doctors" className="text-gray-700 hover:text-blue-600 transition-colors">Doctors</Link> */}
-          
-          <Link to="/contact" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">Contact</Link>
-          <Link to="/careers" className="text-[#FFFFFF] hover:text-blue-200 transition-colors">Careers</Link>
+      <nav className="bg-[#0047AB] shadow-md px-4 md:px-6 lg:px-10 flex justify-between items-center h-16 md:h-24">
+        {/* Logo */}
+        <div className="flex items-center flex-shrink-0">
+          <a href="/">
+            <img 
+              src={logo} 
+              alt="BMC Logo" 
+              className="h-12 md:h-20 w-auto object-contain" 
+            />
+          </a>
         </div>
 
-        {/* Appointment Button */}
+        {/* Desktop Navigation Links */}
+        <div className="hidden md:flex space-x-4 lg:space-x-6">
+          <Link to="/" className="text-white hover:text-blue-200 transition-colors font-medium">Home</Link>
+          <Link to="/about" className="text-white hover:text-blue-200 transition-colors font-medium">About</Link>
+          <Link to="/services" className="text-white hover:text-blue-200 transition-colors font-medium">Services</Link>
+          <Link to="/contact" className="text-white hover:text-blue-200 transition-colors font-medium">Contact</Link>
+          <Link to="/careers" className="text-white hover:text-blue-200 transition-colors font-medium">Careers</Link>
+        </div>
+
+        {/* Mobile Menu Button */}
         <button 
-        onClick={() => navigate("/contact")}
-         className="bg-[#FFFFFF] hover:bg-[#F0F0F0] text-[#0047AB] px-6 py-2 rounded-md font-medium transition-colors">
+          className="md:hidden text-white focus:outline-none"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Desktop Appointment Button */}
+        <button 
+          onClick={() => navigate("/contact")}
+          className="hidden md:block bg-white hover:bg-[#F0F0F0] text-[#0047AB] px-4 py-1 lg:px-6 lg:py-2 rounded-md font-medium transition-colors"
+        >
           Request an Appointment
         </button>
       </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-[#0047AB] w-full overflow-hidden"
+          >
+            <div className="flex flex-col space-y-4 p-4">
+              <Link to="/" className="text-white hover:text-blue-200 transition-colors">Home</Link>
+              <Link to="/about" className="text-white hover:text-blue-200 transition-colors">About</Link>
+              <Link to="/services" className="text-white hover:text-blue-200 transition-colors">Services</Link>
+              <Link to="/contact" className="text-white hover:text-blue-200 transition-colors">Contact</Link>
+              <Link to="/careers" className="text-white hover:text-blue-200 transition-colors">Careers</Link>
+              <button 
+                onClick={() => navigate("/contact")}
+                className="bg-white hover:bg-[#F0F0F0] text-[#0047AB] px-6 py-2 rounded-md font-medium transition-colors mt-2"
+              >
+                Request an Appointment
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

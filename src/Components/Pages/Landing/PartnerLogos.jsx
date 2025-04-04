@@ -36,9 +36,9 @@ const PartnerLogos = () => {
 
   return (
     <div className="pt-12 pb-1 bg bg-gray-50 overflow-hidden">
-      {/* <h2 className="text-4xl font-bold text-center text-gray-800 mb-12">
+      <h2 className="text-4xl font-bold text-center text-gray-800 mb-12">
         Our Trusted Partners
-      </h2> */}
+      </h2>
 
       {/* Desktop - Continuous Flow */}
       <div className="hidden lg:block relative h-[160px]">
