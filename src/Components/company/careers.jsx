@@ -98,7 +98,7 @@ const CareersPage = () => {
       console.error("No download link available.");
       return;
     }
-
+    
     // Method 1: Direct link with download attribute
     const a = document.createElement("a");
     a.href = job.pdfLink;

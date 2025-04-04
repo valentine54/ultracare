@@ -32,30 +32,56 @@ import img27 from "../../assets/50.jpg";
 
 const AboutPage = () => {
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-const galleryImages = [img1, img2,img20, img21, img22, img23, img24, img25, img26, img27, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, ];
+  const [selectedImage, setSelectedImage] = useState(null);
+  
+  const galleryImages = [img1, img2, img20, img21, img22, img23, img24, img25, img26, img27, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18];
  
+  // Function to open the full-size image modal
+  const openImageModal = (img) => {
+    setSelectedImage(img);
+  };
+
+  // Function to close the full-size image modal
+  const closeImageModal = () => {
+    setSelectedImage(null);
+  };
+  
   return (
     <section className="bg-gray-100 py-12 pt-40 px-6">
       {/* About Section */}
       <div className="max-w-6xl mx-auto text-center mb-12">
-      <h1 className="text-5xl font-extrabold text-gray-800 tracking-wide">
-    About Us
-  </h1>
-  <p className="text-lg text-gray-700 mt-4 leading-relaxed max-w-3xl mx-auto">
-    Bosongo Hospital in Kisii County provides high-quality, patient-centered care with a focus on excellence, compassion, and modern medical practices.
-    Our services include advanced diagnostics, emergency care, and community wellness programs.
-  </p>
-  <p className="text-lg text-gray-700 mt-4 leading-relaxed max-w-3xl mx-auto">
-    Guided by integrity and teamwork, we ensure accessible and affordable healthcare. With cutting-edge technology and strict ethical standards, 
-    we prioritize transparency, professionalism, and innovation to improve patient outcomes.
-  </p>
+        <h1 className="text-5xl font-extrabold text-gray-800 tracking-wide">
+          About Us
+        </h1>
+        <p className="text-lg text-gray-700 mt-4 leading-relaxed max-w-3xl mx-auto">
+          Bosongo Hospital in Kisii County provides high-quality, patient-centered care with a focus on excellence, compassion, and modern medical practices.
+          Our services include advanced diagnostics, emergency care, and community wellness programs.
+        </p>
+        <p className="text-lg text-gray-700 mt-4 leading-relaxed max-w-3xl mx-auto">
+          Guided by integrity and teamwork, we ensure accessible and affordable healthcare. With cutting-edge technology and strict ethical standards, 
+          we prioritize transparency, professionalism, and innovation to improve patient outcomes.
+        </p>
         <img
           src={hospitalImage}
           alt="Hospital"
           className="mt-6 w-full h-80 object-cover rounded-lg shadow-lg"
         />
       </div>
-
+      
+      {/* Gallery Button (Aligned Right) */}
+      <div className="sticky top-4 z-40 flex justify-center mb-6">
+        <button
+          onClick={() => {
+            setIsGalleryOpen(true);
+            // window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg flex items-center space-x-2 transition-all duration-300 hover:shadow-xl"
+        >
+          <FaImages className="text-2xl" />
+          <span>View images of our hospital</span>
+        </button>
+      </div>
+      
       {/* Mission & Vision Section */}
       <div className="max-w-5xl mx-auto mb-12">
         <div className="bg-white shadow-lg rounded-lg p-6">
@@ -68,7 +94,7 @@ const galleryImages = [img1, img2,img20, img21, img22, img23, img24, img25, img2
         <div className="bg-white shadow-lg rounded-lg p-6 mt-6">
           <h2 className="text-2xl font-semibold text-gray-800">Our Vision</h2>
           <p className="text-gray-600 mt-2">
-          Bosongo Hospital envisions a future where healthcare is accessible, comprehensive, and of the highest international standards. We strive to inspire hope and contribute to the well-being of our patients by integrating clinical expertise, innovative medical practices, and continuous education to improve health outcomes.
+            Bosongo Hospital envisions a future where healthcare is accessible, comprehensive, and of the highest international standards. We strive to inspire hope and contribute to the well-being of our patients by integrating clinical expertise, innovative medical practices, and continuous education to improve health outcomes.
           </p>
         </div>
       </div>
@@ -85,75 +111,93 @@ const galleryImages = [img1, img2,img20, img21, img22, img23, img24, img25, img2
             "Teamwork",
             "Patient-Centered Care"
           ].map((value, index) => (
-            <div key={index} className="bg-white shadow-lg p-3 rounded-lg ">
+            <div key={index} className="bg-white shadow-lg p-3 rounded-lg">
               <h3 className="text-xl font-semibold text-gray-800">{value}</h3>
             </div>
           ))}
         </div>
       </div>
-      {/* Gallery Button (Aligned Right) */}
-<div className="max-w-5xl mx-auto flex justify-center  mt-6">
-  <button 
-    className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-    onClick={() => setIsGalleryOpen(true)}
-  >
-    <FaImages className="text-2xl" />
-    <span>View images of our hospital</span>
-  </button>
-</div>
 
-         {/* Image Gallery Modal */}
-         {isGalleryOpen && (
-  <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full relative max-h-[80vh] overflow-y-auto">
-      <button
-        className="absolute top-4 right-4 bg-red-500 text-white px-3 py-2 rounded-full hover:bg-red-600 transition"
-        onClick={() => setIsGalleryOpen(false)}
-      >
-        Close ✕
-      </button>
-      <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Gallery</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {galleryImages.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            alt={`Gallery Image ${index + 1}`}
-            className="w-full h-40 object-cover rounded-lg shadow-md hover:opacity-80 transition"
-          />
-        ))}
-      </div>
-    </div>
-  </div>
-)}
+      {/* Image Gallery Modal */}
+      {isGalleryOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[80vh] flex flex-col">
+            {/* Sticky Header */}
+            <div className="sticky top-0 bg-white p-6 z-10 border-b">
+              <div className="flex justify-between items-center">
+                <div className="flex-1 text-center">
+                  <h2 className="text-2xl font-semibold text-gray-800 inline-block">Gallery</h2>
+                </div>
+                <button
+                  className="bg-red-500 text-white px-3 py-2 rounded-full hover:bg-red-600 transition"
+                  onClick={() => setIsGalleryOpen(false)}
+                >
+                  Close ✕
+                </button>
+              </div>
+            </div>
+            
+            {/* Scrollable Images */}
+            <div className="overflow-y-auto p-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {galleryImages.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`Gallery Image ${index + 1}`}
+                    className="w-full h-40 object-cover rounded-lg shadow-md hover:opacity-80 cursor-pointer transition"
+                    onClick={() => openImageModal(img)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
+      {/* Full-size Image Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50" onClick={closeImageModal}>
+          <div className="relative max-w-[90vw] max-h-[90vh]">
+            <img 
+              src={selectedImage} 
+              alt="Enlarged view" 
+              className="max-w-full max-h-[85vh] object-contain"
+            />
+            <button
+              className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition-colors"
+              onClick={closeImageModal}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Contact Information Section */}
       <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-6">
-  <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">Contact Us</h2>
-  <p className="text-gray-600 text-center mb-6">
-    Reach out to us for appointments, inquiries, or emergency services.
-  </p>
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-    {[
-      { title: "Phone", info: "011-196-4576" },
-      { title: "Email", info: "bosongomedical@yahoo.com" },
-      { title: "Address", info: "Near the Kisii-Kisumu and Kisii-Migori Roundabout, Kenya" },
-      { title: "Working Hours", info: "24/7 Emergency Services" },
-    ].map((contact, index) => (
-      <div
-        key={index}
-        className="bg-gray-50 shadow-md rounded-lg p-6 text-center transition duration-300 hover:shadow-lg"
-      >
-        <h3 className="text-lg font-semibold text-gray-800">{contact.title}</h3>
-        <p className="text-gray-600">{contact.info}</p>
-      </div>
-    ))}
-  </div>
-
+        <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">Contact Us</h2>
+        <p className="text-gray-600 text-center mb-6">
+          Reach out to us for appointments, inquiries, or emergency services.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            { title: "Phone", info: "011-196-4576" },
+            { title: "Email", info: "bosongomedical@yahoo.com" },
+            { title: "Address", info: "Near the Kisii-Kisumu and Kisii-Migori Roundabout, Kenya" },
+            { title: "Working Hours", info: "24/7 Emergency Services" },
+          ].map((contact, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 shadow-md rounded-lg p-6 text-center transition duration-300 hover:shadow-lg"
+            >
+              <h3 className="text-lg font-semibold text-gray-800">{contact.title}</h3>
+              <p className="text-gray-600">{contact.info}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
-    
   );
 };
 
