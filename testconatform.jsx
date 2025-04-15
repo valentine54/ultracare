@@ -1,19 +1,66 @@
-import React, { useState } from "react";
+:import React, { useState } from "react";
 import hero from "../../../assets/40.jpg";
+import emailjs from '@emailjs/browser';
+
 
 const ContactInfo = () => {
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(""); // Success notification
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    phone:"",
     specialty: "",
-    date: "",
+    date:"",
     message: "",
   });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    const serviceId = "service_5d05rs1";
+    const templateId = "template_cbidvo1";
+    const publicKey = "tuJNp_E9sQiOg4GmL";
+  
+    const templateParams = {
+      from_name: formData.name,      // Corrected reference
+      from_email: formData.email,
+      from_phone: formData.phone,
+      from_specialty: formData.specialty,
+      from_date: formData.date,
+      from_message: formData.message,
+      to_name: "Bosongo Hospital",
+    };
+  
+    emailjs
+      .send(serviceId, templateId, templateParams, publicKey)
+      .then((response) => {
+        console.log("Email sent successfully!", response);
+        setSuccessMessage("Appointment successfully booked! You will receive further details about the doctor's availability and office location soon.");
+  
+        // Reset form after submission
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          specialty: "",
+          date: "",
+          message: "",
+        });
+      })
+      .catch((error) => {
+        console.error("Error sending email:", error);
+      });
+  };
+  
 
   const allSpecialties = [
     "-- Please Select --",
@@ -92,56 +139,13 @@ const ContactInfo = () => {
     "Physicist",
     "Radiology",
   ];
-
   const today = new Date().toISOString().split("T")[0];
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/appointments/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to submit appointment');
-      }
-
-      const data = await response.json();
-      setSuccessMessage(data.message || "Appointment successfully booked! You will receive further details about the doctor's availability and office location soon.");
-
-      // Reset form after submission
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        specialty: "",
-        date: "",
-        message: "",
-      });
-    } catch (error) {
-      console.error("Error submitting appointment:", error);
-      setErrorMessage(error.message || "Failed to book appointment. Please try again later.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+const [name, setName] = useState("");
+const [email, setEmail] = useState("");
+const [phone, setPhone] = useState("");
+const [specialty, setSpecialty] = useState("");
+const [date, setDate] = useState("");
+const [message, setMessage] = useState("");
 
   return (
     <div className="bg-white pt-20">
@@ -166,7 +170,7 @@ const ContactInfo = () => {
             <img
               src={hero}
               alt="Customer support illustration"
-              className="mt-6 rounded-lg shadow-lg w-full max-w-md object-cover"
+              className="mt-6 rounded-lg shadow-lg w-full max-w-md  object-cover"
             />
           </div>
 
@@ -204,22 +208,21 @@ const ContactInfo = () => {
                   required
                 />
               </div>
-
               <div>
-                <label htmlFor="phone" className="block text-sm text-gray-600">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="Enter Your Phone Number"
-                  className="mt-1 block w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  required
-                />
-              </div>
+    <label htmlFor="phone" className="block text-sm text-gray-600">
+      Phone Number
+    </label>
+    <input
+      type="tel"
+      id="phone"
+      name="phone"
+      value={formData.phone}
+      onChange={handleChange}
+      placeholder="Enter Your Phone Number"
+      className="mt-1 block w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+      required
+    />
+  </div>
 
               <div>
                 <label htmlFor="specialty" className="block text-sm text-gray-600">
@@ -240,21 +243,18 @@ const ContactInfo = () => {
                   ))}
                 </select>
               </div>
-
               <div>
-                <label htmlFor="date" className="block text-sm text-gray-600">
-                  Appointment Date
-                </label>
+                <label htmlFor="date" className="block text-sm text-gray-600">Appointment Date</label>
                 <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  min={today}
-                  className="mt-1 block w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  required
-                />
+  type="date"
+  id="date"
+  name="date"
+  value={formData.date}
+  onChange={handleChange}
+  min={today} // Prevent past dates
+  className="mt-1 block w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+  required
+/>
               </div>
 
               <div>
@@ -272,48 +272,55 @@ const ContactInfo = () => {
                   className="mt-1 block w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  {formData.message.length}/500 characters
-                </p>
+                 <p className="text-xs text-gray-500 mt-1">
+    {formData.message.length}/500 characters
+  </p>
               </div>
 
               <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors ${
-                  isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-                }`}
-              >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
-              </button>
+  type="submit"
+  // onClick={() => {
+  //   const subject = encodeURIComponent("New Appointment Request");
+  //   const body = encodeURIComponent(
+  //     `Name: ${formData.name}\n` +
+  //     `Email: ${formData.email}\n` +
+  //     `Phone: ${formData.phone}\n` +
+  //     `Specialty: ${formData.specialty}\n` +
+  //     `Date: ${formData.date}\n` +
+  //     `Message: ${formData.message}`
+  //   );
 
-              {successMessage && (
-                <p className="mt-4 text-green-600 font-semibold text-center">
-                  <i>{successMessage}</i>
-                </p>
-              )}
-              {errorMessage && (
-                <p className="mt-4 text-red-600 font-semibold text-center">
-                  <i>{errorMessage}</i>
-                </p>
-              )}
+  //   window.location.href = `mailto:wanjiku.valentine@strathmore.edu?subject=${subject}&body=${body}`;
+  // }}
+  className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+>
+  Send Message
+</button>
+{successMessage && (
+  <p className="mt-4 text-blue-600 font-semibold text-center">
+   <p className="text-red-600 font-semibold mt-4"><i>{successMessage}</i></p> 
+  </p>
+)}
+
             </form>
           </div>
         </div>
-
+        {/* <div className=""> */}
         <div className="relative w-full pt-[3%] mb-10"> 
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.550187277588!2d34.75203497496488!3d-0.6642608993292571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182b3bbe718061cf%3A0x644f6a26efe0ae5b!2sBosongo%20Hospital%2C%20Kisii!5e0!3m2!1sen!2ske!4v1743065353405!5m2!1sen!2ske"
-            width="1200"
-            height="300"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.550187277588!2d34.75203497496488!3d-0.6642608993292571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182b3bbe718061cf%3A0x644f6a26efe0ae5b!2sBosongo%20Hospital%2C%20Kisii!5e0!3m2!1sen!2ske!4v1743065353405!5m2!1sen!2ske"
+         width="1200"
+         height="300"
+         style={{ border: 0 }}
+         allowFullScreen=""
+         loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Bosongo Hospital"
-          />
-        </div>
-      </div>
+            title="Bosongo Hospital">
+
+            </iframe>
+            </div>
+            {/* </div> */}
+      </div >
+      
     </div>
   );
 };

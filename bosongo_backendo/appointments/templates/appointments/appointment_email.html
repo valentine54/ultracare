@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>New Appointment Request</h2>
+    <p><strong>Patient Name:</strong> {{ appointment.name }}</p>
+    <p><strong>Email:</strong> {{ appointment.email }}</p>
+    <p><strong>Phone:</strong> {{ appointment.phone }}</p>
+    <p><strong>Specialty:</strong> {{ appointment.specialty }}</p>
+    <p><strong>Preferred Date:</strong> {{ appointment.date }}</p>
+    <p><strong>Message:</strong></p>
+    <p>{{ appointment.message }}</p>
+    <br>
+    <p>This appointment was submitted on {{ appointment.created_at }}.</p>
+</body>
+</html>
