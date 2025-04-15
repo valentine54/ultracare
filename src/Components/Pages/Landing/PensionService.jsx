@@ -14,7 +14,7 @@ const PensionService = () => {
   };
 
   return (
-    <div className="flex h-[36rem] flex-col lg:flex-row w-full">
+    <div className="flex min-h-screen] flex-col lg:flex-row w-full">
       {/* Left Section */}
       <div
         className="w-full lg:w-1/2 bg-[#003087] px-4 md:px-12 lg:px-16 py-16 md:py-24"

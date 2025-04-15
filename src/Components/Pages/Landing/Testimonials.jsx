@@ -155,63 +155,60 @@ const Testimonials = () => {
         </div>
 
         {/* Mobile/Tablet */}
-        <div className="lg:hidden relative px-4">
-          <div className="overflow-hidden">
-            <div className="flex justify-center items-center relative h-[400px]">
-              <AnimatePresence initial={false} custom={direction}>
-                <motion.div
-                  key={currentIndex}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: "spring", stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.2 },
-                  }}
-                  className="absolute w-full"
-                >
-                  <div className="bg-white p-12 rounded-xl shadow-lg mx-auto max-w-2xl">
-                    <div className="flex flex-col items-center">
-                      <div className="w-20 h-20 mb-8 rounded-full overflow-hidden shadow-md">
-                        <img
-                          src={testimonials[currentIndex].image}
-                          alt={`${testimonials[currentIndex].name}'s avatar`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <p className="text-gray-600 text-center mb-8 leading-relaxed">
-                        {testimonials[currentIndex].text}
-                      </p>
-                      <p className="font-bold text-gray-800 text-lg">
-                        — {testimonials[currentIndex].name}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+<div className="lg:hidden relative px-4">
+  <div className="overflow-hidden">
+    <div className="flex justify-center items-center relative h-[400px]">
+      <AnimatePresence initial={false} custom={direction}>
+        <motion.div
+          key={currentIndex}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
+          }}
+          className="absolute w-full"
+        >
+          <div className="bg-white p-8 rounded-xl shadow-lg mx-auto max-w-2xl">
+            <div className="flex flex-col items-center">
+              {/* Updated icon container with circular boundary */}
+              <div className="w-20 h-20 mb-8 rounded-full bg-blue-50 flex items-center justify-center shadow-md">
+                {testimonials[currentIndex].icon}
+              </div>
+              <p className="text-gray-600 text-center mb-6 leading-relaxed">
+                {testimonials[currentIndex].text}
+              </p>
+              <p className="font-bold text-gray-800 text-lg">
+                {testimonials[currentIndex].name}
+              </p>
             </div>
           </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  </div>
 
-          <div className="flex justify-center gap-3 mt-12">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setDirection(index > currentIndex ? 1 : -1);
-                  setCurrentIndex(index);
-                }}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? "bg-gray-800 scale-125"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
+  <div className="flex justify-center gap-3 mt-8">
+    {testimonials.map((_, index) => (
+      <button
+        key={index}
+        onClick={() => {
+          setDirection(index > currentIndex ? 1 : -1);
+          setCurrentIndex(index);
+        }}
+        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+          index === currentIndex
+            ? "bg-gray-800 scale-125"
+            : "bg-gray-300 hover:bg-gray-400"
+        }`}
+        aria-label={`Go to slide ${index + 1}`}
+      />
+    ))}
+  </div>
+</div>
       </div>
     </div>
   );

@@ -7,6 +7,9 @@ import Hero from "./Hero";
 import WhyChooseUs from "./WhyChooseUs";
 import PensionService from "./PensionService";
 import Testimonials from "./Testimonials";
+import PartnerLogos from "./PartnerLogos";
+import ClientFeedback from "./ClientFeedback";
+// import LogoShowcase from "./LogoShowcase";
 
 const LandingPage = () => {
   return (
@@ -16,7 +19,11 @@ const LandingPage = () => {
       {/* <ServicesSteps /> */}
       <Testimonials />
       <PensionService />
+      <PartnerLogos />
+      {/* <LogoShowcase /> */}
+      <ClientFeedback/>
       <WhyChooseUs />
+      
       
       {/* <Newsletter /> */}
       {/* <Brands /> */}
