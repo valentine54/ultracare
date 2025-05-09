@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+// import EditJobs from "./Components/company/editJobs";
 
-const GOOGLE_SHEET_CSV_URL =import.meta.env.VITE_GOOGLE_SHEET_CSV_URL;
+// const GOOGLE_SHEET_CSV_URL =import.meta.env.VITE_GOOGLE_SHEET_CSV_URL;
 
 const formatDate = (dateString) => {
   if (!dateString) return "N/A";
@@ -60,37 +61,61 @@ const extractFileIdFromUrl = (url) => {
 
 const CareersPage = () => {
   const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  
   useEffect(() => {
-    fetch(GOOGLE_SHEET_CSV_URL)
-      .then((response) => response.text())
-      .then((data) => {
-        const rows = data.split("\n").slice(1); // Skip headers
-        const formattedJobs = rows
-          .map((row) => {
-            const columns = row.split(",");
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch("http://localhost:8000/api/api/jobs/");
+        
+        console.log("Response status:", response.status); // Debug
 
-            const originalLink = columns[3]?.trim(); // "Upload Job Description (PDF)"
-            const fileId = extractFileIdFromUrl(originalLink);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.status}`);
+        }
+        
+        const data = await response.json();
 
-            // Use download link instead of view link
-            const driveDownloadLink = fileId
-              ? `https://drive.google.com/uc?export=download&id=${fileId}`
-              : originalLink;
-
-            return {
-              title: columns[1]?.trim(),
-              closingDate: columns[2]?.trim(),
-              pdfLink: driveDownloadLink, // Updated to use download link
-              fileId: fileId
-            };
-          })
-          .filter((job) => job.title && job.closingDate && job.pdfLink);
-
+        console.log("API data:", data); // Debug
+        
+        // Transform data to match your frontend structure
+        const formattedJobs = data.map(job => ({
+          title: job.title,
+          closingDate: job.closing_date, // Make sure this matches your API
+          pdfLink: job.pdf_file.startsWith('http') 
+            ? job.pdf_file 
+            : `http://localhost:8000${job.pdf_file}`,
+        }));
+        
         setJobs(formattedJobs);
-      })
-      .catch((error) => console.error("Error fetching job data:", error));
+        
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setError(err.message);
+        setJobs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
   }, []);
+  
+  
+
+  // const formattedJobs = data.map((job) => ({
+  //   title: job.title,
+  //   closingDate: job.closing_date,
+  //   pdfLink: job.pdf_file.startsWith('http') 
+  //     ? job.pdf_file 
+  //     : `http://localhost:8000${job.pdf_file}`,
+  // }));
+  // setJobs(formattedJobs);
+  
 
   // Function to handle file download with multiple methods
   const handleDownload = (job) => {
@@ -159,31 +184,48 @@ const CareersPage = () => {
             </tr>
           </thead>
           <tbody>
-            {jobs.length > 0 ? (
-              jobs.map((job, index) => (
-                <tr key={index} className="border-b border-gray-200">
-                  <td className="p-3">{job.title}</td>
-                  <td className="p-3">{formatDate(job.closingDate)}</td>
-                  <td className="p-3">
-                    <button
-                      onClick={() => handleDownload(job)}
-                      className="bg-white text-blue-900 px-4 py-2 rounded-lg border border-blue-900 hover:bg-blue-900 hover:text-white transition"
-                    >
-                      Download Job Description
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="3" className="p-3 text-center">
-                  No job vacancies available.
-                </td>
-              </tr>
-            )}
-          </tbody>
+  {loading ? (
+    <tr>
+      <td colSpan="3" className="p-3 text-center">
+        Loading jobs...
+      </td>
+    </tr>
+  ) : error ? (
+    <tr>
+      <td colSpan="3" className="p-3 text-center text-red-500">
+        Error: {error}
+      </td>
+    </tr>
+  ) : jobs.length > 0 ? (
+    jobs.map((job, index) => (
+      <tr key={index} className="border-t border-gray-300">
+        <td className="p-3 font-medium text-gray-800">{job.title}</td>
+        <td className="p-3 text-gray-600">{formatDate(job.closingDate)}</td>
+        <td className="p-3">
+          <button
+            onClick={() => handleDownload(job)}
+            className="text-blue-600 hover:underline"
+          >
+            Download
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="3" className="p-3 text-center">
+        No job vacancies available.
+      </td>
+    </tr>
+  )}
+</tbody>
+
         </table>
       </div>
+
+
+      {/* <EditJobs jobs={jobs} loading={loading} error={error} handleDownload={handleDownload} /> */}
+      {/* <EditJobs/> */}
     </div>
   );
 };

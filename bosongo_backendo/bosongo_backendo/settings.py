@@ -9,13 +9,19 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 from decouple import config
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+# Build path to the frontend/.env file
+# Define BASE_DIR correctly first
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Path to the .env file (1 level above the backend folder)
+env_path = BASE_DIR.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -137,6 +143,7 @@ CORS_ALLOWED_ORIGINS = [
 # For development only - remove in production!
 # CORS_ALLOW_ALL_ORIGINS = True  # Temporary for testing
 CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_ALL_ORIGINS = True 
 
 # Add these at the bottom
 CSRF_TRUSTED_ORIGINS = [
@@ -178,3 +185,6 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

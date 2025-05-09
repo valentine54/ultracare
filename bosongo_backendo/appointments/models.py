@@ -14,3 +14,12 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.specialty} - {self.date}"
+    
+class Job(models.Model):
+    title = models.CharField(max_length=255)
+    closing_date = models.DateField()
+    pdf_file = models.FileField(upload_to='job_pdfs/')
+
+    def __str__(self):
+        return self.title
+    

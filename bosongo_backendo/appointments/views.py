@@ -2,13 +2,17 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import Appointment
 from .serializers import AppointmentSerializer
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import AllowAny
 from django.core.mail import send_mail, BadHeaderError
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from smtplib import SMTPException
 import logging
+from .models import Job
+from .serializers import JobSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import generics
 
 logger = logging.getLogger(__name__)
 
@@ -79,3 +83,40 @@ class AppointmentCreateView(generics.CreateAPIView):
         except Exception as e:
             logger.error(f"Unexpected error sending email: {str(e)}")
             raise
+
+
+class JobCreateAPIView(generics.CreateAPIView):
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer
+    parser_classes = (MultiPartParser, FormParser)
+
+    def perform_create(self, serializer):
+        serializer.save(pdf_file=self.request.FILES.get('pdf_file'))
+
+
+@api_view(['GET'])
+# def job_list(request):
+def job_list(request):
+    if request.method == 'GET':
+        jobs = Job.objects.all().order_by('-id')
+        serializer = JobSerializer(jobs, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        serializer = JobSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class JobDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer
+    parser_classes = (MultiPartParser, FormParser)
+
+    def perform_update(self, serializer):
+        # Only update the PDF file if a new one was provided
+        if 'pdf_file' not in self.request.data:
+            serializer.validated_data.pop('pdf_file', None)
+        serializer.save()

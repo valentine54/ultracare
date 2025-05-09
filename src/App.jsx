@@ -9,6 +9,9 @@ import Footer from "./Components/Footer";
 import NotFound from "./NotFound";
 import Careers from "./Components/company/careers";
 import ScrollBar from "./Components/Scrollbar";
+import PostJob from "./Components/company/PostJob";
+// import editJobs from "./Components/company/editJobs";
+import EditJobs from "./Components/company/editJobs";
 // import Navbar from "./Components/Navbar"; // Import the Navbar
 
 const RoutedContent = () => {
@@ -23,6 +26,10 @@ const RoutedContent = () => {
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/careers" element={<Careers />} />
+          <Route path="/post-job" element={<PostJob />} />
+          {/* <Route path="/edit-job" element={<editJobs/>}/> */}
+          <Route path="/edit-job" element={<EditJobs/>}/>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
