@@ -130,7 +130,7 @@ const PostJob = () => {
               type="text"
               id="title"
               name="title"
-              placeholder="e.g. Senior Frontend Developer"
+              placeholder="e.g. Resident Doctor"
               required
               style={{
                 width: "100%",

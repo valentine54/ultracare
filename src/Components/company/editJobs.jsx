@@ -6,6 +6,8 @@ const PostJob = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [editingJob, setEditingJob] = useState(null);
+  const [jobToDelete, setJobToDelete] = useState(null);
+  const [deleteTimeout, setDeleteTimeout] = useState(null);
   const [editFormData, setEditFormData] = useState({
     title: '',
     closing_date: '',
@@ -167,20 +169,44 @@ const PostJob = () => {
 
   
   const handleDelete = async (jobId) => {
-    if (window.confirm('Are you sure you want to delete this job posting?')) {
-      try {
-        const response = await fetch(`http://localhost:8000/api/jobs/${jobId}/`, {
-          method: 'DELETE',
-        });
+    // First click - set confirmation
+    if (jobToDelete !== jobId) {
+      // Clear any existing timeout
+      if (deleteTimeout) {
+        clearTimeout(deleteTimeout);
+      }
+      
+      setJobToDelete(jobId);
+      
+      // Set a timeout to automatically cancel the deletion if no action is taken
+      const timeout = setTimeout(() => {
+        setJobToDelete(null);
+      }, 5000); // 5 seconds to confirm
+      
+      setDeleteTimeout(timeout);
+      return;
+    }
+    
+    // Second click - confirm deletion
+    try {
+      setIsLoading(true);
+      const response = await fetch(`http://localhost:8000/api/jobs/${jobId}/`, {
+        method: 'DELETE',
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to delete job');
-        }
+      if (!response.ok) {
+        throw new Error('Failed to delete job');
+      }
 
-        await fetchJobs();
-      } catch (error) {
-        console.error('Error deleting job:', error);
-        setError(error.message);
+      await fetchJobs();
+      setJobToDelete(null);
+    } catch (error) {
+      console.error('Error deleting job:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+      if (deleteTimeout) {
+        clearTimeout(deleteTimeout);
       }
     }
   };
@@ -220,7 +246,7 @@ const PostJob = () => {
           fontSize: "1.75rem",
           fontWeight: "600"
         }}>
-          Post a New Job Opportunity
+          Manage Job Opportunities (Edit/Delete)
         </h2>
 
         {/* Your existing form here */}
@@ -234,7 +260,7 @@ const PostJob = () => {
               paddingBottom: "0.5rem",
               borderBottom: "2px solid #eee"
             }}>
-              Posted Jobs
+              Current Job Listings
             </h3>
             <div style={{ overflowX: "auto" }}>
               <table style={{ 
@@ -453,19 +479,54 @@ const PostJob = () => {
                             >
                               Edit
                             </button>
-                            <button
-                              onClick={() => handleDelete(job.id)}
-                              style={{
-                                padding: "0.5rem 1rem",
-                                backgroundColor: "#e74c3c",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "4px",
-                                cursor: "pointer"
-                              }}
-                            >
-                              Delete
-                            </button>
+                            {
+    jobToDelete === job.id ? (
+      <div style={{ display: "flex", gap: "0.5rem" }}>
+        <button
+          onClick={() => handleDelete(job.id)}
+          style={{
+            padding: "0.5rem 1rem",
+            backgroundColor: "#e74c3c",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontWeight: "bold"
+          }}
+        >
+          Confirm Delete
+        </button>
+        <button
+          onClick={() => setJobToDelete(null)}
+          style={{
+            padding: "0.5rem 1rem",
+            backgroundColor: "#95a5a6",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer"
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    ) : (
+      <button
+        onClick={() => handleDelete(job.id)}
+        disabled={isLoading}
+        style={{
+          padding: "0.5rem 1rem",
+          backgroundColor: "#f39c12",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          opacity: isLoading ? 0.7 : 1
+        }}
+      >
+        Delete
+      </button>
+    )}
                           </td>
                         </>
                       )}
