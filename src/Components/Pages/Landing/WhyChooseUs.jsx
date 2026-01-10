@@ -1,31 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
-import hero from "../../../assets/12.jpg"; // Ensure high-resolution image
-import hero1 from "../../../assets/15.jpg"; // Ensure high-resolution image
-import hero2 from "../../../assets/47.jpg"; // Ensure high-resolution image
+import { Link } from "react-router-dom";
+import hero from "../../../assets/ultra9.jpg";
+import hero1 from "../../../assets/ultra10.jpg";
+import hero2 from "../../../assets/ultra11.jpg";
 
 const WhyChooseUs = () => {
   const features = [
     {
-      title: "Our Services",
+      title: "Advanced Care",
       description:
-        "We offer expert medical care across multiple specialties, ensuring quality treatment under one roof.",
+        "Delivering world-class medical expertise across multiple specialties under one roof, designed for your health and comfort.",
       bgImage: `url(${hero})`,
-      buttonText: "Explore Services",
+      buttonText: "Discover Services",
       link: "/services",
     },
     {
-      title: "Get in Touch",
+      title: "Connect With Us",
       description:
-        "Have questions? Our team is here to help. Reach out for appointments or inquiries.",
+        "Our friendly team is ready to assist with appointments, inquiries, and personalized care guidance.",
       bgImage: `url(${hero1})`,
-      buttonText: "Contact Us",
+      buttonText: "Contact Now",
       link: "/contact",
     },
     {
-      title: "Why Choose Us?",
+      title: "Why Ultracare?",
       description:
-        "We combine innovation, expertise, and compassionate care to give you the best healthcare experience.",
+        "We blend innovation, compassionate care, and cutting-edge technology to create the ultimate healthcare experience.",
       bgImage: `url(${hero2})`,
       buttonText: "Learn More",
       link: "/about",
@@ -33,13 +33,13 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-20 px-4  bg-gray-150">
+    <section className="py-2 px-4 bg-teal-50">
       {/* Header */}
       <div className="text-center max-w-4xl mx-auto mb-16">
-        <h2 className="text-4xl font-bold text-gray-800 mb-4">
-        Empowering Your Future, <br />  One Step at a Time
+        <h2 className="text-4xl font-bold text-teal-800 mb-4">
+          Empowering Your Health, <br /> One Step at a Time
         </h2>
-        {/* <p className="text-xl text-gray-500">Why Choose Us?</p> */}
+        <p className="text-lg text-teal-700">Experience Ultracare difference</p>
       </div>
 
       {/* Features Grid */}
@@ -49,20 +49,18 @@ const WhyChooseUs = () => {
             key={index}
             className="group relative h-80 overflow-hidden rounded-2xl shadow-xl"
           >
-            {/* Background Image with Blur Effect */}
+            {/* Background Image with Scale Effect */}
             <div
-              className="absolute inset-0 bg-cover bg-center filter  transition-all duration-500  group-hover:scale-105"
-              style={{ backgroundImage: feature.bgImage , objectFit: "cover" }}
-            >
-              {/* Dark overlay (lighter on hover) */}
-              {/* <div className="absolute inset-0 bg-black/40 transition-opacity duration-500 group-hover:bg-black/20"></div> */}
-            </div>
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              style={{ backgroundImage: feature.bgImage }}
+            ></div>
 
-            {/* Glass Effect Container */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
-              {/* Button at the top with Link */}
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
+              
+              {/* Button */}
               <Link to={feature.link}>
-                <button className="absolute top-6 left-1/2 transform -translate-x-1/2 border-2 border-white text-white px-6 py-2 rounded-full text-lg font-medium bg-transparent hover:bg-white hover:text-black transition">
+                <button className="absolute top-6 left-1/2 transform -translate-x-1/2 bg-white hover:bg-teal-700 hover:text-white text-teal-500 px-3 py-2 rounded-full text-lg font-medium transition">
                   {feature.buttonText}
                 </button>
               </Link>

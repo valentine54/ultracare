@@ -1,135 +1,135 @@
 import React from "react";
-import hero from "../../assets/hero.jpeg";
 import pharmacyImage from "../../assets/pharmacy.jpg";
 import consultationsImage  from "../../assets/consulations.jpg";
-import dentalImage from "../../assets/ental.jpg";
+import dentalImage from "../../assets/dental.jpg";
 import inpatientImage  from "../../assets/inpatient.jpg";
-import  maternityImage from "../../assets/maternity.jpg";
+import maternityImage from "../../assets/maternity.jpg";
 import surgeryImage from "../../assets/surgical.jpg";
-import pediatricsImage from "../../assets/pedeatrics.jpg";
+import pediatricsImage from "../../assets/pediatrics.jpg";
 import physiotherapyImage from "../../assets/physiotherapy.jpg";
 import radiologyImage from "../../assets/radiology.jpg";
 import emergencyImage from "../../assets/emergency.jpg";
-import gynecologyImage from "../../assets/gyna.jpg";
+import gynecologyImage from "../../assets/gynacologist.jpg";
 import entImage from "../../assets/ent.jpg";
-import dialysisImage from "../../assets/renal.jpg";
-import mentalHealthImage from "../../assets/mental.jpg";
-import wellnessImage from "../../assets/wellness.jpg";   
-import opticalImage from "../../assets/optical.jpg";
-import labImage from "../../assets/lab.jpeg";
+// import dialysisImage from "../../assets/renal.jpg";
+// import mentalHealthImage from "../../assets/mental.jpg";
+// import wellnessImage from "../../assets/wellness.jpg";   
+// import opticalImage from "../../assets/optical.jpg";
+import labImage from "../../assets/lab.jpg";
+
 const services = [
   {
     title: "Pharmacy",
     description:
-      "Our 24-hour pharmacy ensures patients have access to essential medications anytime. Licensed pharmacists provide expert guidance on usage, dosage, and side effects.",
-    image: pharmacyImage, // pharmacyImage,
+      "Round-the-clock access to essential medicines, with professional pharmacists offering personalized guidance on dosage, interactions, and safe usage.",
+    image: pharmacyImage,
   },
   {
     title: "Laboratory Services",
     description:
-      "The hospital’s well-equipped laboratory department offers a range of diagnostic tests to aid in disease detection and management. Skilled laboratory technicians use state-of-the-art equipment to ensure accurate results.",
-    image: labImage, // labImage
+      "Cutting-edge lab testing including blood work, microbiology, and pathology to support accurate diagnoses and timely treatment planning.",
+    image: labImage,
   },
   {
-    title: "Consultations",
+    title: "Outpatient Consultations",
     description:
-      "Bosongo Hospital provides outpatient consultations with general practitioners and specialists to diagnose, manage, and treat medical conditions.",
-    image: consultationsImage, // consultationsImage
+      "Expert consultations across multiple specialties, providing thorough assessments and individualized treatment plans for every patient.",
+    image: consultationsImage,
   },
   {
-    title: "Dental care",
+    title: "Dental Care",
     description:
-      "Dental check-ups, tooth extractions, cavity treatments, root canals, orthodontics, and cosmetic dentistry.",
-    image: dentalImage, // dentalImage
+      "Comprehensive oral health services, from preventive care to advanced restorative procedures, ensuring healthy smiles for all ages.",
+    image: dentalImage,
   },
   {
     title: "Inpatient Services",
     description:
-      "Comfortable wards with 24-hour medical supervision, post-surgical care, and specialized treatment for critical conditions.",
-    image: inpatientImage, // inpatientImage
+      "Comfortable inpatient wards with attentive 24-hour care, offering specialized treatment for post-operative and critical patients.",
+    image: inpatientImage,
   },
   {
-    title: "Maternity Services",
+    title: "Maternity & Newborn Care",
     description:
-      "Antenatal care, safe deliveries (normal & C-section), postnatal support, and family planning services.",
-    image:  maternityImage, // maternityImage
+      "Full-spectrum maternity services including prenatal check-ups, safe deliveries, and postnatal support, backed by a state-of-the-art newborn unit.",
+    image: maternityImage,
   },
   {
     title: "Surgical Services",
     description:
-      "General, orthopedic, gynecological, urological, and emergency surgeries performed by skilled surgeons.",
-    image: surgeryImage, // surgeryImage
+      "Expert surgical interventions covering general, orthopedic, gynecologic, and emergency procedures with advanced safety protocols.",
+    image: surgeryImage,
   },
   {
     title: "Pediatrics",
     description:
-      "Specialized child healthcare, immunizations, emergency pediatric care, and growth monitoring.",
-    image: pediatricsImage, // pediatricsImage
+      "Holistic child healthcare encompassing preventive check-ups, growth tracking, immunizations, and emergency pediatric management.",
+    image: pediatricsImage,
   },
   {
-    title: "Physiotherapy",
+    title: "Physiotherapy & Rehabilitation",
     description:
-      "Rehabilitation for post-surgery, stroke recovery, sports injuries, and chronic pain management.",
-    image: physiotherapyImage, // physiotherapyImage
+      "Personalized rehabilitation programs for recovery from injuries, surgeries, or chronic conditions to restore function and improve mobility.",
+    image: physiotherapyImage,
   },
   {
     title: "Radiology & Imaging",
     description:
-      "X-rays, ultrasound, CT scans, MRI, mammography, and bone density tests for accurate diagnostics.",
-    image: radiologyImage, // radiologyImage
+      "High-resolution imaging services, including MRI, CT, ultrasound, and X-rays, aiding precise diagnosis and treatment planning.",
+    image: radiologyImage,
   },
   {
-    title: "Emergency & Trauma Care",
+    title: "Emergency & Critical Care",
     description:
-      "24/7 emergency response for accidents, cardiac arrests, poisoning, and critical trauma cases.",
-    image: emergencyImage, // emergencyImage
+      "Immediate response for trauma, cardiac events, and medical emergencies, with expert triage and life-saving interventions available 24/7.",
+    image: emergencyImage,
   },
   {
     title: "Gynecology & Obstetrics",
     description:
-      "Fertility treatments, menstrual disorder management, cancer screenings, and menopause care.",
-    image:gynecologyImage, // gynecologyImage
+      "Comprehensive women’s health care, including fertility management, menstrual care, screenings, and support for high-risk pregnancies.",
+    image: gynecologyImage,
   },
   {
     title: "ENT (Ear, Nose & Throat)",
     description:
-      "Treatment for hearing loss, sinusitis, throat infections, and voice disorders.",
-    image: entImage, // entImage
+      "Specialized treatment for ear, nose, and throat disorders, from hearing evaluations to surgical care for chronic conditions.",
+    image: entImage,
   },
-  {
-    title: "Optical Services",
-    description:
-      "Eye exams, prescription glasses, cataract screening, and glaucoma treatment.",
-    image: opticalImage, // opticalImage
-  },
-  {
-    title: "Renal Dialysis",
-    description:
-      "Hemodialysis, kidney function monitoring, and lifestyle counseling for kidney disease.",
-    image: dialysisImage, // dialysisImage
-  },
-  {
-    title: "Mental Health & Counseling",
-    description:
-      "Therapy for depression, anxiety, substance abuse, stress, and psychiatric evaluations.",
-    image: mentalHealthImage, // mentalHealthImage
-  },
-  {
-    title: "Wellness & Preventive Care",
-    description:
-      "Health screenings, immunization programs, weight management, and workplace wellness initiatives.",
-    image: wellnessImage, // wellnessImage
-  },
+  // {
+  //   title: "Renal Dialysis",
+  //   description:
+  //     "State-of-the-art hemodialysis services with continuous monitoring and support for patients managing kidney conditions.",
+  //   image: dialysisImage,
+  // },
+  // {
+  //   title: "Mental Health & Counseling",
+  //   description:
+  //     "Dedicated mental health services including counseling, therapy, and psychiatric assessments for stress, anxiety, depression, and more.",
+  //   image: mentalHealthImage,
+  // },
+  // {
+  //   title: "Wellness & Preventive Care",
+  //   description:
+  //     "Proactive health programs including screenings, lifestyle guidance, immunizations, and wellness initiatives to promote long-term health.",
+  //   image: wellnessImage,
+  // },
+  // {
+  //   title: "Optical Services",
+  //   description:
+  //     "Complete eye care solutions including vision testing, prescription eyewear, cataract assessment, and treatment for common eye conditions.",
+  //   image: opticalImage,
+  // },
 ];
 
 const ServicesSection = () => {
   return (
     <section className="py-10 bg-gray-100 pt-40 text-center">
-      {/* Services Heading and Description */}
+      {/* Heading */}
       <div className="max-w-4xl mx-auto mb-10 px-4">
         <h2 className="text-4xl font-bold text-gray-800">Our Services</h2>
         <p className="text-gray-600 mt-2 text-lg">
-          We provide a wide range of healthcare services to cater to all your medical needs, ensuring quality treatment and care.
+          At PEJMED Ultracare Specialist Hospital, we offer specialized healthcare services designed to meet the diverse needs of our patients with expertise and compassion.
         </p>
       </div>
 
@@ -138,7 +138,7 @@ const ServicesSection = () => {
         {services.map((service, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105"
+            className="bg-white shadow-lg rounded-2xl overflow-hidden transition-transform transform hover:scale-105"
           >
             <img src={service.image} alt={service.title} className="w-full h-40 object-cover" />
             <div className="p-4">

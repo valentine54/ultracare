@@ -24,12 +24,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   const socialLinks = [
-    { icon: <FaFacebookF size={16} />, href: "https://www.facebook.com/bosongohospital", label: "Facebook" },
+    { icon: <FaFacebookF size={16} />, href: "#", label: "Facebook" },
     { icon: <FaLinkedinIn size={16} />, href: "#", label: "LinkedIn" },
-    { icon: <FaXTwitter size={16} />, href: "https://x.com/Bosongohospital", label: "Twitter" },
-    { icon: <FaInstagram size={16} />, href: "https://www.instagram.com/bosongohospital", label: "Instagram" },
-    { icon: <FaYoutube size={16} />, href: "https://www.youtube.com/@bosongohospital", label: "YouTube" },
-    { icon: <FaTiktok size={16} />, href: "https://www.tiktok.com/@bosongohospital", label: "TikTok" },
+    { icon: <FaXTwitter size={16} />, href: "#", label: "Twitter" },
+    { icon: <FaInstagram size={16} />, href: "#", label: "Instagram" },
+    { icon: <FaYoutube size={16} />, href: "#", label: "YouTube" },
+    { icon: <FaTiktok size={16} />, href: "#", label: "TikTok" },
   ];
 
   useEffect(() => {
@@ -53,19 +53,19 @@ const Header = () => {
       <div className="bg-white text-gray-600 py-2 px-4 md:px-6 lg:px-10 flex flex-col md:flex-row justify-between items-center text-xs border-b border-gray-200">
         <div className="flex flex-wrap justify-center md:justify-start gap-x-3 md:gap-x-4 gap-y-1 mb-1 md:mb-0">
           <span className="flex items-center whitespace-nowrap">
-            <FaEnvelope className="text-blue-600 mr-1 md:mr-2" size={12} />
-            <a href="mailto:bosongomedical@yahoo.com" className="hover:text-blue-600 transition-colors">
-              bosongomedical@yahoo.com
+            <FaEnvelope className="text-teal-600 mr-1 md:mr-2" size={12} />
+            <a href="mailto:ultracarespecialisthospital@gmail.com" className="hover:text-teal-600 transition-colors">
+              ultracarespecialisthospital@gmail.com
             </a>
           </span>
           <span className="flex items-center whitespace-nowrap">
-            <FaPhone className="text-blue-600 mr-1 md:mr-2" size={12} />
-            <a href="tel:+254111964576" className="hover:text-blue-600 transition-colors">
-              011-196-4576
+            <FaPhone className="text-teal-600 mr-1 md:mr-2" size={12} />
+            <a href="tel:+254702761696" className="hover:text-teal-600 transition-colors">
+              0702-761-696
             </a>
           </span>
           <span className="flex items-center whitespace-nowrap">
-            <FaClock className="text-blue-600 mr-1 md:mr-2" size={12} />
+            <FaClock className="text-teal-600 mr-1 md:mr-2" size={12} />
             Mon-Mon 24 hours
           </span>
         </div>
@@ -75,7 +75,7 @@ const Header = () => {
               key={index}
               href={link.href} 
               aria-label={link.label} 
-              className={`text-gray-500 hover:text-blue-600 transition-colors ${link.label === 'Instagram' ? 'hover:text-pink-600' : ''} ${link.label === 'YouTube' ? 'hover:text-red-600' : ''} ${link.label === 'TikTok' ? 'hover:text-black' : ''}`}
+              className={`text-gray-500 hover:text-teal-600 transition-colors ${link.label === 'Instagram' ? 'hover:text-pink-600' : ''} ${link.label === 'YouTube' ? 'hover:text-red-600' : ''} ${link.label === 'TikTok' ? 'hover:text-black' : ''}`}
             >
               {link.icon}
             </a>
@@ -84,7 +84,7 @@ const Header = () => {
       </div>
 
       {/* Main Navbar */}
-      <nav className="bg-[#0047AB] shadow-md px-4 md:px-6 lg:px-10 flex justify-between items-center h-16 md:h-24">
+      <nav className="bg-teal-600 shadow-md px-4 md:px-6 lg:px-10 flex justify-between items-center h-16 md:h-24">
         {/* Logo */}
         <div className="flex items-center flex-shrink-0">
           <a href="/">
@@ -98,11 +98,11 @@ const Header = () => {
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flexspace-x-4 lg:space-x-6">
-          <Link to="/" className="text-white hover:text-blue-200 transition-colors font-medium">Home</Link>
-          <Link to="/about" className="text-white hover:text-blue-200 transition-colors font-medium">About</Link>
-          <Link to="/services" className="text-white hover:text-blue-200 transition-colors font-medium">Services</Link>
-          <Link to="/contact" className="text-white hover:text-blue-200 transition-colors font-medium">Contact Us</Link>
-          <Link to="/careers" className="text-white hover:text-blue-200 transition-colors font-medium">Careers</Link>
+          <Link to="/" className="text-white hover:text-teal-200 transition-colors font-medium">Home</Link>
+          <Link to="/about" className="text-white hover:text-teal-200 transition-colors font-medium">About</Link>
+          <Link to="/services" className="text-white hover:text-teal-200 transition-colors font-medium">Services</Link>
+          <Link to="/contact" className="text-white hover:text-teal-200 transition-colors font-medium">Contact Us</Link>
+          <Link to="/careers" className="text-white hover:text-teal-200 transition-colors font-medium">Careers</Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -114,17 +114,17 @@ const Header = () => {
         </button>
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-4 lg:space-x-6">
-          <Link to="/" className="text-white hover:text-blue-200 transition-colors font-medium">Home</Link>
-          <Link to="/about" className="text-white hover:text-blue-200 transition-colors font-medium">About</Link>
-          <Link to="/services" className="text-white hover:text-blue-200 transition-colors font-medium">Services</Link>
-          <Link to="/contact" className="text-white hover:text-blue-200 transition-colors font-medium">Contact Us</Link>
-          <Link to="/careers" className="text-white hover:text-blue-200 transition-colors font-medium">Careers</Link>
+          <Link to="/" className="text-white hover:text-teal-200 transition-colors font-medium">Home</Link>
+          <Link to="/about" className="text-white hover:text-teal-200 transition-colors font-medium">About</Link>
+          <Link to="/services" className="text-white hover:text-teal-200 transition-colors font-medium">Services</Link>
+          <Link to="/contact" className="text-white hover:text-teal-200 transition-colors font-medium">Contact Us</Link>
+          <Link to="/careers" className="text-white hover:text-teal-200 transition-colors font-medium">Careers</Link>
         </div>
 
         {/* Desktop Appointment Button */}
         <button 
           onClick={() => navigate("/contact")}
-          className="hidden md:block bg-white hover:bg-[#F0F0F0] text-[#0047AB] px-4 py-1 lg:px-6 lg:py-2 rounded-md font-medium transition-colors"
+          className="hidden md:block bg-white hover:bg-[#F0F0F0] text-teal-600 px-4 py-1 lg:px-6 lg:py-2 rounded-md font-medium transition-colors"
         >
           Request an Appointment
         </button>
@@ -139,27 +139,27 @@ const Header = () => {
       animate={{ opacity: 1, height: "auto" }}
       exit={{ opacity: 0, height: 0 }}
       transition={{ duration: 0.3 }}
-      className="md:hidden bg-[#0047AB] w-full overflow-hidden"
+      className="md:hidden bg-teal-600 w-full overflow-hidden"
     >
       <div className="flex items-center flex-col space-y-4 p-4">
-        <Link to="/" className="flex items-center text-white hover:text-blue-200 transition-colors">
+        <Link to="/" className="flex items-center text-white hover:text-teal-200 transition-colors">
           <FaHome className="mr-2 gap-2" /> Home
         </Link>
-        <Link to="/about" className="flex items-center text-white hover:text-blue-200 transition-colors">
+        <Link to="/about" className="flex items-center text-white hover:text-teal-200 transition-colors">
           <FaInfoCircle className="mr-2" /> About
         </Link>
-        <Link to="/services" className="flex items-center text-white hover:text-blue-200 transition-colors">
+        <Link to="/services" className="flex items-center text-white hover:text-teal-200 transition-colors">
           <FaConciergeBell className="mr-2" /> Services
         </Link>
-        <Link to="/contact" className="flex items-center text-white hover:text-blue-200 transition-colors">
+        <Link to="/contact" className="flex items-center text-white hover:text-teal-200 transition-colors">
           <FaEnvelope className="mr-2" /> Contact Us
         </Link>
-        <Link to="/careers" className="flex items-center text-white hover:text-blue-200 transition-colors">
+        <Link to="/careers" className="flex items-center text-white hover:text-teal-200 transition-colors">
           <FaBriefcase className="mr-2" /> Careers
         </Link>
         <button 
           onClick={() => navigate("/contact")}
-          className="bg-white hover:bg-[#F0F0F0] text-[#0047AB] px-6 py-2 rounded-md font-medium transition-colors mt-2 flex items-center justify-center"
+          className="bg-white hover:bg-[#F0F0F0] text-teal-600 px-6 py-2 rounded-md font-medium transition-colors mt-2 flex items-center justify-center"
         >
           <FaCalendarAlt className="mr-2" /> Request an Appointment
         </button>

@@ -1,155 +1,185 @@
 import React, { useState } from "react";
-import { FaImages } from "react-icons/fa"; // Import gallery icon
-import hospitalImage from "../../assets/26.jpg"; // Replace with actual image
-import img1 from "../../assets/40.jpg";
-import img2 from "../../assets/2.jpg";
-import img3 from "../../assets/3.jpg";
-import img4 from "../../assets/4.jpg";
-import img5 from "../../assets/5.jpg";
-import img6 from "../../assets/6.jpg";
-import img7 from "../../assets/7.jpg";
-import img8 from "../../assets/8.jpg";
-import img9 from "../../assets/9.jpg";
-import img10 from "../../assets/10.jpg";
-import img11 from "../../assets/11.jpg";
-import img12 from "../../assets/12.jpg";
-import img13 from "../../assets/13.jpg";
-import img14 from "../../assets/14.jpg";
-import img15 from "../../assets/15.jpg";
-import img16 from "../../assets/41.jpg";
-import img17 from "../../assets/17.jpg";
-import img18 from "../../assets/18.jpg";
-// import img19 from "../../assets/42.jpg";
-import img20 from "../../assets/43.jpg";
-import img21 from "../../assets/44.jpg";
-import img22 from "../../assets/45.jpg";
-import img23 from "../../assets/46.jpg";
-import img24 from "../../assets/47.jpg";
-import img25 from "../../assets/48.jpg";
-import img26 from "../../assets/49.jpg";
-import img27 from "../../assets/50.jpg";
-// import Scrollbar from "./Scrollbar"; // Adjust path if necessary
+import { FaImages } from "react-icons/fa";
+import hospitalImage from "../../assets/26.jpg"; // Replace with actual hospital image
+import img1 from "../../assets/ultra1.jpg";
+import img2 from "../../assets/ultra2.jpg";
+import img3 from "../../assets/ultra3.jpg";
+import img4 from "../../assets/ultra4.jpg";
+import img5 from "../../assets/ultra5.jpg";
+import img6 from "../../assets/ultra6.jpg";
+import img7 from "../../assets/ultra7.jpg";
+import img8 from "../../assets/ultra8.jpg";
+import img9 from "../../assets/ultra9.jpg";
+import img10 from "../../assets/ultra10.jpg";
+import img11 from "../../assets/ultra11.jpg";
+import img12 from "../../assets/ultra1.jpg";
+import img13 from "../../assets/ultra2.jpg";
+import img14 from "../../assets/ultra4.jpg";
+import img15 from "../../assets/ultra5.jpg";
+import img16 from "../../assets/ultra3.jpg";
+import img17 from "../../assets/ultra6.jpg";
+import img18 from "../../assets/ultra7.jpg";
+import img20 from "../../assets/ultra8.jpg";
+import img21 from "../../assets/ultra9.jpg";
+import img22 from "../../assets/ultra10.jpg";
+import img23 from "../../assets/ultra11.jpg";
+import img24 from "../../assets/ultra1.jpg";
+import img25 from "../../assets/ultra2.jpg";
+import img26 from "../../assets/ultra3.jpg";
+import img27 from "../../assets/ultra5.jpg";
 
 const AboutPage = () => {
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  
-  const galleryImages = [img1, img2, img20, img21, img22, img23, img24, img25, img26, img27, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18];
- 
-  // Function to open the full-size image modal
-  const openImageModal = (img) => {
-    setSelectedImage(img);
-  };
 
-  // Function to close the full-size image modal
-  const closeImageModal = () => {
-    setSelectedImage(null);
-  };
-  
+  const galleryImages = [
+    img1, img2, img3, img4, img5, img6, img7, img8, img9, img10,
+    img11, img12, img13, img14, img15, img16, img17, img18,
+    img20, img21, img22, img23, img24, img25, img26, img27
+  ];
+
+  const openImageModal = (img) => setSelectedImage(img);
+  const closeImageModal = () => setSelectedImage(null);
+
   return (
-    <section className="bg-gray-100 py-12 pt-40 px-6">
+    <section className="bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-6">
+
       {/* About Section */}
-      <div className="max-w-6xl mx-auto text-center mb-12">
-        <h1 className="text-5xl font-extrabold text-gray-800 tracking-wide">
+      <div className="max-w-6xl mx-auto text-center mb-16 mt-32">
+        <h1 className="text-5xl font-extrabold text-gray-800 tracking-tight mb-6">
           About Us
         </h1>
-        <p className="text-lg text-gray-700 mt-4 leading-relaxed max-w-3xl mx-auto">
-          Bosongo Hospital in Kisii County provides high-quality, patient-centered care with a focus on excellence, compassion, and modern medical practices.
-          Our services include advanced diagnostics, emergency care, and community wellness programs.
+        <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-4">
+          PEJMED Ultracare Specialist Hospital Limited is a privately owned medical facility in Nyahururu town, Laikipia County. 
+          Registered and regulated as a level 4 Hospital, established in 2023, we are home to consultant specialists across multiple fields.
         </p>
-        <p className="text-lg text-gray-700 mt-4 leading-relaxed max-w-3xl mx-auto">
-          Guided by integrity and teamwork, we ensure accessible and affordable healthcare. With cutting-edge technology and strict ethical standards, 
-          we prioritize transparency, professionalism, and innovation to improve patient outcomes.
-        </p>
-        <img
-          src={hospitalImage}
-          alt="Hospital"
-          className="mt-6 w-full h-80 object-cover rounded-lg shadow-lg"
+        {/* <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+          We offer specialized services in internal medicine, paediatrics, surgery, orthopaedics, obstetrics & gynecology, anaesthesia & critical care, psychiatry, ENT, and more. 
+          Our hospital features 50 beds including VIP rooms, a well-equipped laboratory, pharmacy, advanced diagnostic services, and fully functional inpatient & outpatient departments.
+        </p> */}
+        <img 
+          src={hospitalImage} 
+          alt="Hospital" 
+          className="mt-8 w-full h-96 object-cover rounded-3xl shadow-2xl border-4 border-gray-100"
         />
       </div>
-      
-      {/* Gallery Button (Aligned Right) */}
-      <div className="sticky top-4 z-40 flex justify-center mb-6">
+
+      {/* Gallery Button */}
+      <div className="flex justify-center mb-12">
         <button
-          onClick={() => {
-            setIsGalleryOpen(true);
-            // window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-lg flex items-center space-x-2 transition-all duration-300 hover:shadow-xl"
+          onClick={() => setIsGalleryOpen(true)}
+          className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-8 py-3 rounded-full shadow-lg flex items-center space-x-3 font-semibold text-lg hover:scale-105 transition-transform duration-300"
         >
           <FaImages className="text-2xl" />
-          <span>View images of our hospital</span>
+          <span>View Hospital Gallery</span>
         </button>
       </div>
-      
-      {/* Mission & Vision Section */}
-      <div className="max-w-5xl mx-auto mb-12">
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-2xl font-semibold text-gray-800">Our Mission</h2>
-          <p className="text-gray-600 mt-2">
-            To provide high-quality, patient-centered healthcare through innovation, dedication, and excellence.
-            We are committed to ensuring accessibility to modern medical treatments, advanced diagnostic procedures, and preventive healthcare strategies that promote long-term wellness.
+
+      {/* Mission & Vision */}
+      <div className="max-w-5xl mx-auto mb-12 space-y-6">
+        <div className="bg-white shadow-lg rounded-2xl p-6 hover:shadow-2xl transition-shadow duration-300">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Our Mission</h2>
+          <p className="text-gray-600">
+            To provide comprehensive specialized healthcare services to our patients through specialists dedicated to delivering high-quality, compassionate care.
           </p>
         </div>
-        <div className="bg-white shadow-lg rounded-lg p-6 mt-6">
-          <h2 className="text-2xl font-semibold text-gray-800">Our Vision</h2>
-          <p className="text-gray-600 mt-2">
-            Bosongo Hospital envisions a future where healthcare is accessible, comprehensive, and of the highest international standards. We strive to inspire hope and contribute to the well-being of our patients by integrating clinical expertise, innovative medical practices, and continuous education to improve health outcomes.
+        <div className="bg-white shadow-lg rounded-2xl p-6 hover:shadow-2xl transition-shadow duration-300">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Our Vision</h2>
+          <p className="text-gray-600">
+            To be the leading centre for specialized healthcare in the region, known for our commitment to excellence, innovation, and patient-centered care.
           </p>
         </div>
       </div>
 
-      {/* Core Values Section */}
+      {/* Core Values */}
       <div className="max-w-5xl mx-auto text-center mb-12">
-        <h2 className="text-3xl font-bold text-gray-800">Our Core Values</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Our Core Values</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {[
+            "Patient-centred Care",
+            "Excellence",
+            "Collaboration",
             "Compassion",
             "Integrity",
-            "Quality Policy Statement",
-            "Innovation",
-            "Teamwork",
-            "Patient-Centered Care"
-          ].map((value, index) => (
-            <div key={index} className="bg-white shadow-lg p-3 rounded-lg">
-              <h3 className="text-xl font-semibold text-gray-800">{value}</h3>
+            "Innovation"
+          ].map((value, idx) => (
+            <div key={idx} className="bg-white shadow-lg p-6 rounded-2xl hover:shadow-2xl transition duration-300">
+              <h3 className="text-lg font-semibold text-gray-800">{value}</h3>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Image Gallery Modal */}
+      {/* Goals Section - Modern Timeline Style */}
+{/* Goals Section - Modern Timeline Style */}
+<div className="max-w-6xl mx-auto mb-16">
+  <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Our Goals</h2>
+
+  <div className="relative">
+    {/* Vertical line */}
+    <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-300"></div>
+
+    {[
+      "Provide compassionate specialized healthcare",
+      "Build a caring workforce",
+      "Safeguard patient safety",
+      "Anticipate and respond to community needs",
+      "Advocate and promote preventive healthcare"
+    ].map((goal, idx) => (
+      <div
+        key={idx}
+        className={`flex flex-col md:flex-row items-center mb-10 md:mb-20 ${
+          idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+        }`}
+      >
+        {/* Circle with number */}
+        <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-teal-500 text-white font-bold text-lg z-10">
+          {idx + 1}
+        </div>
+
+        {/* Card */}
+        <div
+  className="bg-white shadow-lg rounded-2xl p-6
+  md:basis-5/12 md:max-w-[45%] md:shrink-0
+  mt-4 md:mt-0 md:mx-6
+  hover:shadow-2xl transition duration-300"
+>
+
+          <p className="text-gray-700 font-medium">{goal}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+
+
+      {/* Gallery Modal */}
       {isGalleryOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[80vh] flex flex-col">
-            {/* Sticky Header */}
-            <div className="sticky top-0 bg-white p-6 z-10 border-b">
-              <div className="flex justify-between items-center">
-                <div className="flex-1 text-center">
-                  <h2 className="text-2xl font-semibold text-gray-800 inline-block">Gallery</h2>
-                </div>
-                <button
-                  className="bg-red-500 text-white px-3 py-2 rounded-full hover:bg-red-600 transition"
-                  onClick={() => setIsGalleryOpen(false)}
-                >
-                  Close ✕
-                </button>
-              </div>
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[85vh] overflow-y-auto flex flex-col">
+            {/* Header */}
+            <div className="sticky top-0 bg-white px-6 py-4 border-b flex justify-between items-center z-10 shadow-md">
+              <h2 className="text-2xl font-semibold text-gray-800">Gallery</h2>
+              <button
+                className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition"
+                onClick={() => setIsGalleryOpen(false)}
+              >
+                Close ✕
+              </button>
             </div>
-            
-            {/* Scrollable Images */}
-            <div className="overflow-y-auto p-6">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {galleryImages.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`Gallery Image ${index + 1}`}
-                    className="w-full h-40 object-cover rounded-lg shadow-md hover:opacity-80 cursor-pointer transition"
-                    onClick={() => openImageModal(img)}
-                  />
-                ))}
-              </div>
+            {/* Images */}
+            <div className="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {galleryImages.map((img, idx) => (
+                <img 
+                  key={idx} 
+                  src={img} 
+                  alt={`Gallery ${idx+1}`} 
+                  className="w-full h-40 object-cover rounded-xl shadow-lg hover:scale-105 cursor-pointer transition-transform"
+                  onClick={() => openImageModal(img)}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -159,11 +189,7 @@ const AboutPage = () => {
       {selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50" onClick={closeImageModal}>
           <div className="relative max-w-[90vw] max-h-[90vh]">
-            <img 
-              src={selectedImage} 
-              alt="Enlarged view" 
-              className="max-w-full max-h-[85vh] object-contain"
-            />
+            <img src={selectedImage} alt="Enlarged view" className="max-w-full max-h-[85vh] object-contain rounded-2xl" />
             <button
               className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition-colors"
               onClick={closeImageModal}
@@ -174,29 +200,27 @@ const AboutPage = () => {
         </div>
       )}
 
-      {/* Contact Information Section */}
-      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">Contact Us</h2>
-        <p className="text-gray-600 text-center mb-6">
-          Reach out to us for appointments, inquiries, or emergency services.
-        </p>
+      {/* Contact Information */}
+      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl p-6 mt-12 mb-12">
+        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Contact Us</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[
-            { title: "Phone", info: "011-196-4576" },
-            { title: "Email", info: "bosongomedical@yahoo.com" },
-            { title: "Address", info: "Near the Kisii-Kisumu and Kisii-Migori Roundabout, Kenya" },
-            { title: "Working Hours", info: "24/7 Emergency Services" },
-          ].map((contact, index) => (
-            <div
-              key={index}
-              className="bg-gray-50 shadow-md rounded-lg p-6 text-center transition duration-300 hover:shadow-lg"
-            >
+            { title: "Phone", info: "0702-761-696" },
+            { title: "Email", info: "ultracarespecialisthospital@gmail.com" },
+            { title: "Address", info: <>
+            Nyahururu town, Laikipia County <br />
+            Along Koinange Rd, near Njaus
+          </> },
+            { title: "Working Hours", info: "24/7 Emergency Services" }
+          ].map((contact, idx) => (
+            <div key={idx} className="bg-gray-50 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 text-center">
               <h3 className="text-lg font-semibold text-gray-800">{contact.title}</h3>
-              <p className="text-gray-600">{contact.info}</p>
+              <p className="text-gray-600 mt-2">{contact.info}</p>
             </div>
           ))}
         </div>
       </div>
+
     </section>
   );
 };

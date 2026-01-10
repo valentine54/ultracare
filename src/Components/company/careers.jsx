@@ -1,231 +1,90 @@
-import React, { useState, useEffect } from "react";
-// import EditJobs from "./Components/company/editJobs";
-
-// const GOOGLE_SHEET_CSV_URL =import.meta.env.VITE_GOOGLE_SHEET_CSV_URL;
+import React from "react";
 
 const formatDate = (dateString) => {
   if (!dateString) return "N/A";
-  
-  const dateParts = dateString.split("/");
-  if (dateParts.length !== 3) return dateString;
-  
-  const [month, day, year] = dateParts.map((part) => parseInt(part, 10));
-  
-  const getOrdinalSuffix = (num) => {
-    if (num > 3 && num < 21) return "th"; // Handles 11th, 12th, 13th
-    switch (num % 10) {
-      case 1:
-        return "st";
-      case 2:
-        return "nd";
-      case 3:
-        return "rd";
-      default:
-        return "th";
-    }
-  };
+  const [month, day, year] = dateString.split("/").map(Number);
+
+  const suffix = (d) =>
+    d > 3 && d < 21 ? "th" : ["th", "st", "nd", "rd"][d % 10] || "th";
 
   return (
     <>
       {day}
-      <sup className="text-xs">{getOrdinalSuffix(day)}</sup>{" "}
-      {new Date(year, month - 1, day).toLocaleString("default", {
-        month: "long",
-      })}{" "}
+      <sup className="text-xs">{suffix(day)}</sup>{" "}
+      {new Date(year, month - 1).toLocaleString("default", { month: "long" })}{" "}
       {year}
     </>
   );
 };
 
-// More robust function to extract file ID from various Google Drive URL formats
-const extractFileIdFromUrl = (url) => {
-  if (!url) return "";
-  
-  // Handle multiple possible Google Drive URL patterns
-  const patterns = [
-    /\/d\/([^/]+)/,           // https://drive.google.com/file/d/FILE_ID/
-    /id=([^&]+)/,             // https://drive.google.com/open?id=FILE_ID
-    /\/open\?id=([^&]+)/,     // Another open?id= format
-    /\/file\/d\/([^\/]+)/     // Another file/d/ format
-  ];
-  
-  for (const pattern of patterns) {
-    const match = url.match(pattern);
-    if (match && match[1]) {
-      return match[1];
-    }
-  }
-  
-  return "";
-};
+const jobs = [
+  {
+    title: "Nursing Officer",
+    closingDate: "12/30/2026",
+  },
+  {
+    title: "Medical Laboratory Technologist",
+    closingDate: "01/15/2027",
+  },
+];
 
 const CareersPage = () => {
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch("http://localhost:8000/api/api/jobs/");
-        
-        console.log("Response status:", response.status); // Debug
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch: ${response.status}`);
-        }
-        
-        const data = await response.json();
-
-        console.log("API data:", data); // Debug
-        
-        // Transform data to match your frontend structure
-        const formattedJobs = data.map(job => ({
-          title: job.title,
-          closingDate: job.closing_date, // Make sure this matches your API
-          pdfLink: job.pdf_file.startsWith('http') 
-            ? job.pdf_file 
-            : `http://localhost:8000${job.pdf_file}`,
-        }));
-        
-        setJobs(formattedJobs);
-        
-      } catch (err) {
-        console.error("Fetch error:", err);
-        setError(err.message);
-        setJobs([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchJobs();
-  }, []);
-  
-  
-
-  // const formattedJobs = data.map((job) => ({
-  //   title: job.title,
-  //   closingDate: job.closing_date,
-  //   pdfLink: job.pdf_file.startsWith('http') 
-  //     ? job.pdf_file 
-  //     : `http://localhost:8000${job.pdf_file}`,
-  // }));
-  // setJobs(formattedJobs);
-  
-
-  // Function to handle file download with multiple methods
-  const handleDownload = (job) => {
-    if (!job.pdfLink) {
-      console.error("No download link available.");
-      return;
-    }
-    
-    // Method 1: Direct link with download attribute
-    const a = document.createElement("a");
-    a.href = job.pdfLink;
-    a.download = `${job.title.replace(/\s+/g, '-')}-Job-Description.pdf`;
-    a.target = "_blank"; // Fallback to open in new tab if download fails
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Method 2: Invisible iframe to force download
-    if (job.fileId) {
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = `https://drive.google.com/uc?export=download&id=${job.fileId}`;
-      document.body.appendChild(iframe);
-      
-      // Remove the iframe after a delay
-      setTimeout(() => {
-        document.body.removeChild(iframe);
-      }, 5000);
-    }
-  };
-
   return (
-    <div className="max-w-5xl pt-40 mx-auto p-6">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">Vacancies</h1>
-      <p className="text-gray-700 mb-4">
-        At Bosongo Hospital, our most valuable resource is our employees.
-        We aim to provide the best client experience by having the right
-        employees on the right jobs.
-      </p>
-      
-      <div className="bg-gray-40 p-4 rounded-md shadow-md mb-6">
-        <h2 className="text-lg font-semibold mb-2">Stay Alert: Avoid Job Scams</h2>
-        <ul className="list-disc pl-6 text-gray-700">
-          <li>Requires you to pay a fee to be shortlisted or interviewed.</li>
-          <li>Requires you to pay fees for a certain recruitment process.</li>
-          <li>
-            Requires you to sign contracts sent through unofficial emails before
-            meeting HR at the Hospital's HR Office.
-          </li>
-          <li>Is not from our official email domains.</li>
-          <li>Informs you that you have been selected without an interview.</li>
-          <li>
-            Is from other websites announcing job vacancies that do not appear
-            on our official careers page.
-          </li>
+    <div className="max-w-5xl mx-auto pt-36 px-4 pb-20">
+
+      {/* Header */}
+      <div className="mb-10 text-center">
+        <h1 className="text-4xl font-semibold text-gray-900 mb-3">
+          Careers at Ultracare Hospital
+        </h1>
+        <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Our people are our greatest strength. Explore current opportunities and
+          join a team committed to delivering exceptional patient care.
+        </p>
+      </div>
+
+      {/* Scam Alert */}
+      <div className="mb-10 rounded-xl border border-amber-200 bg-amber-50 p-6">
+        <h2 className="font-semibold text-amber-900 mb-2">
+          ⚠️ Recruitment Scam Alert
+        </h2>
+        <ul className="list-disc pl-5 text-sm text-amber-800 space-y-1">
+          <li>No recruitment fees are charged.</li>
+          <li>Official communication uses verified hospital emails.</li>
+          <li>No offers are made without interviews.</li>
+          <li>Contracts are signed at the HR office only.</li>
         </ul>
       </div>
 
-      <div className="mt-8 bg-white p-6 rounded-lg shadow">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-blue-900 text-white uppercase">
-              <th className="p-3">JOB VACANCY</th>
-              <th className="p-3">CLOSING DATE</th>
-              <th className="p-3">DOWNLOAD</th>
-            </tr>
-          </thead>
-          <tbody>
-  {loading ? (
-    <tr>
-      <td colSpan="3" className="p-3 text-center">
-        Loading jobs...
-      </td>
-    </tr>
-  ) : error ? (
-    <tr>
-      <td colSpan="3" className="p-3 text-center text-red-500">
-        Error: {error}
-      </td>
-    </tr>
-  ) : jobs.length > 0 ? (
-    jobs.map((job, index) => (
-      <tr key={index} className="border-t border-gray-300">
-        <td className="p-3 font-medium text-gray-800">{job.title}</td>
-        <td className="p-3 text-gray-600">{formatDate(job.closingDate)}</td>
-        <td className="p-3">
-          <button
-            onClick={() => handleDownload(job)}
-            className="text-blue-600 hover:underline"
+      {/* Vacancies */}
+      <div className="space-y-4">
+        {jobs.map((job, index) => (
+          <div
+            key={index}
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition"
           >
-            Download
-          </button>
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="3" className="p-3 text-center">
-        No job vacancies available.
-      </td>
-    </tr>
-  )}
-</tbody>
+            <div>
+              <h3 className="text-lg font-medium text-gray-900">
+                {job.title}
+              </h3>
+              <p className="text-sm text-gray-500 mt-1">
+                Closing Date: {formatDate(job.closingDate)}
+              </p>
+            </div>
 
-        </table>
+            <div className="text-sm text-gray-400">
+              Coming soon
+            </div>
+          </div>
+        ))}
       </div>
 
-
-      {/* <EditJobs jobs={jobs} loading={loading} error={error} handleDownload={handleDownload} /> */}
-      {/* <EditJobs/> */}
+      {/* Empty state (future-ready) */}
+      {jobs.length === 0 && (
+        <div className="text-center py-20 text-gray-500">
+          No vacancies available at the moment.
+        </div>
+      )}
     </div>
   );
 };

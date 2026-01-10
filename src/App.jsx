@@ -13,6 +13,8 @@ import PostJob from "./Components/company/PostJob";
 // import editJobs from "./Components/company/editJobs";
 import EditJobs from "./Components/company/editJobs";
 // import Navbar from "./Components/Navbar"; // Import the Navbar
+import { Link } from "react-router-dom";
+
 
 const RoutedContent = () => {
   return (

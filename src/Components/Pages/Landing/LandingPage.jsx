@@ -19,7 +19,7 @@ const LandingPage = () => {
       {/* <ServicesSteps /> */}
       <Testimonials />
       <PensionService />
-      <PartnerLogos />
+      {/*<PartnerLogos /> */}
       {/* <LogoShowcase /> */}
       <ClientFeedback/>
       <WhyChooseUs />

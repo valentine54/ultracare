@@ -10,24 +10,24 @@ const Navbar = () => {
     <nav className="bg-white shadow-md p-4 relative z-50">
       <div className="container mx-auto flex justify-between items-center relative">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-600 flex items-center">
+        <Link to="/" className="text-2xl font-bold text-teal-600 flex items-center">
           <img src="/logo.png" alt="Logo" className="h-10 mr-2" />
-          <span className="whitespace-nowrap">BOSONGO HOSPITAL</span>
+          <span className="whitespace-nowrap">ULTRACARE HOSPITAL</span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-6">
-          <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors">Home</Link>
-          <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors">About</Link>
-          <Link to="/services" className="text-gray-700 hover:text-blue-600 transition-colors">Services</Link>
-          <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
-          <Link to="/careers" className="text-gray-700 hover:text-blue-600 transition-colors">Careers</Link>
+          <Link to="/" className="text-gray-700 hover:text-teal-600 transition-colors">Home</Link>
+          <Link to="/about" className="text-gray-700 hover:text-teal-600 transition-colors">About</Link>
+          <Link to="/services" className="text-gray-700 hover:text-teal-600 transition-colors">Services</Link>
+          <Link to="/contact" className="text-gray-700 hover:text-teal-600 transition-colors">Contact</Link>
+          <Link to="/careers" className="text-gray-700 hover:text-teal-600 transition-colors">Careers</Link>
         </div>
 
         {/* Appointment Button */}
         <button
           onClick={() => navigate("/contact")}
-          className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+          className="hidden md:block bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
         >
           Book Appointment
         </button>
@@ -48,11 +48,11 @@ const Navbar = () => {
             <X size={30} />
           </button>
           <div className="flex flex-col space-y-4 mt-10">
-            <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsOpen(false)}>Home</Link>
-            <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsOpen(false)}>About</Link>
-            <Link to="/services" className="text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsOpen(false)}>Services</Link>
-            <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsOpen(false)}>Contact</Link>
-            <Link to="/careers" className="text-gray-700 hover:text-blue-600 transition-colors" onClick={() => setIsOpen(false)}>Careers</Link>
+            <Link to="/" className="text-gray-700 hover:text-teal-600 transition-colors" onClick={() => setIsOpen(false)}>Home</Link>
+            <Link to="/about" className="text-gray-700 hover:text-teal-600 transition-colors" onClick={() => setIsOpen(false)}>About</Link>
+            <Link to="/services" className="text-gray-700 hover:text-teal-600 transition-colors" onClick={() => setIsOpen(false)}>Services</Link>
+            <Link to="/contact" className="text-gray-700 hover:text-teal-600 transition-colors" onClick={() => setIsOpen(false)}>Contact</Link>
+            <Link to="/careers" className="text-gray-700 hover:text-teal-600 transition-colors" onClick={() => setIsOpen(false)}>Careers</Link>
           </div>
 
           <button
@@ -60,7 +60,7 @@ const Navbar = () => {
               setIsOpen(false);
               navigate("/contact");
             }}
-            className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
+            className="mt-6 w-full bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
           >
             Book Appointment
           </button>
