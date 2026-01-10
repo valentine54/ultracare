@@ -19,7 +19,7 @@ const Footer = () => {
               className="h-24 w-auto object-contain"
             />
 
-            <div className="text-center md:text-left">
+            <div className="text-center md:text-left md:ml-7">
               <h2 className="text-lg font-bold text-teal-700">
                 ULTRACARE
               </h2>
