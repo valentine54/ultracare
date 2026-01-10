@@ -6,6 +6,7 @@ const ContactInfo = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -63,6 +64,7 @@ const ContactInfo = () => {
           Accept: "application/json",
         },
         body: JSON.stringify({
+           _subject: "New Appointment Request – Ultracare",
           Name: formData.name,
           Email: formData.email,
           Phone: formData.phone,
@@ -252,4 +254,9 @@ const ContactInfo = () => {
             </form>
           </div>
         </div>
-        {/* Responsive Map Container */} <div className="mt-8 md:mt-12 mb-2 w-full overflow-hidden rounded-lg shadow-lg"> <div className="aspect-w-16 aspect-h-9 w-full"> <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.817776472679!2d36.35423347349351!3d0.02991636439928671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1787630044c19569%3A0x79b7f84de6c2fbb6!2sUltracare%20Specialist%20Hospital!5e0!3m2!1sen!2sus!4v1767988769696!5m2!1sen!2sus" className="w-full h-64 md:h-80 lg:h-96" style={{ border: 0 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Ultracare Specialist Hospital" /> </div> </div> </div> </div> ); }; export default ContactInfo;
+        </div>
+        </div>
+  );
+};
+     
+export default ContactInfo;

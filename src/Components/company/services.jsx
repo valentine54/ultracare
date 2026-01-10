@@ -1,13 +1,13 @@
 import React from "react";
 import pharmacyImage from "../../assets/pharmacy.jpg";
 import consultationsImage  from "../../assets/consulations.jpg";
-import dentalImage from "../../assets/dental.jpg";
+// import dentalImage from "../../assets/dental.jpg";
 import inpatientImage  from "../../assets/inpatient.jpg";
 import maternityImage from "../../assets/maternity.jpg";
 import surgeryImage from "../../assets/surgical.jpg";
 import pediatricsImage from "../../assets/pediatrics.jpg";
 import physiotherapyImage from "../../assets/physiotherapy.jpg";
-import radiologyImage from "../../assets/radiology.jpg";
+// import radiologyImage from "../../assets/radiology.jpg";
 import emergencyImage from "../../assets/emergency.jpg";
 import gynecologyImage from "../../assets/gynacologist.jpg";
 import entImage from "../../assets/ent.jpg";
@@ -36,12 +36,12 @@ const services = [
       "Expert consultations across multiple specialties, providing thorough assessments and individualized treatment plans for every patient.",
     image: consultationsImage,
   },
-  {
-    title: "Dental Care",
-    description:
-      "Comprehensive oral health services, from preventive care to advanced restorative procedures, ensuring healthy smiles for all ages.",
-    image: dentalImage,
-  },
+  // {
+  //   title: "Dental Care",
+  //   description:
+  //     "Comprehensive oral health services, from preventive care to advanced restorative procedures, ensuring healthy smiles for all ages.",
+  //   image: dentalImage,
+  // },
   {
     title: "Inpatient Services",
     description:
@@ -72,12 +72,12 @@ const services = [
       "Personalized rehabilitation programs for recovery from injuries, surgeries, or chronic conditions to restore function and improve mobility.",
     image: physiotherapyImage,
   },
-  {
-    title: "Radiology & Imaging",
-    description:
-      "High-resolution imaging services, including MRI, CT, ultrasound, and X-rays, aiding precise diagnosis and treatment planning.",
-    image: radiologyImage,
-  },
+  // {
+  //   title: "Radiology & Imaging",
+  //   description:
+  //     "High-resolution imaging services, including MRI, CT, ultrasound, and X-rays, aiding precise diagnosis and treatment planning.",
+  //   image: radiologyImage,
+  // },
   {
     title: "Emergency & Critical Care",
     description:
