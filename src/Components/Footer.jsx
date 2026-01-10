@@ -1,111 +1,91 @@
 import React from "react";
 import { Phone, Clock, Mail, MapPin } from "lucide-react";
-import { motion } from "framer-motion";
-import logo from "../assets/logo.jpg";
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaTiktok, FaXTwitter } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import logo from "../assets/logo3.png";
 
 const Footer = () => {
-  const linkVariants = {
-    hover: { scale: 1.05, transition: { duration: 0.3 } },
-    tap: { scale: 0.95 },
-  };
-
   return (
-    <motion.footer
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="bg-teal-600 text-teal-100"
-    >
-      <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-12 py-8 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
+    <footer className="bg-white border-t border-gray-200">
 
-          {/* Brand Info */}
-          <div className="flex flex-col items-center lg:items-start space-y-5">
-            <a href="/">
-              <img src={logo} alt="BMC Logo" className="h-16 md:h-20 lg:h-[100px] w-auto" />
-            </a>
-            <h3 className="text-lg md:text-xl font-bold text-white text-center lg:text-left">ULTRACARE HOSPITAL</h3>
-            <motion.a
-              variants={linkVariants}
-              whileHover="hover"
-              whileTap="tap"
-              href="/contact"
-              className="bg-white text-teal-900 px-5 py-2 md:px-6 md:py-1 rounded-lg font-medium text-sm md:text-base"
-            >
-              Request an Appointment
-            </motion.a>
-            <div className="flex gap-3 mt-4">
-              {[
-                { icon: FaFacebookF, link: "https://www.facebook.com/ultracarehospital", color: "hover:bg-teal-600" },
-                { icon: FaInstagram, link: "https://www.instagram.com/ultracarehospital", color: "hover:bg-pink-600" },
-                { icon: FaYoutube, link: "https://youtube.com/Ultracarehospital", color: "hover:bg-red-600" },
-                { icon: FaTiktok, link: "https://tiktok.com/@ultracarehospital", color: "hover:bg-gray-800" },
-                { icon: FaXTwitter, link: "https://x.com/Ultracarehospital", color: "hover:bg-gray-800" }
-              ].map(({ icon: Icon, link, color }, index) => (
-                <motion.a
-                  key={index}
-                  href={link}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className={`w-9 h-9 flex items-center justify-center border-2 border-white rounded-full transition duration-300 ${color}`}
-                >
-                  <Icon className="text-white text-lg" />
-                </motion.a>
-              ))}
+      {/* Main Footer */}
+      <div className="max-w-screen-2xl mx-auto px-6 lg:px-12 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+
+          {/* Logo & Brand */}
+          <div className="flex flex-col items-center md:items-start space-y-4">
+            <img
+              src={logo}
+              alt="Ultracare Specialist Hospital"
+              className="h-24 w-auto object-contain"
+            />
+
+            <div className="text-center md:text-left">
+              <h2 className="text-lg font-bold text-teal-700">
+                ULTRACARE
+              </h2>
+              <p className="text-teal-600 font-medium">
+                Specialist Hospital
+              </p>
+              <p className="text-gray-500 text-sm mt-2 max-w-xs">
+                Hearts that Care
+              </p>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="flex flex-col items-center lg:items-center">
-            <h3 className="text-lg font-semibold text-white mb-6">Quick Links</h3>
-            <nav className="grid grid-cols-2 gap-x-10 gap-y-3 text-center lg:text-left">
-              {[
-                { name: "Home", url: "/" },
-                { name: "About", url: "/about" },
-                { name: "Services", url: "/services" },
-                { name: "Contact Us", url: "/contact" },
-                { name: "Careers", url: "/careers" },
-              ].map(({ name, url }) => (
-                <motion.a
-                  key={name}
-                  variants={linkVariants}
-                  whileHover="hover"
-                  href={url}
-                  className="hover:text-white transition text-sm md:text-base"
-                >
-                  {name}
-                </motion.a>
-              ))}
-            </nav>
-          </div>
+<div className="flex flex-col items-start ml-6">
+  <h3 className="text-base font-semibold text-gray-800 mb-4">
+    Quick Links
+  </h3>
 
-          {/* Contact */}
-          <div className="flex flex-col items-center lg:items-center">
-            <h3 className="text-lg font-semibold text-white mb-6">Contact</h3>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <MapPin size={20} className="flex-shrink-0 mt-0.5" />
-                <span className="text-sm md:text-base">Ultracare Specialist Hospital, Kisii, Kenya</span>
+  <nav className="grid grid-cols-2 gap-x-10 gap-y-3 text-sm">
+    <Link to="/" className="text-teal-600 hover:text-teal-600 transition">
+      Home
+    </Link>
+    <Link to="/contact" className="text-teal-600 hover:text-teal-600 transition">
+      Contact Us
+    </Link>
+
+    <Link to="/about" className="text-teal-600 hover:text-teal-600 transition">
+      About
+    </Link>
+    <Link to="/careers" className="text-teal-600 hover:text-teal-600 transition">
+      Careers
+    </Link>
+
+    <Link to="/services" className="text-teal-600 hover:text-teal-600 transition">
+      Services
+    </Link>
+  </nav>
+</div>
+
+
+          {/* Contact Info */}
+          <div className="flex flex-col items-center md:items-start">
+            <h3 className="text-base font-semibold text-gray-800 mb-4">
+              Contact
+            </h3>
+            <div className="space-y-3 text-sm text-teal-600">
+              <div className="flex items-start gap-2">
+                <MapPin size={16} className="mt-0.5 text-teal-800" />
+                <span>Ultracare Specialist Hospital, Nyahururu</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone size={20} className="flex-shrink-0" />
-                <span className="text-sm md:text-base">011-196-4576</span>
+              <div className="flex items-center gap-2">
+                <Phone size={16} className="text-teal-800" />
+                <span>0702-761-696</span>
               </div>
-              <div className="flex items-start gap-3">
-                <Mail size={20} className="flex-shrink-0 mt-0.5" />
-                <motion.a
-                  variants={linkVariants}
-                  whileHover="hover"
+              <div className="flex items-center gap-2">
+                <Mail size={16} className="text-teal-800" />
+                <a
                   href="mailto:ultracarespecialisthospital@gmail.com"
-                  className="hover:text-white text-sm md:text-base"
+                  className="hover:text-teal-600 transition"
                 >
                   ultracarespecialisthospital@gmail.com
-                </motion.a>
+                </a>
               </div>
-              <div className="flex items-center gap-3">
-                <Clock size={20} className="flex-shrink-0" />
-                <span className="text-sm md:text-base">Mon-Sun: 24 Hours</span>
+              <div className="flex items-center gap-2">
+                <Clock size={16} className="text-teal-800" />
+                <span>Mon–Sun: 24 Hours</span>
               </div>
             </div>
           </div>
@@ -113,14 +93,12 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright */}
-      <div className="bg-teal-700 py-4 md:py-6">
-  <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-teal-100 opacity-20 text-xs md:text-sm">
-    © {new Date().getFullYear()} Insur. All rights reserved.
-  </div>
-</div>
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-200 py-4 text-center text-xs text-gray-100">
+        © {new Date().getFullYear()} Insur. All rights reserved.
+      </div>
 
-    </motion.footer>
+    </footer>
   );
 };
 

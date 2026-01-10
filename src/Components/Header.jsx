@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa6";
 import { FaEnvelope, FaPhone, FaClock } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo3.png";
 import { FaHome, FaInfoCircle, FaConciergeBell, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
 
 
@@ -84,51 +84,48 @@ const Header = () => {
       </div>
 
       {/* Main Navbar */}
-      <nav className="bg-teal-600 shadow-md px-4 md:px-6 lg:px-10 flex justify-between items-center h-16 md:h-24">
-        {/* Logo */}
-        <div className="flex items-center flex-shrink-0">
-          <a href="/">
-            <img 
-              src={logo} 
-              alt="BMC Logo" 
-              className="h-12 md:h-20 w-auto object-contain" 
-            />
-          </a>
-        </div>
+      <nav className="bg-white shadow-md px-6 lg:px-12 flex items-center h-20 md:h-24">
+  {/* Logo */}
+  <div className="flex items-center flex-shrink-0">
+    <a href="/" className="flex items-center">
+      <img
+        src={logo}
+        alt="Ultracare Specialist Hospital Logo"
+        className="h-14 md:h-16 w-auto object-contain"
+      />
+    </a>
+  </div>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flexspace-x-4 lg:space-x-6">
-          <Link to="/" className="text-white hover:text-teal-200 transition-colors font-medium">Home</Link>
-          <Link to="/about" className="text-white hover:text-teal-200 transition-colors font-medium">About</Link>
-          <Link to="/services" className="text-white hover:text-teal-200 transition-colors font-medium">Services</Link>
-          <Link to="/contact" className="text-white hover:text-teal-200 transition-colors font-medium">Contact Us</Link>
-          <Link to="/careers" className="text-white hover:text-teal-200 transition-colors font-medium">Careers</Link>
-        </div>
+  {/* Center Nav */}
+  <div className="flex-1 flex justify-center">
+    <div className="hidden md:flex items-center space-x-6">
+      <Link to="/" className="text-teal-700 hover:text-teal-500 font-medium">Home</Link>
+      <Link to="/about" className="text-teal-700 hover:text-teal-500 font-medium">About</Link>
+      <Link to="/services" className="text-teal-700 hover:text-teal-500 font-medium">Services</Link>
+      <Link to="/contact" className="text-teal-700 hover:text-teal-500 font-medium">Contact Us</Link>
+      <Link to="/careers" className="text-teal-700 hover:text-teal-500 font-medium">Careers</Link>
+    </div>
+  </div>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden text-white focus:outline-none"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flex space-x-4 lg:space-x-6">
-          <Link to="/" className="text-white hover:text-teal-200 transition-colors font-medium">Home</Link>
-          <Link to="/about" className="text-white hover:text-teal-200 transition-colors font-medium">About</Link>
-          <Link to="/services" className="text-white hover:text-teal-200 transition-colors font-medium">Services</Link>
-          <Link to="/contact" className="text-white hover:text-teal-200 transition-colors font-medium">Contact Us</Link>
-          <Link to="/careers" className="text-white hover:text-teal-200 transition-colors font-medium">Careers</Link>
-        </div>
+  {/* CTA */}
+  <div className="hidden md:block">
+    <button
+      onClick={() => navigate("/contact")}
+      className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-md font-medium transition-colors"
+    >
+      Request an Appointment
+    </button>
+  </div>
 
-        {/* Desktop Appointment Button */}
-        <button 
-          onClick={() => navigate("/contact")}
-          className="hidden md:block bg-white hover:bg-[#F0F0F0] text-teal-600 px-4 py-1 lg:px-6 lg:py-2 rounded-md font-medium transition-colors"
-        >
-          Request an Appointment
-        </button>
-      </nav>
+  {/* Mobile Menu Button */}
+  <button
+    className="md:hidden text-teal-700"
+    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+  >
+    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+  </button>
+</nav>
+
 
       {/* Mobile Menu */}
       {/* Mobile Menu */}
