@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import hero from "../../../assets/ultra9.jpg";
-import hero1 from "../../../assets/ultra10.jpg";
-import hero2 from "../../../assets/ultra11.jpg";
+import hero from "../../../assets/ultra23.jpeg";
+import hero1 from "../../../assets/ultra28.jpeg";
+import hero2 from "../../../assets/ultra14.jpeg";
 
 const WhyChooseUs = () => {
   const features = [

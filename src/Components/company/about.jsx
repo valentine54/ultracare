@@ -1,32 +1,32 @@
 import React, { useState } from "react";
 import { FaImages } from "react-icons/fa";
 import hospitalImage from "../../assets/26.jpg"; // Replace with actual hospital image
-import img1 from "../../assets/ultra1.jpg";
-import img2 from "../../assets/ultra2.jpg";
-import img3 from "../../assets/ultra3.jpg";
-import img4 from "../../assets/ultra4.jpg";
-import img5 from "../../assets/ultra5.jpg";
-import img6 from "../../assets/ultra6.jpg";
-import img7 from "../../assets/ultra7.jpg";
-import img8 from "../../assets/ultra8.jpg";
-import img9 from "../../assets/ultra9.jpg";
-import img10 from "../../assets/ultra10.jpg";
-import img11 from "../../assets/ultra11.jpg";
-import img12 from "../../assets/ultra1.jpg";
-import img13 from "../../assets/ultra2.jpg";
-import img14 from "../../assets/ultra4.jpg";
-import img15 from "../../assets/ultra5.jpg";
-import img16 from "../../assets/ultra3.jpg";
-import img17 from "../../assets/ultra6.jpg";
-import img18 from "../../assets/ultra7.jpg";
-import img20 from "../../assets/ultra8.jpg";
-import img21 from "../../assets/ultra9.jpg";
-import img22 from "../../assets/ultra10.jpg";
-import img23 from "../../assets/ultra11.jpg";
-import img24 from "../../assets/ultra1.jpg";
-import img25 from "../../assets/ultra2.jpg";
-import img26 from "../../assets/ultra3.jpg";
-import img27 from "../../assets/ultra5.jpg";
+import img1 from "../../assets/ultra11.jpeg";
+import img2 from "../../assets/ultra12.jpeg";
+import img3 from "../../assets/ultra13.jpeg";
+import img4 from "../../assets/ultra14.jpeg";
+import img5 from "../../assets/ultra15.jpeg";
+import img6 from "../../assets/ultra16.jpeg";
+import img7 from "../../assets/ultra17.jpeg";
+import img8 from "../../assets/ultra18.jpeg";
+import img9 from "../../assets/ultra19.jpeg";
+import img10 from "../../assets/ultra20.jpeg";
+import img11 from "../../assets/ultra21.jpeg";
+import img12 from "../../assets/ultra22.jpeg";
+import img13 from "../../assets/ultra23.jpeg";
+import img14 from "../../assets/ultra24.jpeg";
+import img15 from "../../assets/ultra25.jpeg";
+import img16 from "../../assets/ultra26.jpeg";
+import img17 from "../../assets/ultra27.jpeg";
+import img18 from "../../assets/ultra28.jpeg";
+// import img20 from "../../assets/ultra8.jpg";
+// import img21 from "../../assets/ultra9.jpg";
+// import img22 from "../../assets/ultra10.jpg";
+// import img23 from "../../assets/ultra11.jpg";
+// import img24 from "../../assets/ultra1.jpg";
+// import img25 from "../../assets/ultra2.jpg";
+// import img26 from "../../assets/ultra3.jpg";
+// import img27 from "../../assets/ultra5.jpg";
 
 const AboutPage = () => {
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -35,7 +35,7 @@ const AboutPage = () => {
   const galleryImages = [
     img1, img2, img3, img4, img5, img6, img7, img8, img9, img10,
     img11, img12, img13, img14, img15, img16, img17, img18,
-    img20, img21, img22, img23, img24, img25, img26, img27
+   // img20, img21, img22, img23, img24, img25, img26, img27
   ];
 
   const openImageModal = (img) => setSelectedImage(img);
