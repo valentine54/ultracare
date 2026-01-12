@@ -6,11 +6,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ChevronRight, Phone, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import hero1 from "../../../assets/ultra1.jpg";
-import hero2 from "../../../assets/ultra2.jpg";
-import hero3 from "../../../assets/ultra3.jpg";
-import hero4 from "../../../assets/ultra4.jpg";
-import hero5 from "../../../assets/ultra5.jpg";
+import hero1 from "../../../assets/ultra18.jpeg";
+import hero2 from "../../../assets/ultra24.jpeg";
+import hero3 from "../../../assets/ultra19.jpeg";
+import hero4 from "../../../assets/ultra20.jpeg";
+// import hero5 from "../../../assets/ultra5.jpg";
 
 const slides = [
   {
@@ -37,12 +37,12 @@ const slides = [
     description:
       "With a 50-bed capacity, VIP rooms, a modern maternity unit, newborn unit (NBU), and 24-hour inpatient care, we prioritize comfort, safety, and clinical excellence.",
   },
-  {
-    image: hero5,
-    title: "Patient-Centred. Ethical. Compassionate.",
-    description:
-      "Guided by integrity, collaboration and compassion, Ultracare is committed to delivering high-quality, patient-centred healthcare to communities across Laikipia and beyond.",
-  },
+  // {
+  //   image: hero5,
+  //   title: "Patient-Centred. Ethical. Compassionate.",
+  //   description:
+  //     "Guided by integrity, collaboration and compassion, Ultracare is committed to delivering high-quality, patient-centred healthcare to communities across Laikipia and beyond.",
+  // },
 ];
 
 
@@ -70,7 +70,7 @@ const HeroSlider = () => {
               <img
                 src={slide.image}
                 alt="Slide background"
-                className="w-full h-full object-cover md:object-[50%_40%]"
+                className="w-full h-full object-cover md:object-[20%_10%] "
               />
               <div className="absolute inset-0 bg-black/30"></div>
               
